@@ -1,0 +1,44 @@
+config:
+  fullscreen: 0
+  height: 600
+  width: 800
+  aalines: 1
+  record: record.dat
+  playDefaultSoundtrack: 1
+  playMusic: 1
+  rotationSpeed: 7
+  moveSpeed: 7
+  audio: 1
+  showNextBlock: 1
+  showBlockIndicator: 1
+  shaftWidth: 5
+  shaftHeight: 5
+  shaftDepth: 12
+  startLevel: 1
+  allowShaftTilting: 1
+  practiceMode: 0
+  drawSolidShaftTiles: 1
+  drawShaftTileFrame: 0
+  effectsVolume: 0.9
+  musicVolume: 0.4
+  grabMouse: 1
+  showCursorAnimation: 1
+  showScoreUpdates: 1
+
+binds:
+  MoveIn: SPACE
+  MoveUp: UP
+  MoveDown: DOWN
+  MoveRight: RIGHT
+  MoveLeft: LEFT
+  Motion: MOTION
+  RotateA: A
+  RotateD: D
+  RotateE: E
+  RotateQ: Q
+  RotateS: S
+  RotateW: W
+  Confirm: RETURN
+  EscapeAction: ESCAPE
+  Snapshot: F6
+  PauseGame: P
