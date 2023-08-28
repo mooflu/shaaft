@@ -1,3 +1,6 @@
+# Play
+https://mooflu.github.io/shaaft/shaaft.html
+
 # Introduction
 Shaaft is a three-dimensional block stacking game. The blocks fall into a shaft (also known as the pit). The aim of the game is to complete planes (instead of rows). Incomplete layers cause the blocks to build up and reduce the available space. The game ends when some blocks no longer fit into the shaft.
 
