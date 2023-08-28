@@ -3,6 +3,16 @@ Shaaft is a three-dimensional block stacking game. The blocks fall into a shaft 
 
 ![image](https://github.com/mooflu/shaaft/assets/693717/87e89d27-6571-47bc-b8e0-ed95847796e2)
 
+# Scoring
+
+Points are given when a block is locked. Its visual representation changes from the outline (which you can move and rotate) to the solid elements that accumulate at the bottom of the shaft.
+
+The number of points is dependent on the number of elements in a block, the block's complexity, as well as the current level. Dropping a block earlier (using SPACE) results in  more points as well.
+
+When a plane is completed (and disappears) additional points are given out. Completing multiple planes at a time gives more points. 
+
+The 20 seconds following a Moo-Hachoo all points scored are doubled.
+
 # Menu
 The menu hierarchy looks like this:
 ```
