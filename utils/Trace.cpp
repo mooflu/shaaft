@@ -19,6 +19,10 @@
 #include <fstream>
 using namespace std;
 
+#ifdef HAVE_CONFIG_H
+#include <defines.h> //PACKAGE and VERSION
+#endif
+
 int Trace::indent_=0;
 
 #ifdef WIN32
@@ -67,7 +71,7 @@ Trace::~Trace()
 #ifdef TRACE
 #ifdef WIN32
 #include "../utilsfs/GetDataPath.hpp"
-ofstream mcout( (getWritableDataPath( "mooflu.com") + "/log.txt").c_str());
+ofstream mcout( (getWritableDataPath(PACKAGE) + "/log.txt").c_str());
 //#define mcout cout
 #else
 #define mcout cout

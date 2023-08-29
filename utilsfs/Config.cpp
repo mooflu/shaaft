@@ -248,7 +248,7 @@ bool Config::getList( const std::string &section, std::vector<ConfigItem> &items
 
     if(sectionNode.IsNone())
     {
-        LOG_ERROR << "section not found\n";
+        LOG_ERROR << "section '" << section << "' not found\n";
         return false;
     }
 

@@ -220,7 +220,7 @@ size_t receiveData(void *buffer, size_t size, size_t nmemb, void *data)
 }
 
 
-#include "OSName.hpp"
+// #include "OSName.hpp"
 int ScoreRequestThread(void *data)
 {
     GetLock();

@@ -462,7 +462,7 @@ void Model::prepareModel( void)
                     verts, norms, colors);
         }
     }
-    GLuint vi[verts.size()];
+    GLuint *vi = new GLuint[verts.size()];
     for( size_t i=0; i<verts.size(); i++) {
         vi[i] = i;
     }
@@ -479,4 +479,5 @@ void Model::prepareModel( void)
     _colorBuf->setData(GL_ARRAY_BUFFER, colors.size()*sizeof(vec4f), colors.data(), GL_STATIC_DRAW);
 
     _vao->unbind();
+    delete[] vi;
 }

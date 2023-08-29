@@ -1,13 +1,25 @@
-#!/bin/bash
+#!/bin/bash -x
 
 export PROJ_FOLDER=`pwd`
 export OEM="oem"
+
+case "$(uname -sr)" in
+   CYGWIN*)
+     echo 'MS Windows'
+     export PROJ_FOLDER=`cygpath -w ${PROJ_FOLDER}`
+     ;;
+
+   *)
+     ;;
+esac
 
 if [ ! -f resource.dat ]; then
     pushd data
     7z a ../resource.dat .
     popd
 fi
+
+echo proj folder: ${PROJ_FOLDER}
 
 mkdir -p 3rdparty
 pushd 3rdparty
@@ -23,7 +35,6 @@ fi
         -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
         -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
         -DPHYSFS_BUILD_SHARED=False \
-        -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DPHYSFS_ARCHIVE_7Z:BOOL=ON \
         -DPHYSFS_ARCHIVE_ZIP=OFF \
         -DPHYSFS_ARCHIVE_GRP=OFF \
@@ -36,8 +47,8 @@ fi
         -DPHYSFS_ARCHIVE_ISO9660=OFF \
         -DPHYSFS_ARCHIVE_VDF=OFF \
         .
-    make VERBOSE=1 -j`nproc`
-    make VERBOSE=1 -j`nproc` install
+    cmake --build . --config Release
+    cmake --install .
     popd
 
 if [ ! -d zlib ]; then
@@ -49,12 +60,13 @@ fi
         -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
         -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
         -DBUILD_SHARED_LIBS:BOOL=OFF \
-        -DCMAKE_BUILD_TYPE=MinSizeRel \
         .
-    make VERBOSE=1 -j`nproc`
-    make VERBOSE=1 -j`nproc` install
+    cmake --build . --config Release
+    cmake --install .
     # zlib doesn't seem to honour BUILD_SHARED_LIBS false
     rm -f ${PROJ_FOLDER}/${OEM}/lib/libz.so*
+    rm -f ${PROJ_FOLDER}/${OEM}/lib/zlib.dll
+    rm -f ${PROJ_FOLDER}/${OEM}/lib/zlib.lib
     popd
 
 if [ ! -d libpng ]; then
@@ -72,10 +84,27 @@ fi
         -DBUILD_SHARED_LIBS:BOOL=OFF \
         -DPNG_SHARED:BOOL=OFF \
         -DPNG_STATIC:BOOL=ON \
-        -DCMAKE_BUILD_TYPE=MinSizeRel \
         .
-    make VERBOSE=1 -j`nproc`
-    make VERBOSE=1 -j`nproc` install
+    cmake --build . --config Release
+    cmake --install .
+    popd
+
+if [ ! -d glew ]; then
+	git clone --depth 1 --branch glew-2.2.0 https://github.com/nigels-com/glew.git
+fi
+    pushd glew/auto
+    make
+    popd
+
+    pushd glew/build
+    cmake \
+        -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
+        -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
+        -DBUILD_SHARED_LIBS:BOOL=OFF \
+        -BUILD_UTILS:BOOL=OFF \
+        ./cmake
+    cmake --build . --config Release
+    cmake --install .
     popd
 
 if [ ! -d SDL ]; then
@@ -89,10 +118,9 @@ fi
             -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
             -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
             -DBUILD_SHARED_LIBS:BOOL=OFF \
-            -DSDL_SHARED:BOOL=OFF \
-            -DCMAKE_BUILD_TYPE=MinSizeRel
-        make VERBOSE=1 -j`nproc`
-        make VERBOSE=1 -j`nproc` install
+            -DSDL_SHARED:BOOL=OFF
+        cmake --build . --config Release
+        cmake --install .
         popd
     popd
 
@@ -123,10 +151,9 @@ fi
             -DSDL2IMAGE_XCF:BOOL=OFF \
             -DSDL2IMAGE_XPM:BOOL=OFF \
             -DSDL2IMAGE_XV:BOOL=OFF \
-            -DSDL2IMAGE_SAMPLES:BOOL=OFF \
-            -DCMAKE_BUILD_TYPE=MinSizeRel
-        make VERBOSE=1 -j`nproc`
-        make VERBOSE=1 -j`nproc` install
+            -DSDL2IMAGE_SAMPLES:BOOL=OFF
+        cmake --build . --config Release
+        cmake --install .
         popd
     popd
 
@@ -150,10 +177,9 @@ fi
             -DSDL2MIXER_FLAC:BOOL=OFF \
             -DSDL2MIXER_CMD:BOOL=OFF \
             -DSDL2MIXER_SNDFILE:BOOL=OFF \
-            -DSDL2MIXER_SAMPLES:BOOL=OFF \
-            -DCMAKE_BUILD_TYPE=MinSizeRel
-        make VERBOSE=1 -j`nproc`
-        make VERBOSE=1 -j`nproc` install
+            -DSDL2MIXER_SAMPLES:BOOL=OFF
+        cmake --build . --config Release
+        cmake --install .
         popd
     popd
 
@@ -170,10 +196,9 @@ fi
         -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
         -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
         -DBUILD_SHARED_LIBS:BOOL=OFF \
-        -DCMAKE_BUILD_TYPE=MinSizeRel \
         .
-    make VERBOSE=1 -j`nproc`
-    make VERBOSE=1 -j`nproc` install
+    cmake --build . --config Release
+    cmake --install .
     popd
 
 if [ ! -d libvorbis ]; then
@@ -189,10 +214,9 @@ fi
         -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
         -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
         -DBUILD_SHARED_LIBS:BOOL=OFF \
-        -DCMAKE_BUILD_TYPE=MinSizeRel \
         .
-    make VERBOSE=1 -j`nproc`
-    make VERBOSE=1 -j`nproc` install
+    cmake --build . --config Release
+    cmake --install .
     popd
 
 popd
@@ -200,6 +224,6 @@ popd
 mkdir -p build
 pushd build
 cmake -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} -DBUILD_SHARED_LIBS:BOOL=OFF ..
-make VERBOSE=1 -j`nproc`
+cmake --build . --config Release
 popd
 

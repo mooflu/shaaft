@@ -139,14 +139,14 @@ void GLVBO::init( std::vector<vec4f> &verts,
         //glDisableVertexAttribArray( colorLoc );
     }
 
-    GLuint vi[verts.size()];
+    GLuint *vi = new GLuint[verts.size()];
     for( size_t i=0; i<verts.size(); i++) {
         vi[i] = i;
     }
     _vIndexBuf->bind(GL_ELEMENT_ARRAY_BUFFER);
     _vIndexBuf->setData(GL_ELEMENT_ARRAY_BUFFER, verts.size()*sizeof(GLuint), vi, GL_STATIC_DRAW);
-
     _vao->unbind();
+    delete[] vi;
 }
 
 void GLVBO::draw(GLenum mode)

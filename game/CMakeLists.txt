@@ -1,3 +1,7 @@
+include(${PROJECT_SOURCE_DIR}/utilscmake/FindExtras.cmake)
+
+set(CMAKE_FIND_DEBUG_MODE TRUE)
+
 if(NOT EMSCRIPTEN)
     find_package(ZLIB REQUIRED)
     find_package(PNG REQUIRED)
@@ -9,14 +13,15 @@ if(NOT EMSCRIPTEN)
     find_package(PhysFS REQUIRED)
     find_package(OpenGL REQUIRED)
     find_package(GLEW REQUIRED)
-    find_library(GLEW_LIBRARY GLEW)
 endif()
-
-include(${PROJECT_SOURCE_DIR}/utilscmake/FindExtras.cmake)
 
 set(EXTRA_LIBRARIES "")
 if(WIN32)
-	set(EXTRA_LIBRARIES imm32.lib winmm.lib version.lib)
+	set(EXTRA_LIBRARIES
+        imm32.lib
+        winmm.lib
+        version.lib
+    )
 endif()
 if(APPLE)
 	FIND_LIBRARY(CARBON_LIBRARY Carbon)
@@ -98,7 +103,7 @@ if(NOT EMSCRIPTEN)
         ${OGG_LIBRARY}
         ${VORBIS_LIBRARY}
         ${VORBISFILE_LIBRARY}
-        ${GLEW_LIBRARIES}
+        GLEW::glew_s
     )
 else()
 	#FIND_LIBRARY(PHYSFS_LIBRARY physfs)
@@ -108,13 +113,12 @@ else()
 endif()
 
 target_link_libraries(shaaft utils utilsrandom utilssdl utilsfs utilsgl tinyxml miniyaml
-${SDL2_MIXER_LIBRARY}
-${SDL2_IMAGE_LIBRARY}
-${SDL2_LIBRARY}
+SDL2_mixer::SDL2_mixer-static
+SDL2_image::SDL2_image-static
+${SDL2_LIBRARIES}
 ${PNG_LIBRARY}
 ${ZLIB_LIBRARY}
 ${OPENGL_LIBRARY}
-${GLEW_LIBRARY}
 ${EXTRA_LIBRARIES}
 ${EXTRA_LIBRARIES_2}
 ${CMAKE_DL_LIBS}

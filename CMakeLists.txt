@@ -32,6 +32,7 @@ endif()
 #-s FULL_ES3=1
 
 set(CMAKE_DEBUG_POSTFIX "_d")
+set(CMAKE_CXX_STANDARD 11)
 
 include(${PROJECT_SOURCE_DIR}/utilscmake/PlatformSetup.cmake)
 
