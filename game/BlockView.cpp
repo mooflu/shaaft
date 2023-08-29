@@ -43,7 +43,6 @@ const int DEFAULT_MOVE_STEPS = 10;
 
 BlockView::BlockView( BlockModel &model):
     _model(model),
-    _useAALines(false),
     _showNextBlock(false),
     _showBlockIndicator(false),
     _blockAngle(0.0),
@@ -211,7 +210,6 @@ void  BlockView::updateSettings( void)
     ConfigS::instance()->getInteger( "moveSpeed", moveSpeed);
     _moveSteps = 20 - 2*moveSpeed;
 
-    ConfigS::instance()->getBoolean( "aalines", _useAALines);
     ConfigS::instance()->getBoolean( "showNextBlock", _showNextBlock);
     ConfigS::instance()->getBoolean( "showBlockIndicator", _showBlockIndicator);
 
@@ -460,19 +458,6 @@ void BlockView::draw( void)
 
     _squaresize = 200.0f / (float)(max(w,h));
     _bottom = -120.0f -((float)d *_squaresize);
-
-#if not defined(EMSCRIPTEN) // aa lines not supported in opengl es
-    if( _useAALines)
-    {
-        //AA lines
-        //glHint(GL_NICEST,GL_LINE_SMOOTH_HINT);
-        glEnable( GL_LINE_SMOOTH);
-    }
-    else
-    {
-        glDisable( GL_LINE_SMOOTH);
-    }
-#endif
 
     // -- Draw the shaft
     bool drawSolidShaftTiles = true;

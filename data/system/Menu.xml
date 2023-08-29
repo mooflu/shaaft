@@ -158,11 +158,6 @@
 		Position="30.0 260.0"
 		Variable="drawShaftTileFrame" />
 	    <Bool
-		Text="Antialiased Lines"
-		Info="Draw smooth or blocky lines."
-		Position="30.0 220.0"
-		Variable="aalines" />
-	    <Bool
 		Text="Mouse Cursor Animation"
 		Info="Draw mouse cursor animation."
 		Position="30.0 170.0"
@@ -241,12 +236,6 @@
 	    Position="30.0 110.0"
 	    Variable="blockset"
 	    Values="Shaaft Flat3 Basic3 Flat5 Simple5 Extended5"/>
-	<!--Bool
-	    Dis="1"
-	    Text="Online Scores"
-	    Info="Online Hi-scores."
-	    Position="30.0 70.0"
-	    Variable="onlineScores" /-->
 
 	<Enum
 	    Text="Rotation Speed: "

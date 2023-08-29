@@ -15,7 +15,7 @@ esac
 
 if [ ! -f resource.dat ]; then
     pushd data
-    7z a ../resource.dat .
+    zip -9r ../resource.dat .
     popd
 fi
 
@@ -36,7 +36,7 @@ fi
         -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
         -DPHYSFS_BUILD_SHARED=False \
         -DPHYSFS_ARCHIVE_7Z:BOOL=ON \
-        -DPHYSFS_ARCHIVE_ZIP=OFF \
+        -DPHYSFS_ARCHIVE_ZIP=ON \
         -DPHYSFS_ARCHIVE_GRP=OFF \
         -DPHYSFS_ARCHIVE_WAD=OFF \
         -DPHYSFS_ARCHIVE_CSM=OFF \

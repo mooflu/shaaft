@@ -71,7 +71,6 @@ private:
     float _squaresize;
     float _bottom;
 
-    bool _useAALines;
     bool _showNextBlock;
     bool _showBlockIndicator;
 

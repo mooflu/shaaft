@@ -9,7 +9,7 @@ export PROJ_FOLDER=`pwd`
 
 if [ ! -f resource.dat ]; then
     pushd data
-    7z a ../resource.dat .
+    zip -9r ../resource.dat .
     popd
 fi
 
@@ -29,7 +29,7 @@ fi
         -DPHYSFS_BUILD_SHARED=False \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DPHYSFS_ARCHIVE_7Z:BOOL=ON \
-        -DPHYSFS_ARCHIVE_ZIP=OFF \
+        -DPHYSFS_ARCHIVE_ZIP=ON \
         -DPHYSFS_ARCHIVE_GRP=OFF \
         -DPHYSFS_ARCHIVE_WAD=OFF \
         -DPHYSFS_ARCHIVE_CSM=OFF \

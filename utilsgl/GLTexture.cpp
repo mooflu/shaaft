@@ -148,11 +148,7 @@ GLenum GLTexture::getGLTextureFormat( void)
 
     if( alpha > 0)
     {
-#if defined (EMSCRIPTEN)
         texFormat = GL_RGBA;
-#else
-        texFormat = GL_BGRA; // TODO: figure out why not GL_RGBA anymore - must be how SDL_image loads?
-#endif
     }
 
     return texFormat;
