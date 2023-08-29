@@ -99,22 +99,24 @@ endif()
 
 if(NOT EMSCRIPTEN)
     set(EXTRA_LIBRARIES_2
+        SDL2_mixer::SDL2_mixer-static
+        SDL2_image::SDL2_image-static
         ${PHYSFS_LIBRARY}
         ${OGG_LIBRARY}
         ${VORBIS_LIBRARY}
         ${VORBISFILE_LIBRARY}
-        GLEW::glew_s
+        ${GLEW_LIBRARIES} #GLEW::glew_s
     )
 else()
 	#FIND_LIBRARY(PHYSFS_LIBRARY physfs)
     set(EXTRA_LIBRARIES_2
+		${SDL2_MIXER_LIBRARY}
+		${SDL2_IMAGE_LIBRARY}
         "${PROJECT_SOURCE_DIR}/oem.emscripten/lib/libphysfs.a"
     )
 endif()
 
 target_link_libraries(shaaft utils utilsrandom utilssdl utilsfs utilsgl tinyxml miniyaml
-SDL2_mixer::SDL2_mixer-static
-SDL2_image::SDL2_image-static
 ${SDL2_LIBRARIES}
 ${PNG_LIBRARY}
 ${ZLIB_LIBRARY}

@@ -20,6 +20,7 @@ dist-clean: clean
 	rm -f resource.dat
 	rm -rf glm
 	rm -rf physfs
+	rm -rf oem
 	rm -rf oem.emscripten
 	rm -rf 3rdparty
 
