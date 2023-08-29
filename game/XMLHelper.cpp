@@ -5,6 +5,8 @@
 //
 #include "XMLHelper.hpp"
 
+#include <memory>
+
 #include "Trace.hpp"
 #include "ResourceManager.hpp"
 

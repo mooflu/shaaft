@@ -22,7 +22,8 @@ if(EMSCRIPTEN)
     ")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EMSCRIPTEN_FLAGS}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${PROJECT_SOURCE_DIR}/3rdparty/glm -I${PROJECT_SOURCE_DIR}/oem.emscripten/include/")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --shell-file ${PROJECT_SOURCE_DIR}/shaaft-template.html")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${PROJECT_SOURCE_DIR}/3rdparty/glm -I${PROJECT_SOURCE_DIR}/oem/include/")
 endif()
 #-s USE_OGG=1
 #-s USE_VORBIS=1

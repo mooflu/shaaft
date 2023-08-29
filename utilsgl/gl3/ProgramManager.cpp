@@ -1,5 +1,7 @@
 #include "ProgramManager.hpp"
 
+#include <memory>
+
 #include "Trace.hpp"
 #include "ResourceManager.hpp"
 

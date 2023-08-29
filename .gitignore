@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+3rdparty
+build
+oem.emscripten
+resource.dat
+
