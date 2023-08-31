@@ -4,7 +4,7 @@ project(shaaft C CXX)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/utilscmake")
 
-add_definitions(-DPACKAGE="Shaaft" -DVERSION="2.1" -DSTATIC_LIB)
+add_definitions(-DPACKAGE="Shaaft" -DVERSION="2.1.1" -DSTATIC_LIB)
 
 if(EMSCRIPTEN)
     string(REGEX REPLACE "\n *" " " EMSCRIPTEN_FLAGS "
