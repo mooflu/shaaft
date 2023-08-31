@@ -401,7 +401,7 @@ void Input::handleTouch( SDL_TouchEvent &touch)
 
         if( pos.x() < 75 && pos.y() < 105 )
         {
-            pushKey(SDLK_ESCAPE);
+            pushKey(ESCAPE_KEY);
         }
         else if( pos.x() < 75 && pos.y() < 205 )
         {
@@ -683,7 +683,7 @@ bool Input::update( void)
                 case eKeyTrigger:
                     switch( trigger.data1)
                     {
-                        case SDLK_ESCAPE:
+                        case ESCAPE_KEY:
                             validBind = false;
                             break;
                         default:

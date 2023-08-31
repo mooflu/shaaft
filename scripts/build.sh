@@ -2,6 +2,8 @@
 
 export PROJ_FOLDER=`pwd`
 export OEM="oem"
+export BUILD_TYPE="Debug"
+#export BUILD_TYPE="Release"
 
 case "$(uname -sr)" in
    CYGWIN*)
@@ -47,8 +49,8 @@ fi
         -DPHYSFS_ARCHIVE_ISO9660=OFF \
         -DPHYSFS_ARCHIVE_VDF=OFF \
         .
-    cmake --build . --config Release
-    cmake --install .
+    cmake --build . --config ${BUILD_TYPE}
+    cmake --install . --config ${BUILD_TYPE}
     popd
 
 if [ ! -d zlib ]; then
@@ -61,8 +63,8 @@ fi
         -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
         -DBUILD_SHARED_LIBS:BOOL=OFF \
         .
-    cmake --build . --config Release
-    cmake --install .
+    cmake --build . --config ${BUILD_TYPE}
+    cmake --install . --config ${BUILD_TYPE}
     # zlib doesn't seem to honour BUILD_SHARED_LIBS false
     rm -f ${PROJ_FOLDER}/${OEM}/lib/libz.so*
     rm -f ${PROJ_FOLDER}/${OEM}/lib/zlib.dll
@@ -85,8 +87,8 @@ fi
         -DPNG_SHARED:BOOL=OFF \
         -DPNG_STATIC:BOOL=ON \
         .
-    cmake --build . --config Release
-    cmake --install .
+    cmake --build . --config ${BUILD_TYPE}
+    cmake --install . --config ${BUILD_TYPE}
     popd
 
 if [ ! -d glew ]; then
@@ -101,10 +103,10 @@ fi
         -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
         -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
         -DBUILD_SHARED_LIBS:BOOL=OFF \
-        -BUILD_UTILS:BOOL=OFF \
+        -DBUILD_UTILS:BOOL=OFF \
         ./cmake
-    cmake --build . --config Release
-    cmake --install .
+    cmake --build . --config ${BUILD_TYPE}
+    cmake --install . --config ${BUILD_TYPE}
     popd
 
 if [ ! -d SDL ]; then
@@ -119,8 +121,8 @@ fi
             -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
             -DBUILD_SHARED_LIBS:BOOL=OFF \
             -DSDL_SHARED:BOOL=OFF
-        cmake --build . --config Release
-        cmake --install .
+        cmake --build . --config ${BUILD_TYPE}
+        cmake --install . --config ${BUILD_TYPE}
         popd
     popd
 
@@ -152,8 +154,8 @@ fi
             -DSDL2IMAGE_XPM:BOOL=OFF \
             -DSDL2IMAGE_XV:BOOL=OFF \
             -DSDL2IMAGE_SAMPLES:BOOL=OFF
-        cmake --build . --config Release
-        cmake --install .
+        cmake --build . --config ${BUILD_TYPE}
+        cmake --install . --config ${BUILD_TYPE}
         popd
     popd
 
@@ -178,8 +180,8 @@ fi
             -DSDL2MIXER_CMD:BOOL=OFF \
             -DSDL2MIXER_SNDFILE:BOOL=OFF \
             -DSDL2MIXER_SAMPLES:BOOL=OFF
-        cmake --build . --config Release
-        cmake --install .
+        cmake --build . --config ${BUILD_TYPE}
+        cmake --install . --config ${BUILD_TYPE}
         popd
     popd
 
@@ -197,8 +199,8 @@ fi
         -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
         -DBUILD_SHARED_LIBS:BOOL=OFF \
         .
-    cmake --build . --config Release
-    cmake --install .
+    cmake --build . --config ${BUILD_TYPE}
+    cmake --install . --config ${BUILD_TYPE}
     popd
 
 if [ ! -d libvorbis ]; then
@@ -215,8 +217,8 @@ fi
         -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
         -DBUILD_SHARED_LIBS:BOOL=OFF \
         .
-    cmake --build . --config Release
-    cmake --install .
+    cmake --build . --config ${BUILD_TYPE}
+    cmake --install . --config ${BUILD_TYPE}
     popd
 
 popd
@@ -224,6 +226,6 @@ popd
 mkdir -p build
 pushd build
 cmake -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} -DBUILD_SHARED_LIBS:BOOL=OFF ..
-cmake --build . --config Release
+cmake --build . --config ${BUILD_TYPE}
 popd
 

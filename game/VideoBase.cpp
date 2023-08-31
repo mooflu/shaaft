@@ -73,12 +73,12 @@ VideoBase::~VideoBase()
 
 void VideoBase::reload( void)
 {
-    //BitmapManagerS::instance()->reset();
-    BitmapManagerS::instance()->reload();
-    //FontManagerS::instance()->reset();
-    FontManagerS::instance()->reload();
-
+    BitmapManagerS::instance()->reset();
+    FontManagerS::instance()->reset();
     ModelManagerS::instance()->reset();
+
+    BitmapManagerS::instance()->reload();
+    FontManagerS::instance()->reload();
     ModelManagerS::instance()->reload();
 
     std::list<ResolutionChangeObserverI*>::iterator i;

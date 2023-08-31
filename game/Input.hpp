@@ -20,6 +20,12 @@ using namespace vmml;
 
 class Callback;
 
+#if defined(EMSCRIPTEN)
+#define ESCAPE_KEY SDLK_BACKSPACE
+#else
+#define ESCAPE_KEY SDLK_ESCAPE
+#endif
+
 namespace HASH_NAMESPACE
 {
     template<>
@@ -29,7 +35,7 @@ namespace HASH_NAMESPACE
 	int operator()(const Trigger &t) const
 	{
 	    int hashval;
-	    
+
 	    if( t.type == eMotionTrigger)
 	    {
 		hashval = t.type*1000;
@@ -53,7 +59,7 @@ struct TouchInfo
         active(true)
     {
     }
-    
+
     void *touch;
     vec2i pos;
     vec2i currentPos;
@@ -85,7 +91,7 @@ public:
     }
 
     void addCallback( Callback *cb);
-    
+
     std::string getTriggerName( std::string &action);
 
     void enableInterceptor( InterceptorI *i)
@@ -140,21 +146,21 @@ private:
 	//damp of 0 means no filtering
 	//damp of 1 means input value is filtered out completely
 	return memory = value*(1.0f-damp) + memory*damp;
-    }   
+    }
     float _sensitivity;
 
     //intercept raw input
     InterceptorI *_interceptor;
-    
+
     //Touch information
     int _touchCount;
     std::vector<TouchInfo> _touches;
-    
+
 #ifdef IPHONE
     int addTouch( void *t, const vec2i &p);
     void removeTouch( int button);
     int removeTouch( void *t);
-    int findTouch( void *t, const vec2i &currentPos);    
+    int findTouch( void *t, const vec2i &currentPos);
 #endif
 };
 

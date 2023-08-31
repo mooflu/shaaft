@@ -375,7 +375,7 @@ void MenuManager::input( const Trigger &trigger, const bool &isDown)
                         Enter();
                         break;
 
-                    case SDLK_ESCAPE:
+                    case ESCAPE_KEY:
                         if( !Exit())
                         {
                             turnMenuOff();
@@ -387,6 +387,14 @@ void MenuManager::input( const Trigger &trigger, const bool &isDown)
                         break;
                     case SDLK_DOWN:
                         Down();
+                        break;
+
+                    case SDLK_TAB:
+                        if (trigger.data2 & KMOD_SHIFT) {
+                            Up();
+                        } else {
+                            Down();
+                        }
                         break;
 
                     case SDLK_F6:

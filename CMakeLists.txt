@@ -44,3 +44,9 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/utilsfs ${CMAKE_BINARY_DIR}/utilsfs)
 add_subdirectory(${PROJECT_SOURCE_DIR}/tinyxml ${CMAKE_BINARY_DIR}/tinyxml)
 add_subdirectory(${PROJECT_SOURCE_DIR}/miniyaml ${CMAKE_BINARY_DIR}/miniyaml)
 add_subdirectory(${PROJECT_SOURCE_DIR}/game)
+
+set_target_properties(shaaft PROPERTIES
+    VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+    VS_DEBUGGER_COMMAND "${CMAKE_BINARY_DIR}/game/Debug/shaaft.exe"
+    VS_DEBUGGER_COMMAND_ARGUMENTS "-fullscreen 0 -audio 0"
+)
