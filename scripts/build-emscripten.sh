@@ -65,7 +65,7 @@ pushd ${BUILD_DIR}
         -DPHYSFS_ARCHIVE_ISO9660=OFF \
         -DPHYSFS_ARCHIVE_VDF=OFF \
         .
-    cmake --build . --config ${BUILD_TYPE}
+    cmake --build . --config ${BUILD_TYPE} --parallel
     cmake --install . --config ${BUILD_TYPE}
     popd
 
@@ -73,7 +73,7 @@ pushd ${BUILD_DIR}
         -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
         -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
         ..
-    cmake --build . --config ${BUILD_TYPE}
+    cmake --build . --config ${BUILD_TYPE} --parallel
     mkdir -p webapp
     cp game/shaaft.* webapp
 popd
