@@ -17,7 +17,9 @@ if (NOT VERSION)
     message( FATAL_ERROR "VERSION not specified or no git tag found" )
 endif()
 
-string(STRIP VERSION, VERSION)
+string(STRIP ${VERSION} VERSION)
+message("VERSION: ${VERSION}")
+
 add_definitions(-DPACKAGE="Shaaft" -DVERSION="${VERSION}" -DSTATIC_LIB)
 
 if(EMSCRIPTEN)

@@ -126,6 +126,9 @@ pushd ${BUILD_DIR}
     rm -f ${INSTALL_DIR}/lib/libz.so*
     rm -f ${INSTALL_DIR}/lib/zlib.dll
     rm -f ${INSTALL_DIR}/lib/zlib.lib
+    rm -f ${INSTALL_DIR}/lib/libzd.so*
+    rm -f ${INSTALL_DIR}/lib/zlibd.dll
+    rm -f ${INSTALL_DIR}/lib/zlibd.lib
     popd
 
     pushd libpng
