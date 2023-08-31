@@ -2,21 +2,29 @@
 https://mooflu.github.io/shaaft/shaaft.html
 
 `q,a,w,s,e,d` to rotate
+
 `arrows` to move
+
 `space` to drop
 
 `p` to pause
 
 `mouse` to change pitch & yaw of shaft
+
 `cmd/ctrl 0` to reset pitch & yaw
 
 `cmd/ctrl f` to toggle fullscreen
+
 `backtick` \` to quit game
+
 `shift-backtick` to reset resolution back to 800x600
+
 `F6` in native app to take screenshot
 
 `arrows`, `enter` and `escape` to navigate menus with keyboard
+
 `escape` to toggle menu and in-game
+
 (In browser app use `backspace` instead of `escape`. `escape` is used to exit mouse pointer grab)
 
 # Introduction
@@ -34,4 +42,4 @@ When a plane is completed (and disappears) additional points are given out. Comp
 
 The 20 seconds following a Moo-Hachoo all points scored are doubled.
 
-#[Menu Details](Menu.md)
+# [Menu Details](Menu.md)
