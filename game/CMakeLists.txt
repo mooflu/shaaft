@@ -66,9 +66,7 @@ if(EMSCRIPTEN)
     message(STATUS "Setting compilation target to EMSCRIPTEN")
     set(CMAKE_EXECUTABLE_SUFFIX ".html")
     string(REGEX REPLACE "\n *" " " EMSCRIPTEN_LINK_FLAGS "
-        -s WASM=1
         -Oz
-        -s USE_WEBGL2=1
         -s USE_SDL=2
         -s USE_SDL_IMAGE=2
         -s SDL2_IMAGE_FORMATS='[\"png\"]'
@@ -116,7 +114,7 @@ else()
     set(EXTRA_LIBRARIES_2
 		${SDL2_MIXER_LIBRARY}
 		${SDL2_IMAGE_LIBRARY}
-        "${PROJECT_SOURCE_DIR}/oem.emscripten/lib/libphysfs.a"
+        "${CMAKE_INSTALL_PREFIX}/lib/libphysfs.a"
     )
 endif()
 

@@ -11,6 +11,8 @@ export BUILD_TYPE="Release"
 export BUILD_DIR=build.${OEM}.${BUILD_TYPE}
 export INSTALL_DIR=${PROJ_FOLDER}/${OEM}.${BUILD_TYPE}
 
+ln -sfT ${BUILD_DIR} build
+
 case "$(uname -sr)" in
    CYGWIN*)
      echo 'MS Windows'
@@ -56,7 +58,6 @@ pushd ${BUILD_DIR}
         -DPHYSFS_ARCHIVE_ZIP=ON \
         -DPHYSFS_ARCHIVE_GRP=OFF \
         -DPHYSFS_ARCHIVE_WAD=OFF \
-        -DPHYSFS_ARCHIVE_CSM=OFF \
         -DPHYSFS_ARCHIVE_HOG=OFF \
         -DPHYSFS_ARCHIVE_MVL=OFF \
         -DPHYSFS_ARCHIVE_QPAK=OFF \
@@ -64,17 +65,16 @@ pushd ${BUILD_DIR}
         -DPHYSFS_ARCHIVE_ISO9660=OFF \
         -DPHYSFS_ARCHIVE_VDF=OFF \
         .
-    emcmake cmake --build . --config ${BUILD_TYPE}
-    emcmake cmake --install . --config ${BUILD_TYPE}
+    cmake --build . --config ${BUILD_TYPE}
+    cmake --install . --config ${BUILD_TYPE}
     popd
 
     emcmake cmake \
         -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
         -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
-        -DWASM=1 \
         ..
-    emcmake cmake --build . --config ${BUILD_TYPE}
-    mkdir webapp
+    cmake --build . --config ${BUILD_TYPE}
+    mkdir -p webapp
     cp game/shaaft.* webapp
 popd
 

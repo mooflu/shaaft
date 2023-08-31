@@ -17,14 +17,13 @@ if (NOT VERSION)
     message( FATAL_ERROR "VERSION not specified or no git tag found" )
 endif()
 
-add_definitions(-DPACKAGE="Shaaft" -DVERSION=${VERSION} -DSTATIC_LIB)
+string(STRIP VERSION, VERSION)
+add_definitions(-DPACKAGE="Shaaft" -DVERSION="${VERSION}" -DSTATIC_LIB)
 
 if(EMSCRIPTEN)
     string(REGEX REPLACE "\n *" " " EMSCRIPTEN_FLAGS "
         -fno-rtti
         -Oz
-        -s WASM=1
-        -s USE_WEBGL2=1
         -s USE_SDL=2
         -s USE_SDL_IMAGE=2
         -s SDL2_IMAGE_FORMATS='[\"png\"]'
