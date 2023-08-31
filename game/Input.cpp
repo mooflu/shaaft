@@ -90,6 +90,11 @@ bool Input::init( void)
         Config::ConfigItem &bind = (*i);
         string action = bind.key;
         string keyname = bind.value;
+#if defined(EMSCRIPTEN)
+        if (action == "EscapeAction") {
+            keyname = "BACKSPACE";
+        }
+#endif
         LOG_INFO << "action [" << action << "], "
                 << "keyname [" << keyname << "]" << endl;
 
@@ -802,6 +807,12 @@ void Input::handleLine( const string line)
 
     string action = t.next();
     string keyname = t.next();
+
+#if defined(EMSCRIPTEN)
+    if (action == "EscapeAction") {
+        keyname = "BACKSPACE";
+    }
+#endif
 
     LOG_INFO << "action [" << action << "], "
              << "keyname [" << keyname << "]" << endl;
