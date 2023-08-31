@@ -4,7 +4,20 @@ project(shaaft C CXX)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/utilscmake")
 
-add_definitions(-DPACKAGE="Shaaft" -DVERSION="2.1.1" -DSTATIC_LIB)
+if (NOT VERSION)
+    find_package (Git)
+    if (GIT_FOUND)
+        execute_process(
+            COMMAND ${GIT_EXECUTABLE} describe --always --tags "--abbrev=0"
+            OUTPUT_VARIABLE VERSION)
+    endif (GIT_FOUND)
+endif()
+
+if (NOT VERSION)
+    message( FATAL_ERROR "VERSION not specified or no git tag found" )
+endif()
+
+add_definitions(-DPACKAGE="Shaaft" -DVERSION=${VERSION} -DSTATIC_LIB)
 
 if(EMSCRIPTEN)
     string(REGEX REPLACE "\n *" " " EMSCRIPTEN_FLAGS "
@@ -20,20 +33,19 @@ if(EMSCRIPTEN)
         -s USE_LIBPNG=1
         -s USE_ICU=1
     ")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EMSCRIPTEN_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${PROJECT_SOURCE_DIR}/3rdparty/glm -I${PROJECT_SOURCE_DIR}/oem.emscripten/include/")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --shell-file ${PROJECT_SOURCE_DIR}/shaaft-template.html")
-else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${PROJECT_SOURCE_DIR}/3rdparty/glm -I${PROJECT_SOURCE_DIR}/oem/include/")
-endif()
 #-s USE_OGG=1
 #-s USE_VORBIS=1
 #-O2
 #-fno-exceptions
 #-s FULL_ES3=1
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EMSCRIPTEN_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --shell-file ${PROJECT_SOURCE_DIR}/shaaft-template.html")
+endif()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${PROJECT_SOURCE_DIR}/3rdparty/glm")
+set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_DEBUG_POSTFIX "_d")
-set(CMAKE_CXX_STANDARD 11)
 
 include(${PROJECT_SOURCE_DIR}/utilscmake/PlatformSetup.cmake)
 

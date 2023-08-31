@@ -1,6 +1,6 @@
 include(${PROJECT_SOURCE_DIR}/utilscmake/FindExtras.cmake)
 
-set(CMAKE_FIND_DEBUG_MODE TRUE)
+# set(CMAKE_FIND_DEBUG_MODE TRUE)
 
 if(NOT EMSCRIPTEN)
     find_package(ZLIB REQUIRED)

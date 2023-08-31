@@ -1,5 +1,6 @@
 project(UTILSRANDOM)
 
+include_directories(${CMAKE_PREFIX_PATH}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 file(GLOB UTILSRANDOM_SRC *.cpp)

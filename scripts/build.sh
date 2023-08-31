@@ -1,14 +1,18 @@
-#!/bin/bash -x
+#!/bin/bash -xe
 
 export PROJ_FOLDER=`pwd`
 export OEM="oem"
 export BUILD_TYPE="Debug"
 #export BUILD_TYPE="Release"
+export BUILD_DIR=build.${OEM}.${BUILD_TYPE}
+export INSTALL_DIR=${PROJ_FOLDER}/${OEM}.${BUILD_TYPE}
 
 case "$(uname -sr)" in
    CYGWIN*)
      echo 'MS Windows'
      export PROJ_FOLDER=`cygpath -w ${PROJ_FOLDER}`
+     export BUILD_DIR=`cygpath -w ${BUILD_DIR}`
+     export INSTALL_DIR=`cygpath -w ${INSTALL_DIR}`
      ;;
 
    *)
@@ -25,17 +29,75 @@ echo proj folder: ${PROJ_FOLDER}
 
 mkdir -p 3rdparty
 pushd 3rdparty
-if [ ! -d glm ]; then
-	git clone --depth 1 --branch 0.9.9.8 https://github.com/g-truc/glm.git
-fi
-if [ ! -d physfs ]; then
-	git clone --depth 1 --branch release-3.2.0 https://github.com/icculus/physfs.git
-fi
+    if [ ! -d glm ]; then
+        git clone --depth 1 --branch 0.9.9.8 https://github.com/g-truc/glm.git
+    fi
 
+    if [ ! -d physfs ]; then
+        git clone --depth 1 --branch release-3.2.0 https://github.com/icculus/physfs.git
+    fi
+
+    if [ ! -d zlib ]; then
+        git clone --depth 1 --branch v1.3 https://github.com/madler/zlib.git
+    fi
+
+    if [ ! -d libpng ]; then
+        if [ ! -f libpng-1.6.40.tar.gz ]; then
+            wget https://download.sourceforge.net/libpng/libpng-1.6.40.tar.gz
+        fi
+        tar xf libpng-1.6.40.tar.gz
+        mv libpng-1.6.40 libpng
+    fi
+
+    if [ ! -d glew ]; then
+        #git clone --depth 1 --branch glew-2.2.0 https://github.com/nigels-com/glew.git
+        #pushd glew/auto
+        #make
+        #popd
+        if [ ! -f glew-2.2.0.tgz ]; then
+            wget https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.tgz
+        fi
+        tar xf glew-2.2.0.tgz
+        mv glew-2.2.0 glew
+    fi
+
+    if [ ! -d SDL ]; then
+        git clone --depth 1 --branch release-2.28.2 https://github.com/libsdl-org/SDL.git
+    fi
+
+    if [ ! -d SDL_image ]; then
+        git clone --depth 1 --branch release-2.6.3 https://github.com/libsdl-org/SDL_image.git
+    fi
+
+    if [ ! -d SDL_mixer ]; then
+        git clone --depth 1 --branch release-2.6.3 https://github.com/libsdl-org/SDL_mixer.git
+    fi
+
+    if [ ! -d libogg ]; then
+        if [ ! -f libogg-1.3.5.tar.gz ]; then
+            wget https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz
+        fi
+        tar xf libogg-1.3.5.tar.gz
+        mv libogg-1.3.5 libogg
+    fi
+
+    if [ ! -d libvorbis ]; then
+        if [ ! -f libvorbis-1.3.7.tar.gz ]; then
+            wget https://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.gz
+        fi
+        tar xf libvorbis-1.3.7.tar.gz
+        mv libvorbis-1.3.7 libvorbis
+    fi
+popd
+
+if [ ! -d ${BUILD_DIR} ]; then
+    cp -r 3rdparty ${BUILD_DIR}
+fi
+pushd ${BUILD_DIR}
     pushd physfs
     cmake \
-        -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
-        -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
+        -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
+        -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
         -DPHYSFS_BUILD_SHARED=False \
         -DPHYSFS_ARCHIVE_7Z:BOOL=ON \
         -DPHYSFS_ARCHIVE_ZIP=ON \
@@ -53,36 +115,24 @@ fi
     cmake --install . --config ${BUILD_TYPE}
     popd
 
-if [ ! -d zlib ]; then
-	git clone --depth 1 --branch v1.3 https://github.com/madler/zlib.git
-fi
-
     pushd zlib
     cmake \
-        -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
-        -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
+        -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
+        -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
         -DBUILD_SHARED_LIBS:BOOL=OFF \
         .
     cmake --build . --config ${BUILD_TYPE}
     cmake --install . --config ${BUILD_TYPE}
     # zlib doesn't seem to honour BUILD_SHARED_LIBS false
-    rm -f ${PROJ_FOLDER}/${OEM}/lib/libz.so*
-    rm -f ${PROJ_FOLDER}/${OEM}/lib/zlib.dll
-    rm -f ${PROJ_FOLDER}/${OEM}/lib/zlib.lib
+    rm -f ${INSTALL_DIR}/lib/libz.so*
+    rm -f ${INSTALL_DIR}/lib/zlib.dll
+    rm -f ${INSTALL_DIR}/lib/zlib.lib
     popd
-
-if [ ! -d libpng ]; then
-    if [ ! -f libpng-1.6.40.tar.gz ]; then
-        wget https://download.sourceforge.net/libpng/libpng-1.6.40.tar.gz
-    fi
-    tar xf libpng-1.6.40.tar.gz
-    mv libpng-1.6.40 libpng
-fi
 
     pushd libpng
     cmake \
-        -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
-        -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
+        -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
+        -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
         -DBUILD_SHARED_LIBS:BOOL=OFF \
         -DPNG_SHARED:BOOL=OFF \
         -DPNG_STATIC:BOOL=ON \
@@ -91,17 +141,10 @@ fi
     cmake --install . --config ${BUILD_TYPE}
     popd
 
-if [ ! -d glew ]; then
-	git clone --depth 1 --branch glew-2.2.0 https://github.com/nigels-com/glew.git
-fi
-    pushd glew/auto
-    make
-    popd
-
     pushd glew/build
     cmake \
-        -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
-        -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
+        -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
+        -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
         -DBUILD_SHARED_LIBS:BOOL=OFF \
         -DBUILD_UTILS:BOOL=OFF \
         ./cmake
@@ -109,16 +152,12 @@ fi
     cmake --install . --config ${BUILD_TYPE}
     popd
 
-if [ ! -d SDL ]; then
-	git clone --depth 1 --branch release-2.28.2 https://github.com/libsdl-org/SDL.git
-fi
-
     pushd SDL
         mkdir -p build
         pushd build
         cmake -S .. -B . \
-            -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
-            -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
+            -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
+            -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
             -DBUILD_SHARED_LIBS:BOOL=OFF \
             -DSDL_SHARED:BOOL=OFF
         cmake --build . --config ${BUILD_TYPE}
@@ -126,16 +165,12 @@ fi
         popd
     popd
 
-if [ ! -d SDL_image ]; then
-	git clone --depth 1 --branch release-2.6.3 https://github.com/libsdl-org/SDL_image.git
-fi
-
     pushd SDL_image
         mkdir -p build
         pushd build
         cmake -S .. -B . \
-            -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
-            -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
+            -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
+            -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
             -DBUILD_SHARED_LIBS:BOOL=OFF \
             -DSDL2IMAGE_AVIF:BOOL=OFF \
             -DSDL2IMAGE_BMP:BOOL=OFF \
@@ -159,17 +194,12 @@ fi
         popd
     popd
 
-
-if [ ! -d SDL_mixer ]; then
-	git clone --depth 1 --branch release-2.6.3 https://github.com/libsdl-org/SDL_mixer.git
-fi
-
     pushd SDL_mixer
         mkdir -p build
         pushd build
         cmake -S .. -B . \
-            -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
-            -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
+            -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
+            -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
             -DBUILD_SHARED_LIBS:BOOL=OFF \
             -DSDL2MIXER_OPUS:BOOL=OFF \
             -DSDL2MIXER_MIDI:BOOL=OFF \
@@ -185,47 +215,31 @@ fi
         popd
     popd
 
-if [ ! -d libogg ]; then
-    if [ ! -f libogg-1.3.5.tar.gz ]; then
-        wget https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz
-    fi
-    tar xf libogg-1.3.5.tar.gz
-    mv libogg-1.3.5 libogg
-fi
-
     pushd libogg
     cmake \
-        -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
-        -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
+        -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
+        -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
         -DBUILD_SHARED_LIBS:BOOL=OFF \
         .
     cmake --build . --config ${BUILD_TYPE}
     cmake --install . --config ${BUILD_TYPE}
     popd
-
-if [ ! -d libvorbis ]; then
-    if [ ! -f libvorbis-1.3.7.tar.gz ]; then
-        wget https://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.gz
-    fi
-    tar xf libvorbis-1.3.7.tar.gz
-    mv libvorbis-1.3.7 libvorbis
-fi
 
     pushd libvorbis
     cmake \
-        -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} \
-        -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} \
+        -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
+        -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
         -DBUILD_SHARED_LIBS:BOOL=OFF \
         .
     cmake --build . --config ${BUILD_TYPE}
     cmake --install . --config ${BUILD_TYPE}
     popd
 
-popd
-
-mkdir -p build
-pushd build
-cmake -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/${OEM} -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/${OEM} -DBUILD_SHARED_LIBS:BOOL=OFF ..
-cmake --build . --config ${BUILD_TYPE}
+    cmake \
+        -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
+        -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
+        -DBUILD_SHARED_LIBS:BOOL=OFF \
+        ..
+    cmake --build . --config ${BUILD_TYPE}
 popd
 

@@ -32,8 +32,7 @@
 *.app
 
 3rdparty
-build
-oem
-oem.emscripten
+build.*
+oem.*
 resource.dat
-
+.vscode

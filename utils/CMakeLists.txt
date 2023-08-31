@@ -7,6 +7,7 @@ if(NOT EMSCRIPTEN)
     include_directories(${ZLIB_INCLUDE_DIR})
 endif()
 
+include_directories(${CMAKE_PREFIX_PATH}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 set(UTILS_SRC

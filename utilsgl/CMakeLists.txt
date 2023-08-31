@@ -11,6 +11,7 @@ if(NOT EMSCRIPTEN)
     find_package(SDL2_image REQUIRED)
 endif()
 
+include_directories(${CMAKE_PREFIX_PATH}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../utils)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../utilsfs)

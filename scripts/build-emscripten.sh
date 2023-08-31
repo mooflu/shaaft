@@ -1,11 +1,27 @@
-#!/bin/bash
-
+#!/bin/bash -xe
 if [[ -z "${EMSDK}" ]]; then
     echo EMSDK not set
     exit
 fi
 
 export PROJ_FOLDER=`pwd`
+export OEM="oem.emscripten"
+#export BUILD_TYPE="Debug"
+export BUILD_TYPE="Release"
+export BUILD_DIR=build.${OEM}.${BUILD_TYPE}
+export INSTALL_DIR=${PROJ_FOLDER}/${OEM}.${BUILD_TYPE}
+
+case "$(uname -sr)" in
+   CYGWIN*)
+     echo 'MS Windows'
+     export PROJ_FOLDER=`cygpath -w ${PROJ_FOLDER}`
+     export BUILD_DIR=`cygpath -w ${BUILD_DIR}`
+     export INSTALL_DIR=`cygpath -w ${INSTALL_DIR}`
+     ;;
+
+   *)
+     ;;
+esac
 
 if [ ! -f resource.dat ]; then
     pushd data
@@ -13,19 +29,27 @@ if [ ! -f resource.dat ]; then
     popd
 fi
 
+echo proj folder: ${PROJ_FOLDER}
+
 mkdir -p 3rdparty
 pushd 3rdparty
-if [ ! -d 3rdparty/glm ]; then
-	git clone --depth 1 --branch 0.9.9.8 https://github.com/g-truc/glm.git
-fi
-if [ ! -d 3rdparty/physfs ]; then
-	git clone --depth 1 --branch release-3.2.0 https://github.com/icculus/physfs.git
-fi
+    if [ ! -d glm ]; then
+        git clone --depth 1 --branch 0.9.9.8 https://github.com/g-truc/glm.git
+    fi
 
+    if [ ! -d physfs ]; then
+        git clone --depth 1 --branch release-3.2.0 https://github.com/icculus/physfs.git
+    fi
+popd
+
+if [ ! -d ${BUILD_DIR} ]; then
+    cp -r 3rdparty ${BUILD_DIR}
+fi
+pushd ${BUILD_DIR}
     pushd physfs
     emcmake cmake \
-        -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/oem.emscripten \
-        -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/oem.emscripten \
+        -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
+        -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
         -DPHYSFS_BUILD_SHARED=False \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DPHYSFS_ARCHIVE_7Z:BOOL=ON \
@@ -40,17 +64,17 @@ fi
         -DPHYSFS_ARCHIVE_ISO9660=OFF \
         -DPHYSFS_ARCHIVE_VDF=OFF \
         .
-    emmake make VERBOSE=1 -j`nproc`
-    emmake make VERBOSE=1 -j`nproc` install
+    emcmake cmake --build . --config ${BUILD_TYPE}
+    emcmake cmake --install . --config ${BUILD_TYPE}
     popd
 
-popd
-
-mkdir -p build
-pushd build
-emcmake cmake -DCMAKE_INSTALL_PREFIX:PATH=${PROJ_FOLDER}/oem.emscripten -DCMAKE_PREFIX_PATH:PATH=${PROJ_FOLDER}/oem.emscripten -DWASM=1 ..
-emmake make VERBOSE=1 -j`nproc`
-mkdir webapp
-cp game/shaaft.* webapp
+    emcmake cmake \
+        -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
+        -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
+        -DWASM=1 \
+        ..
+    emcmake cmake --build . --config ${BUILD_TYPE}
+    mkdir webapp
+    cp game/shaaft.* webapp
 popd
 

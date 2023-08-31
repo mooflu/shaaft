@@ -12,6 +12,7 @@ if(NOT EMSCRIPTEN)
     #include_directories(${SDL_MIXER_INCLUDE_DIR})
 endif()
 
+include_directories(${CMAKE_PREFIX_PATH}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../utils)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../utilsfs)

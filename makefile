@@ -14,7 +14,7 @@ clean:
 	rm -rf */CMakeFiles
 	rm -rf */cmake_install.cmake
 	rm -rf */Makefile
-	rm -rf build
+	rm -rf build.*
 
 dist-clean: clean
 	rm -f resource.dat
@@ -22,5 +22,4 @@ dist-clean: clean
 	rm -rf physfs
 	rm -rf oem
 	rm -rf oem.emscripten
-	rm -rf 3rdparty
 
