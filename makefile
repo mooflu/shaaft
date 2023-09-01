@@ -14,7 +14,7 @@ clean:
 	rm -rf */CMakeFiles
 	rm -rf */cmake_install.cmake
 	rm -rf */Makefile
-	rm -rf build.*
+	rm -rf build*
 
 dist-clean: clean
 	rm -f resource.dat
