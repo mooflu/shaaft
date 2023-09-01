@@ -66,7 +66,7 @@ pushd ${BUILD_DIR}
         -DPHYSFS_ARCHIVE_VDF=OFF \
         .
     cmake --build . --config ${BUILD_TYPE} --parallel
-    cmake --install . --config ${BUILD_TYPE}
+    cmake --install .
     popd
 
     emcmake cmake \
