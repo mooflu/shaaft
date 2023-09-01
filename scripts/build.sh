@@ -111,7 +111,7 @@ pushd ${BUILD_DIR}
         -DPHYSFS_ARCHIVE_VDF=OFF \
         .
     cmake --build . --config ${BUILD_TYPE} --parallel
-    cmake --install .
+    cmake --install . --config ${BUILD_TYPE} # need config for win?
     popd
 
     pushd zlib
@@ -121,7 +121,7 @@ pushd ${BUILD_DIR}
         -DBUILD_SHARED_LIBS:BOOL=OFF \
         .
     cmake --build . --config ${BUILD_TYPE} --parallel
-    cmake --install .
+    cmake --install . --config ${BUILD_TYPE} # need config for win?
     # zlib doesn't seem to honour BUILD_SHARED_LIBS false
     rm -f ${INSTALL_DIR}/lib/libz.so*
     rm -f ${INSTALL_DIR}/lib/zlib.dll
@@ -140,7 +140,7 @@ pushd ${BUILD_DIR}
         -DPNG_STATIC:BOOL=ON \
         .
     cmake --build . --config ${BUILD_TYPE} --parallel
-    cmake --install .
+    cmake --install . --config ${BUILD_TYPE} # need config for win?
     popd
 
     pushd glew/build
@@ -151,7 +151,7 @@ pushd ${BUILD_DIR}
         -DBUILD_UTILS:BOOL=OFF \
         ./cmake
     cmake --build . --config ${BUILD_TYPE} --parallel
-    cmake --install .
+    cmake --install . --config ${BUILD_TYPE} # need config for win?
     popd
 
     pushd SDL
@@ -163,7 +163,7 @@ pushd ${BUILD_DIR}
             -DBUILD_SHARED_LIBS:BOOL=OFF \
             -DSDL_SHARED:BOOL=OFF
         cmake --build . --config ${BUILD_TYPE} --parallel
-        cmake --install .
+        cmake --install . --config ${BUILD_TYPE} # need config for win?
         popd
     popd
 
@@ -192,7 +192,7 @@ pushd ${BUILD_DIR}
             -DSDL2IMAGE_XV:BOOL=OFF \
             -DSDL2IMAGE_SAMPLES:BOOL=OFF
         cmake --build . --config ${BUILD_TYPE} --parallel
-        cmake --install .
+        cmake --install . --config ${BUILD_TYPE} # need config for win?
         popd
     popd
 
@@ -213,7 +213,7 @@ pushd ${BUILD_DIR}
             -DSDL2MIXER_SNDFILE:BOOL=OFF \
             -DSDL2MIXER_SAMPLES:BOOL=OFF
         cmake --build . --config ${BUILD_TYPE} --parallel
-        cmake --install .
+        cmake --install . --config ${BUILD_TYPE} # need config for win?
         popd
     popd
 
@@ -224,7 +224,7 @@ pushd ${BUILD_DIR}
         -DBUILD_SHARED_LIBS:BOOL=OFF \
         .
     cmake --build . --config ${BUILD_TYPE} --parallel
-    cmake --install .
+    cmake --install . --config ${BUILD_TYPE} # need config for win?
     popd
 
     pushd libvorbis
@@ -234,7 +234,7 @@ pushd ${BUILD_DIR}
         -DBUILD_SHARED_LIBS:BOOL=OFF \
         .
     cmake --build . --config ${BUILD_TYPE} --parallel
-    cmake --install .
+    cmake --install . --config ${BUILD_TYPE} # need config for win?
     popd
 
     cmake \
