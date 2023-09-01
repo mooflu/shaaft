@@ -54,7 +54,7 @@ int ziStream_close(struct SDL_RWops *context)
 {
     PHYSFS_file* physFile = (PHYSFS_file*) context->hidden.unknown.data1;
     PHYSFS_close(physFile);
-    delete context;
+    SDL_FreeRW(context);
 
     return 0;
 }
