@@ -119,13 +119,21 @@ bool Input::init( void)
 
 void Input::updateMouseSettings( void)
 {
-    ConfigS::instance()->getFloat( "mouseSmooth", _dampVal);
+    if( !ConfigS::instance()->getFloat( "mouseSmooth", _dampVal))
+    {
+        Value *v = new Value( _dampVal);
+        ConfigS::instance()->updateKeyword( "mouseSmooth", v);
+    }
     if( (_dampVal<0.0) || (_dampVal>0.999))
     {
         _dampVal = 0.0f;
     }
 
-    ConfigS::instance()->getFloat( "mouseSensitivity", _sensitivity);
+    if( !ConfigS::instance()->getFloat( "mouseSensitivity", _sensitivity))
+    {
+        Value *v = new Value( _sensitivity);
+        ConfigS::instance()->updateKeyword( "mouseSensitivity", v);
+    }
     if( (_sensitivity<0.01) || (_sensitivity>1.0))
     {
         _sensitivity = 0.1f;

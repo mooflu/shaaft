@@ -227,10 +227,10 @@ bool VideoBase::setVideoMode( void)
     //reset mouse position ang grab-state
     InputS::instance()->resetMousePosition();
 
-#if 0
-    //Only implemented on Mac and has focus problems
+#if 1
     SDL_SetRelativeMouseMode( SDL_TRUE);
 #else
+    // SDL_SetRelativeMouseMode used to only work on Mac
     SDL_ShowCursor( SDL_DISABLE);
     bool grabMouse = true;
     ConfigS::instance()->getBoolean( "grabMouse", grabMouse);

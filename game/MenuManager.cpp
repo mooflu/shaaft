@@ -314,6 +314,7 @@ bool MenuManager::draw( void)
     float gf = GameState::frameFractionOther;
     float interpMouseX = _prevMouseX + (_mouseX-_prevMouseX)*gf;
     float interpMouseY = _prevMouseY + (_mouseY-_prevMouseY)*gf;
+
     icons->Draw( _pointer, interpMouseX, interpMouseY, 0.5, 0.5);
 
     return true;
