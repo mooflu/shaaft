@@ -60,7 +60,7 @@ include_directories(${PROJECT_SOURCE_DIR}/) # vmmlib/vector.hpp
 file(GLOB GAME_SRC *.cpp)
 file(GLOB GAME_HEADERS *.hpp)
 
-add_executable(shaaft WIN32 MACOSX_BUNDLE ${GAME_SRC} ${GAME_HEADERS})
+add_executable(shaaft WIN32 MACOSX_BUNDLE ${GAME_SRC} ${GAME_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/Shaaft.rc)
 
 if(EMSCRIPTEN)
     message(STATUS "Setting compilation target to EMSCRIPTEN")
