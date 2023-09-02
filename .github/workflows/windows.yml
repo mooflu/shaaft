@@ -1,0 +1,76 @@
+name: Shaaft Windows build via cygwin
+
+# scripts/build.sh needs
+# bash, wget, zip, tar, coreutils
+
+on:
+  push:
+    tags:
+      - "[1-9].[0-9]+.[0-9]+"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: main
+        submodules: recursive
+        fetch-depth: 0
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1
+
+    - uses: cygwin/cygwin-install-action@master
+      with:
+        packages: >-
+          bash
+          wget
+          zip
+          tar
+          coreutils
+
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: |
+        bash ./scripts/build.sh -b Release
+        mkdir -p shaaft-${{ env.GITHUB_REF_NAME }}
+        cp build.oem.Release\game\Release\shaaft.exe shaaft-${{ env.GITHUB_REF_NAME }}
+        cp resource.dat shaaft-${{ env.GITHUB_REF_NAME }}
+        zip -9r shaaft-${{ env.GITHUB_REF_NAME }}.zip shaaft-${{ env.GITHUB_REF_NAME }}
+
+    # upload msi and zip artifacts so the publish job below can download and then update latest release via Linux
+    - uses: actions/upload-artifact@v3
+      with:
+        name: shaaft-win-build
+        path: shaaft-${{ env.GITHUB_REF_NAME }}.zip
+
+  publish:
+    needs: build-windows
+
+    # one of the steps uses container action which is Linux only
+    runs-on: ubuntu-latest
+
+    permissions: write-all
+
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: shaaft-win-build
+
+    - name: Publish release
+      # see https://github.com/pyTooling/Actions/tree/main/releaser
+      uses: pyTooling/Actions/releaser@main
+      with:
+        tag: ${{ env.GITHUB_REF_NAME }}
+        rm: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+        files: shaaft-${{ env.GITHUB_REF_NAME }}.zip
