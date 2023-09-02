@@ -22,6 +22,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    - name: Do not convert line endings on checkout
+      run: git config --global core.autocrlf input
+
     - uses: actions/checkout@v3
       with:
         ref: main
