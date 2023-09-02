@@ -1,11 +1,23 @@
-#!/bin/bash -xe
+#!/bin/bash -e
 
 export PROJ_FOLDER=`pwd`
 export OEM="oem"
-export BUILD_TYPE="Debug"
-#export BUILD_TYPE="Release"
+export BUILD_TYPE="Release"
 export BUILD_DIR=build.${OEM}.${BUILD_TYPE}
 export INSTALL_DIR=${PROJ_FOLDER}/${OEM}.${BUILD_TYPE}
+
+while getopts 'b:' opt; do
+  case "$opt" in
+    b)
+      export BUILD_TYPE=${OPTARG}
+      ;;
+
+    ?|h)
+      echo "Usage: $(basename $0) [-b <Release|Debug>]"
+      exit 1
+      ;;
+  esac
+done
 
 case "$(uname -sr)" in
    CYGWIN*)
@@ -25,7 +37,8 @@ if [ ! -f resource.dat ]; then
     popd
 fi
 
-echo proj folder: ${PROJ_FOLDER}
+echo Proj folder: ${PROJ_FOLDER}
+echo Build type: ${BUILD_TYPE}
 
 mkdir -p 3rdparty
 pushd 3rdparty
