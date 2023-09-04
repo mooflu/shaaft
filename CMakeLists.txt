@@ -39,7 +39,7 @@ if(EMSCRIPTEN)
 #-O2
 #-fno-exceptions
 #-s FULL_ES3=1
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EMSCRIPTEN_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EMSCRIPTEN_FLAGS} -s USE_WEBGL2=1")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --shell-file ${PROJECT_SOURCE_DIR}/shaaft-template.html")
 endif()
 
