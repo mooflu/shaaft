@@ -750,8 +750,8 @@ void ScoreKeeper::draw( const Point2Di &offset)
     {
         icons->bind();
         int slider = icons->getIndex( "Slider");
-        icons->Draw(slider, vec2i(100,325), vec2i(200,425));
-        icons->Draw(slider, vec2i(840,325), vec2i(740,425));
+        icons->Draw(slider, vec2i(offset.x + 40, offset.y + 487), vec2i(offset.x + 80, offset.y + 512));
+        icons->Draw(slider, vec2i(offset.x + 490, offset.y + 487), vec2i(offset.x + 450, offset.y + 512));
     }
 
     float scale = 1.0;

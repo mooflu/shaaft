@@ -895,16 +895,26 @@ void LeaderBoardSelectable::input( const Trigger &trigger, const bool &isDown, c
             break;
 
         case eButtonTrigger:
-            if( trigger.data1 == -99) //TODO: handle mouse wheel - sdl1 SDL_BUTTON_WHEELDOWN)
+            if (trigger.data1 == SDL_BUTTON(1))
             {
-                ScoreKeeperS::instance()->prevBoard();
-                AudioS::instance()->playSample( "sounds/click1");
-
-            }
-            else
-            {
-                ScoreKeeperS::instance()->nextBoard();
-                AudioS::instance()->playSample( "sounds/click1");
+                if (ScoreKeeperS::instance()->numBoards() > 1)
+                {
+                    // Same values as in ScoreKeeper::draw but a bit of extra padding
+                    int padding = 5;
+                    if ((mouseY > offset.y + 487 - padding) && (mouseY < offset.y + 512 + padding))
+                    {
+                        if ((mouseX > offset.x + 40 - padding) && (mouseX < offset.x + 80 + padding))
+                        {
+                            ScoreKeeperS::instance()->prevBoard();
+                            AudioS::instance()->playSample("sounds/click1");
+                        }
+                        if ((mouseX > offset.x + 450 - padding) && (mouseX < offset.x + 490 + padding))
+                        {
+                            ScoreKeeperS::instance()->nextBoard();
+                            AudioS::instance()->playSample("sounds/click1");
+                        }
+                    }
+                }
             }
             break;
 #endif

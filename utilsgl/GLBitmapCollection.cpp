@@ -351,11 +351,12 @@ void GLBitmapCollection::Draw(
     tx = (float)bitmapInfo.xpos / _textureSize;
     ty = (float)bitmapInfo.ypos / _textureSize;
 
+    GLfloat z = 0.0;
     GLfloat squareVertices[] = {
-        ll.x()       ,ll.y(),
-        ur.x()       ,ll.y(),
-        ur.x()       ,ur.y(),
-        ll.x()       ,ur.y(),
+        ll.x()       ,ll.y(), z,
+        ur.x()       ,ll.y(), z,
+        ur.x()       ,ur.y(), z,
+        ll.x()       ,ur.y(), z,
     };
 
     GLfloat squareTexCoords[] = {
