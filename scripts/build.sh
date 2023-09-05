@@ -3,8 +3,6 @@
 export PROJ_FOLDER=`pwd`
 export OEM="oem"
 export BUILD_TYPE="Release"
-export BUILD_DIR=build.${OEM}.${BUILD_TYPE}
-export INSTALL_DIR=${PROJ_FOLDER}/${OEM}.${BUILD_TYPE}
 
 while getopts 'b:' opt; do
   case "$opt" in
@@ -18,6 +16,9 @@ while getopts 'b:' opt; do
       ;;
   esac
 done
+
+export BUILD_DIR=build.${OEM}.${BUILD_TYPE}
+export INSTALL_DIR=${PROJ_FOLDER}/${OEM}.${BUILD_TYPE}
 
 case "$(uname -sr)" in
    CYGWIN*)

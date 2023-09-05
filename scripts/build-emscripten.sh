@@ -8,6 +8,20 @@ export PROJ_FOLDER=`pwd`
 export OEM="oem.emscripten"
 #export BUILD_TYPE="Debug"
 export BUILD_TYPE="Release"
+
+while getopts 'b:' opt; do
+  case "$opt" in
+    b)
+      export BUILD_TYPE=${OPTARG}
+      ;;
+
+    ?|h)
+      echo "Usage: $(basename $0) [-b <Release|Debug>]"
+      exit 1
+      ;;
+  esac
+done
+
 export BUILD_DIR=build.${OEM}.${BUILD_TYPE}
 export INSTALL_DIR=${PROJ_FOLDER}/${OEM}.${BUILD_TYPE}
 
