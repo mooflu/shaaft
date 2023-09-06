@@ -1,4 +1,4 @@
-name: Shaaft Windows build via cygwin
+name: Shaaft build
 
 # scripts/build.sh needs
 # bash, wget, zip, tar, coreutils
@@ -50,16 +50,45 @@ jobs:
         mkdir -p shaaft-${{ github.ref_name }}
         cp build.oem.Release\game\Release\shaaft.exe shaaft-${{ github.ref_name }}
         cp resource.dat shaaft-${{ github.ref_name }}
-        zip -9r shaaft-${{ github.ref_name }}.zip shaaft-${{ github.ref_name }}
+        zip -9r shaaft-${{ github.ref_name }}-windows.zip shaaft-${{ github.ref_name }}
 
-    # upload msi and zip artifacts so the publish job below can download and then update latest release via Linux
+    # upload artifacts so the publish job below can download and then update latest release via Linux
     - uses: actions/upload-artifact@v3
       with:
         name: shaaft-win-build
-        path: shaaft-${{ github.ref_name }}.zip
+        path: shaaft-${{ github.ref_name }}-windows.zip
+
+  build-mac:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: main
+        submodules: recursive
+        fetch-depth: 0
+
+    - name: Setup Macos dependencies
+      run: |
+        brew install wget zip bash coreutils
+
+    - name: Build
+      working-directory: ${{github.workspace}}
+      run: |
+        bash ${{env.BUILD_SCRIPT}}
+        mkdir -p shaaft-${{ github.ref_name }}
+        cp -a build.oem.Release\game\Release\shaaft.app shaaft-${{ github.ref_name }}
+        cp resource.dat shaaft-${{ github.ref_name }}
+        zip -9r shaaft-${{ github.ref_name }}-mac.zip shaaft-${{ github.ref_name }}
+
+    # upload artifacts so the publish job below can download and then update latest release via Linux
+    - uses: actions/upload-artifact@v3
+      with:
+        name: shaaft-mac-build
+        path: shaaft-${{ github.ref_name }}-mac.zip
 
   publish:
-    needs: build-windows
+    needs: [build-windows, build-mac]
 
     # one of the steps uses container action which is Linux only
     runs-on: ubuntu-latest
@@ -70,6 +99,10 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: shaaft-win-build
+        
+    - uses: actions/download-artifact@v3
+      with:
+        name: shaaft-mac-build
 
     - name: Publish release
       # see https://github.com/pyTooling/Actions/tree/main/releaser
@@ -78,4 +111,6 @@ jobs:
         tag: ${{ github.ref_name }}
         rm: true
         token: ${{ secrets.GITHUB_TOKEN }}
-        files: shaaft-${{ github.ref_name }}.zip
+        files: |
+          shaaft-${{ github.ref_name }}-windows.zip
+          shaaft-${{ github.ref_name }}-mac.zip
