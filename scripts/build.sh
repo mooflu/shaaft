@@ -128,6 +128,7 @@ pushd ${BUILD_DIR}
     rm -f ${INSTALL_DIR}/lib/libzd.so*
     rm -f ${INSTALL_DIR}/lib/zlibd.dll
     rm -f ${INSTALL_DIR}/lib/zlibd.lib
+    rm -f ${INSTALL_DIR}/lib/libz*dylib
     popd
 
     pushd libpng
@@ -193,7 +194,6 @@ pushd ${BUILD_DIR}
             -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
             -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
             -DBUILD_SHARED_LIBS:BOOL=OFF \
-            -DSDL2IMAGE_VENDORED=OFF \
             -DSDL2IMAGE_AVIF:BOOL=OFF \
             -DSDL2IMAGE_BMP:BOOL=OFF \
             -DSDL2IMAGE_GIF:BOOL=OFF \
@@ -210,7 +210,6 @@ pushd ${BUILD_DIR}
             -DSDL2IMAGE_XCF:BOOL=OFF \
             -DSDL2IMAGE_XPM:BOOL=OFF \
             -DSDL2IMAGE_XV:BOOL=OFF \
-            -DSDL2IMAGE_BACKEND_STB:BOOL=OFF \
             -DSDL2IMAGE_TESTS:BOOL=OFF \
             -DSDL2IMAGE_SAMPLES:BOOL=OFF
         cmake --build . --config ${BUILD_TYPE} --parallel
