@@ -15,34 +15,43 @@ if(NOT EMSCRIPTEN)
     find_package(GLEW REQUIRED)
 endif()
 
+set(RESOURCE_DAT ${PROJECT_SOURCE_DIR}/resource.dat)
+
 set(EXTRA_LIBRARIES "")
 if(WIN32)
-	set(EXTRA_LIBRARIES
+    set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/Shaaft.rc)
+    set(EXTRA_LIBRARIES
         imm32.lib
         winmm.lib
         version.lib
     )
 endif()
 if(APPLE)
-	FIND_LIBRARY(CARBON_LIBRARY Carbon)
-	FIND_LIBRARY(FF_LIBRARY ForceFeedback)
-	FIND_LIBRARY(IOKIT_LIBRARY IOKit)
-	FIND_LIBRARY(COREAUDIO_LIBRARY CoreAudio)
-	FIND_LIBRARY(COREVIDEO_LIBRARY CoreVideo)
-	FIND_LIBRARY(AUDIOTOOLBOX_LIBRARY AudioToolbox)
-	FIND_LIBRARY(AUDIOUNIT_LIBRARY AudioUnit)
-	FIND_LIBRARY(ICONV_LIBRARY iconv)
+    set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/shaaft.icns)
+    set_source_files_properties(${APP_ICON} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources")
+    set_source_files_properties(${RESOURCE_DAT} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources")
 
-	set(EXTRA_LIBRARIES
-		${CARBON_LIBRARY}
-		${FF_LIBRARY}
-		${IOKIT_LIBRARY}
-		${COREAUDIO_LIBRARY}
-		${COREVIDEO_LIBRARY}
-		${AUDIOTOOLBOX_LIBRARY}
-		${AUDIOUNIT_LIBRARY}
-		${ICONV_LIBRARY}
-	)
+    FIND_LIBRARY(CARBON_LIBRARY Carbon)
+    FIND_LIBRARY(FF_LIBRARY ForceFeedback)
+    FIND_LIBRARY(IOKIT_LIBRARY IOKit)
+    FIND_LIBRARY(COREAUDIO_LIBRARY CoreAudio)
+    FIND_LIBRARY(COREVIDEO_LIBRARY CoreVideo)
+    FIND_LIBRARY(AUDIOTOOLBOX_LIBRARY AudioToolbox)
+    FIND_LIBRARY(AUDIOUNIT_LIBRARY AudioUnit)
+    FIND_LIBRARY(ICONV_LIBRARY iconv)
+
+    set(EXTRA_LIBRARIES
+        ${CARBON_LIBRARY}
+        ${FF_LIBRARY}
+        ${IOKIT_LIBRARY}
+        ${COREAUDIO_LIBRARY}
+        ${COREVIDEO_LIBRARY}
+        ${AUDIOTOOLBOX_LIBRARY}
+        ${AUDIOUNIT_LIBRARY}
+        ${ICONV_LIBRARY}
+    )
 endif()
 
 include_directories(${CMAKE_PREFIX_PATH}/include)
@@ -60,7 +69,7 @@ include_directories(${PROJECT_SOURCE_DIR}/) # vmmlib/vector.hpp
 file(GLOB GAME_SRC *.cpp)
 file(GLOB GAME_HEADERS *.hpp)
 
-add_executable(shaaft WIN32 MACOSX_BUNDLE ${GAME_SRC} ${GAME_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/Shaaft.rc)
+add_executable(shaaft WIN32 MACOSX_BUNDLE ${GAME_SRC} ${GAME_HEADERS} ${APP_ICON} ${RESOURCE_DAT})
 
 if(EMSCRIPTEN)
     message(STATUS "Setting compilation target to EMSCRIPTEN")
@@ -77,7 +86,7 @@ if(EMSCRIPTEN)
         -s EXPORTED_FUNCTIONS='[_main]'
         -s EXPORTED_RUNTIME_METHODS=['UTF8ToString']
         --preload-file ${CMAKE_SOURCE_DIR}/resource.dat@resource.dat
-		-lidbfs.js
+        -lidbfs.js
     ")
 # -flto
 # -s BINARYEN_METHOD='native-wasm'
@@ -111,10 +120,10 @@ if(NOT EMSCRIPTEN)
         #set(EXTRA_LIBRARIES_2 ${EXTRA_LIBRARIES_2} ${GLEW_LIBRARIES})
     endif()
 else()
-	#FIND_LIBRARY(PHYSFS_LIBRARY physfs)
+    #FIND_LIBRARY(PHYSFS_LIBRARY physfs)
     set(EXTRA_LIBRARIES_2
-		${SDL2_MIXER_LIBRARY}
-		${SDL2_IMAGE_LIBRARY}
+        ${SDL2_MIXER_LIBRARY}
+        ${SDL2_IMAGE_LIBRARY}
         "${CMAKE_INSTALL_PREFIX}/lib/libphysfs.a"
     )
 endif()

@@ -64,3 +64,13 @@ set_target_properties(shaaft PROPERTIES
     VS_DEBUGGER_COMMAND "${CMAKE_BINARY_DIR}/game/Debug/shaaft.exe"
     VS_DEBUGGER_COMMAND_ARGUMENTS "-fullscreen 0 -audio 0"
 )
+
+if (APPLE)
+    set_target_properties(shaaft PROPERTIES
+        MACOSX_BUNDLE_BUNDLE_NAME "Shaaft"
+        MACOSX_BUNDLE_BUNDLE_VERSION "${VERSION}"
+        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2008-2023 Frank Becker"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.mooflu.Shaaft"
+        MACOSX_BUNDLE_ICON_FILE "shaaft"
+    )
+endif()
