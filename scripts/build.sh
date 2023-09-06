@@ -113,26 +113,6 @@ if [ ! -d ${BUILD_DIR} ]; then
     cp -r 3rdparty ${BUILD_DIR}
 fi
 pushd ${BUILD_DIR}
-    pushd physfs
-    cmake \
-        -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
-        -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
-        -DPHYSFS_BUILD_SHARED=False \
-        -DPHYSFS_ARCHIVE_7Z:BOOL=ON \
-        -DPHYSFS_ARCHIVE_ZIP=ON \
-        -DPHYSFS_ARCHIVE_GRP=OFF \
-        -DPHYSFS_ARCHIVE_WAD=OFF \
-        -DPHYSFS_ARCHIVE_HOG=OFF \
-        -DPHYSFS_ARCHIVE_MVL=OFF \
-        -DPHYSFS_ARCHIVE_QPAK=OFF \
-        -DPHYSFS_ARCHIVE_SLB=OFF \
-        -DPHYSFS_ARCHIVE_ISO9660=OFF \
-        -DPHYSFS_ARCHIVE_VDF=OFF \
-        .
-    cmake --build . --config ${BUILD_TYPE} --parallel
-    cmake --install . ${INSTALL_CMAKE_BUILD_TYPE}
-    popd
-
     pushd zlib
     cmake \
         -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
@@ -173,6 +153,26 @@ pushd ${BUILD_DIR}
     cmake --install . ${INSTALL_CMAKE_BUILD_TYPE}
     popd
 
+    pushd physfs
+    cmake \
+        -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
+        -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
+        -DPHYSFS_BUILD_SHARED=False \
+        -DPHYSFS_ARCHIVE_7Z:BOOL=ON \
+        -DPHYSFS_ARCHIVE_ZIP=ON \
+        -DPHYSFS_ARCHIVE_GRP=OFF \
+        -DPHYSFS_ARCHIVE_WAD=OFF \
+        -DPHYSFS_ARCHIVE_HOG=OFF \
+        -DPHYSFS_ARCHIVE_MVL=OFF \
+        -DPHYSFS_ARCHIVE_QPAK=OFF \
+        -DPHYSFS_ARCHIVE_SLB=OFF \
+        -DPHYSFS_ARCHIVE_ISO9660=OFF \
+        -DPHYSFS_ARCHIVE_VDF=OFF \
+        .
+    cmake --build . --config ${BUILD_TYPE} --parallel
+    cmake --install . ${INSTALL_CMAKE_BUILD_TYPE}
+    popd
+
     pushd SDL
         mkdir -p build
         pushd build
@@ -193,6 +193,7 @@ pushd ${BUILD_DIR}
             -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR} \
             -DCMAKE_PREFIX_PATH:PATH=${INSTALL_DIR} \
             -DBUILD_SHARED_LIBS:BOOL=OFF \
+            -DSDL2IMAGE_VENDORED=OFF \
             -DSDL2IMAGE_AVIF:BOOL=OFF \
             -DSDL2IMAGE_BMP:BOOL=OFF \
             -DSDL2IMAGE_GIF:BOOL=OFF \
@@ -228,10 +229,8 @@ pushd ${BUILD_DIR}
             -DSDL2MIXER_MIDI:BOOL=OFF \
             -DSDL2MIXER_MP3:BOOL=OFF \
             -DSDL2MIXER_MOD:BOOL=OFF \
-            -DSDL2MIXER_GME:BOOL=OFF \
             -DSDL2MIXER_FLAC:BOOL=OFF \
             -DSDL2MIXER_CMD:BOOL=OFF \
-            -DSDL2MIXER_SNDFILE:BOOL=OFF \
             -DSDL2MIXER_SAMPLES:BOOL=OFF
         cmake --build . --config ${BUILD_TYPE} --parallel
         cmake --install . ${INSTALL_CMAKE_BUILD_TYPE}
