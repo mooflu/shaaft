@@ -99,7 +99,8 @@ jobs:
 
     - name: Setup Linux dependencies
       run: |
-        sudo apt install -y wget zip
+        sudo apt-get update
+        sudo apt install -y --fix-missing wget zip libgl1-mesa-dev
 
     - name: Build
       working-directory: ${{github.workspace}}
