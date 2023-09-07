@@ -78,7 +78,6 @@ jobs:
         bash ${{env.BUILD_SCRIPT}}
         mkdir -p shaaft-${{ github.ref_name }}
         cp -a build.oem.Release/game/shaaft.app shaaft-${{ github.ref_name }}
-        cp resource.dat shaaft-${{ github.ref_name }}
         zip -9r shaaft-${{ github.ref_name }}-mac.zip shaaft-${{ github.ref_name }}
 
     # upload artifacts so the publish job below can download and then update latest release via Linux
