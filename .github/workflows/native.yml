@@ -59,7 +59,7 @@ jobs:
         path: shaaft-${{ github.ref_name }}-windows.zip
 
   build-mac:
-    runs-on: macos-latest
+    runs-on: macos-13
 
     steps:
     - uses: actions/checkout@v3
@@ -70,7 +70,7 @@ jobs:
 
     - name: Setup Macos dependencies
       run: |
-        brew install wget zip bash coreutils
+        brew install bash coreutils
 
     - name: Build
       working-directory: ${{github.workspace}}
