@@ -99,7 +99,10 @@ jobs:
     - name: Setup Linux dependencies
       run: |
         sudo apt-get update
-        sudo apt install -y --fix-missing wget zip libgl1-mesa-dev libglu1-mesa-dev
+        sudo apt install -y --fix-missing \
+          wget zip libgl1-mesa-dev libglu1-mesa-dev libdrm-dev \
+          libxrandr-dev libxcursor-dev libxcb-xinput-dev libudev-dev libdbus-1-dev \
+          libasound2-dev libjack-dev libpulse-dev libsndio-dev
 
     - name: Build
       working-directory: ${{github.workspace}}
