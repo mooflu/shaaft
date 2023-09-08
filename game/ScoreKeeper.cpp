@@ -22,6 +22,7 @@
 #include "ParticleInfo.hpp"
 #include "ParticleGroup.hpp"
 #include "ParticleGroupManager.hpp"
+#include "VideoBase.hpp"
 
 #include "Tokenizer.hpp"
 #include "OnlineScore.hpp"
@@ -252,8 +253,12 @@ int ScoreKeeper::addToCurrentScore( int score, int cubes, int secs)
         static ParticleGroup *effects =
             ParticleGroupManagerS::instance()->getParticleGroup( EFFECTS_GROUP1);
 
+        VideoBase& video = *VideoBaseS::instance();
+        int blockView = video.getHeight();
+        int shaftOffset = (video.getWidth() - blockView * 4 / 3) / 2;
+
         ParticleInfo pi;
-        pi.position.x = 375;
+        pi.position.x = 375 + shaftOffset / 2;
         pi.position.y = 375;
         pi.position.z = 0;
         char buf[10];
