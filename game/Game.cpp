@@ -254,7 +254,6 @@ void Game::updateOtherLogic( void)
         if( GameState::context == Context::eMenu)
         {
             MenuManagerS::instance()->update();
-            InputS::instance()->update();
         }
 
         //advance to next start-of-game-step point in time
@@ -296,8 +295,6 @@ void Game::updateInGameLogic( void)
         GameState::prevShaftYaw = GameState::shaftYaw;
 
         ParticleGroupManagerS::instance()->update();
-
-        InputS::instance()->update();
 
         if( GameState::isAlive)
         {
@@ -341,6 +338,7 @@ void Game::gameLoop()
 {
     Game &game = *GameS::instance();
     Audio &audio = *AudioS::instance();
+    Input &input = *InputS::instance();
 
     switch( GameState::context)
     {
@@ -350,7 +348,6 @@ void Game::gameLoop()
             break;
 
         case Context::ePaused:
-            InputS::instance()->update(); //so we can un-pause...
             break;
 
         default:
@@ -362,6 +359,7 @@ void Game::gameLoop()
 
     ScoreKeeperS::instance()->mergeOnlineScores();
 
+    input.update();
     audio.update();
 
     game._view->draw();
