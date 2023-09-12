@@ -202,15 +202,20 @@ bool MenuManager::update( void)
 #endif
         for( int j=0; j<20; j++)
         {
+            float interpMouseX = _prevMouseX + (_mouseX - _prevMouseX) * ((19.0 - (float)j) / 19.0);
+            float interpMouseY = _prevMouseY + (_mouseY - _prevMouseY) * ((19.0 - (float)j) / 19.0);
 #ifdef IPHONE
-            float w = _mouseX;// + iw*0.5;
-            float h = _mouseY;// - ih*0.5;
+            float w = interpMouseX;// + iw*0.5;
+            float h = interpMouseY;// - ih*0.5;
 #else
-            float w = _mouseX + iw*1.4;
-            float h = _mouseY - ih*2.4;
+            float w = interpMouseX + iw * 1.4;
+            float h = interpMouseY - ih * 2.4;
 #endif
             _cursorAnim.newParticle( "Spark", w, h, 0);
         }
+
+        _prevMouseX = _mouseX;
+        _prevMouseY = _mouseY;
 
         _cursorAnim.update();
     }
