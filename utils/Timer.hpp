@@ -23,18 +23,18 @@ public:
     {
         struct timeval tv;
         static bool initialized = false;
-        static int startSeconds = 0;
-        static int startUSeconds = 0;
+        static long startSeconds = 0;
+        static long startUSeconds = 0;
 
         gettimeofday(&tv, 0);
         
         if( ! initialized)
         {
-	    startSeconds = tv.tv_sec;
+            startSeconds = tv.tv_sec;
             startUSeconds = tv.tv_usec;
             initialized = true;
         }
-        int msecs = (tv.tv_sec-startSeconds)*1000 + (tv.tv_usec-startUSeconds)/1000;
+        long msecs = (tv.tv_sec-startSeconds)*1000 + (tv.tv_usec-startUSeconds)/1000;
         return((double)msecs/1000.0);
     } 
 };

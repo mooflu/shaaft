@@ -159,7 +159,7 @@ void MenuManager::loadMenuLevel( void)
         _activeSelectables.insert( _activeSelectables.end(), sel);
     }
     _currentSelectable = _activeSelectables.begin();
-    activateSelectableUnderMouse();
+    activateSelectableUnderMouse(true);
 }
 
 void MenuManager::makeMenu( TiXmlNode *_node)
@@ -452,7 +452,7 @@ void MenuManager::input( const Trigger &trigger, const bool &isDown)
     }
 }
 
-void MenuManager::activateSelectableUnderMouse( void)
+void MenuManager::activateSelectableUnderMouse(const bool& useFallback)
 {
     list<Selectable*>::iterator i;
     bool foundSelectable = false;
@@ -475,7 +475,7 @@ void MenuManager::activateSelectableUnderMouse( void)
             break;
         }
     }
-    if( !foundSelectable)
+    if( !foundSelectable && useFallback)
     {
         _activeSelectables.front()->activate();
     }

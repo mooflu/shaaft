@@ -20,9 +20,9 @@ public:
     float rangef0_1( void);
     double ranged0_1( void);
 
-private:
-    void reset( unsigned int seed);
+    void reset(unsigned int seed);
 
+private:
     unsigned int _index;
     unsigned int _randomNumbers[ 250];
     unsigned int _seed;

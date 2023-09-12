@@ -12,6 +12,7 @@
 #include "GameState.hpp"
 #include "Constants.hpp"
 #include "Config.hpp"
+#include "gettimeofday.hpp"
 
 #include "Audio.hpp"
 #include "Input.hpp"
@@ -138,6 +139,10 @@ bool Game::init( void)
 
         ew = new EventWatcher(*os);
     }
+#else
+    struct timeval tv;
+    gettimeofday(&tv, 0);
+    GameState::r250.reset(tv.tv_sec);
 #endif
 
     setupModel( ModelCreate);
@@ -264,6 +269,13 @@ void Game::updateOtherLogic( void)
         if( stepCount > MAX_GAME_STEPS) break;
     }
 
+    if (GameState::context == Context::eMenu || GameState::context == Context::ePaused)
+    {
+        // When in menu or paused, process input on every frame.
+        // Especially in menu the mouse cursor needs to update every frame.
+        InputS::instance()->update();
+    }
+
     GameState::frameFractionOther =
         (currentTime - GameState::startOfStep) / GAME_STEP_SIZE;
 
@@ -295,6 +307,7 @@ void Game::updateInGameLogic( void)
         GameState::prevShaftYaw = GameState::shaftYaw;
 
         ParticleGroupManagerS::instance()->update();
+        InputS::instance()->update();
 
         if( GameState::isAlive)
         {
@@ -338,16 +351,12 @@ void Game::gameLoop()
 {
     Game &game = *GameS::instance();
     Audio &audio = *AudioS::instance();
-    Input &input = *InputS::instance();
 
     switch( GameState::context)
     {
         case Context::eInGame:
             //stuff that only needs updating when game is actually running
             game.updateInGameLogic();
-            break;
-
-        case Context::ePaused:
             break;
 
         default:
@@ -359,7 +368,6 @@ void Game::gameLoop()
 
     ScoreKeeperS::instance()->mergeOnlineScores();
 
-    input.update();
     audio.update();
 
     game._view->draw();
