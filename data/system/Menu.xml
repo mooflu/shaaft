@@ -102,35 +102,12 @@
 		Size="0.5"
 		Position="475.0 160.0"
 		Action="PauseGame" />
-
-	    <Float
-		Text="Mouse Sensitivity"
-		Info="Change mouse speed."
-		Position="110.0 80.0"
-		Variable="mouseSensitivity"
-		Range="0.1 0.5"
-		SliderOffset="100"/>
-
-	    <Float
-		Text="Mouse Smoothing"
-		Info="Soften mouse movement."
-		Position="110.0 30.0"
-		Variable="mouseSmooth"
-		Range="0.0 0.9"
-		SliderOffset="100"/>
-
 	</Menu>
 
 	<Menu
 	    Text="Display"
 	    Info="Display related tweaks."
 	    Position="300.0 380.0">
-
-	    <Bool
-		Text="Grab mouse"
-		Info="When in windowed mode don't let mouse cursor escape window."
-		Position="330.0 440.0"
-		Variable="grabMouse" />
 
 	    <Bool
 		Text="Fullscreen"

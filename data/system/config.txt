@@ -21,7 +21,6 @@ config:
   drawShaftTileFrame: 0
   effectsVolume: 0.9
   musicVolume: 0.4
-  grabMouse: 1
   showCursorAnimation: 1
   showScoreUpdates: 1
 

@@ -202,23 +202,18 @@ bool MenuManager::update( void)
 #endif
         for( int j=0; j<20; j++)
         {
-            float interpMouseX = _prevMouseX + (_mouseX-_prevMouseX)*((19.0-(float)j)/19.0);
-            float interpMouseY = _prevMouseY + (_mouseY-_prevMouseY)*((19.0-(float)j)/19.0);
 #ifdef IPHONE
-            float w = interpMouseX;// + iw*0.5;
-            float h = interpMouseY;// - ih*0.5;
+            float w = _mouseX;// + iw*0.5;
+            float h = _mouseY;// - ih*0.5;
 #else
-            float w = interpMouseX + iw*1.4;
-            float h = interpMouseY - ih*2.4;
+            float w = _mouseX + iw*1.4;
+            float h = _mouseY - ih*2.4;
 #endif
             _cursorAnim.newParticle( "Spark", w, h, 0);
         }
 
         _cursorAnim.update();
     }
-
-    _prevMouseX = _mouseX;
-    _prevMouseY = _mouseY;
 
     return true;
 }
@@ -311,11 +306,7 @@ bool MenuManager::draw( void)
         BitmapManagerS::instance()->getBitmap( "bitmaps/menuIcons");
     icons->bind();
     icons->setColor(1.0, 1.0, 1.0, 1.0);
-    float gf = GameState::frameFractionOther;
-    float interpMouseX = _prevMouseX + (_mouseX-_prevMouseX)*gf;
-    float interpMouseY = _prevMouseY + (_mouseY-_prevMouseY)*gf;
-
-    icons->Draw( _pointer, interpMouseX, interpMouseY, 0.5, 0.5);
+    icons->Draw( _pointer, _mouseX, _mouseY, 0.5, 0.5);
 
     return true;
 }
@@ -429,9 +420,6 @@ void MenuManager::input( const Trigger &trigger, const bool &isDown)
 
             case eMotionTrigger:
                 {
-                    //_prevMouseX = _mouseX;
-                    //_prevMouseY = _mouseY;
-
 #ifdef IPHONE
                     _mouseX = trigger.fData1*1000/480;
                     _mouseY = 750-trigger.fData2*750/320;
@@ -440,8 +428,8 @@ void MenuManager::input( const Trigger &trigger, const bool &isDown)
 #else
                     VideoBase &video = *VideoBaseS::instance();
 
-                    _mouseX += (trigger.fData1*10.0f);
-                    _mouseY += (trigger.fData2*10.0f);
+                    _mouseX += trigger.fData1;
+                    _mouseY += trigger.fData2;
                     Clamp( _mouseX, 0.0f, (750.0*(float)video.getWidth()) / (float)video.getHeight());
                     Clamp( _mouseY, 0.0f, 750.0);
 #endif

@@ -137,18 +137,6 @@ private:
     vec2f _mousePos;
     vec2f _mouseDelta;
 
-    //stuff for mouse smoothing
-    float _memoryDX;
-    float _memoryDY;
-    float _dampVal;
-    float feedbackFilter( float value, float damp, float &memory)
-    {
-	//damp of 0 means no filtering
-	//damp of 1 means input value is filtered out completely
-	return memory = value*(1.0f-damp) + memory*damp;
-    }
-    float _sensitivity;
-
     //intercept raw input
     InterceptorI *_interceptor;
 

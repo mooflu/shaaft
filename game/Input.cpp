@@ -42,10 +42,6 @@ Input::Input( void):
     _callbackManager(),
     _mousePos(0,0),
     _mouseDelta(0,0),
-    _memoryDX(0.0),
-    _memoryDY(0.0),
-    _dampVal(0.0),
-    _sensitivity(0.5),
     _interceptor(0),
     _touchCount(0)
 {
@@ -106,8 +102,6 @@ bool Input::init( void)
     }
 
     updateMouseSettings();
-    LOG_INFO << "Mouse smoothing: " << _dampVal << endl;
-    LOG_INFO << "Mouse sensitivity: " << _sensitivity << endl;
 
     //SDL_EnableKeyRepeat( 300,200); -- SDL1
 
@@ -119,25 +113,6 @@ bool Input::init( void)
 
 void Input::updateMouseSettings( void)
 {
-    if( !ConfigS::instance()->getFloat( "mouseSmooth", _dampVal))
-    {
-        Value *v = new Value( _dampVal);
-        ConfigS::instance()->updateKeyword( "mouseSmooth", v);
-    }
-    if( (_dampVal<0.0) || (_dampVal>0.999))
-    {
-        _dampVal = 0.0f;
-    }
-
-    if( !ConfigS::instance()->getFloat( "mouseSensitivity", _sensitivity))
-    {
-        Value *v = new Value( _sensitivity);
-        ConfigS::instance()->updateKeyword( "mouseSensitivity", v);
-    }
-    if( (_sensitivity<0.01) || (_sensitivity>1.0))
-    {
-        _sensitivity = 0.1f;
-    }
 }
 
 std::vector<TouchInfo*> Input::getActiveTouches()
@@ -679,12 +654,8 @@ bool Input::update( void)
         if( trigger.type == eMotionTrigger)
         {
             //LOG_INFO << "dx: " << trigger.fData1 << " dy: " << trigger.fData2 << "\n";
-
-            _mouseDelta = vec2f(trigger.fData1 * _sensitivity, trigger.fData2 * _sensitivity);
-            _mouseDelta = vec2f(
-                feedbackFilter( _mouseDelta.x(), _dampVal, _memoryDX),
-                feedbackFilter( _mouseDelta.y(), _dampVal, _memoryDY)
-            );
+            _mouseDelta += vec2f(trigger.fData1, trigger.fData2);
+            continue;
         }
 #endif
         //Note: motion triggers can't be bound
@@ -772,12 +743,7 @@ bool Input::update( void)
                 _bindMode = false;
         }
     }
-/*
-    _mouseDelta = vec2f(
-        feedbackFilter( _mouseDelta.x(), _dampVal, _memoryDX),
-        feedbackFilter( _mouseDelta.y(), _dampVal, _memoryDY)
-    );
-    */
+
     if( (fabs(_mouseDelta.x())>1.0e-10) || (fabs(_mouseDelta.y())>1.0e-10))
     {
         _mousePos += _mouseDelta;
@@ -786,7 +752,6 @@ bool Input::update( void)
 
         trigger.fData1 = _mouseDelta.x();
         trigger.fData2 = _mouseDelta.y();
-
         if( _interceptor)
         {
             //feed trigger to interceptor instead of normal callback mechanism
