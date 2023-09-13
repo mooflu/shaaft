@@ -640,13 +640,16 @@ void EnumSelectable::input( const Trigger &trigger, const bool &isDown, const Po
 #ifdef IPHONE
                 this->activate();
 #endif
-                if( trigger.data1 == -99) //TODO: handle mouse wheel - sdl1 SDL_BUTTON_WHEELDOWN)
+                if (trigger.data1 == SDL_MOUSEWHEEL)
                 {
-                    prevEnum();
-                }
-                else
-                {
-                    nextEnum();
+                    if (trigger.data3 > 0)
+                    {
+                        nextEnum();
+                    }
+                    else
+                    {
+                        prevEnum();
+                    }
                 }
             }
             break;
@@ -851,6 +854,9 @@ void LeaderBoardSelectable::input( const Trigger &trigger, const bool &isDown, c
     float mouseX = trigger.fData1;
     float mouseY = trigger.fData2;
 
+    bool goPrevBoard = false;
+    bool goNextBoard = false;
+
     switch( trigger.type)
     {
 #ifdef IPHONE
@@ -863,13 +869,11 @@ void LeaderBoardSelectable::input( const Trigger &trigger, const bool &isDown, c
                     {
                         if( (mouseX > 100) && (mouseX < 200) )
                         {
-                            ScoreKeeperS::instance()->prevBoard();
-                            AudioS::instance()->playSample( "sounds/click1");
+                            goPrevBoard = true;
                         }
                         if( (mouseX > 740) && (mouseX < 840) )
                         {
-                            ScoreKeeperS::instance()->nextBoard();
-                            AudioS::instance()->playSample( "sounds/click1");
+                            goNextBoard = true;
                         }
                     }
                 }
@@ -880,13 +884,11 @@ void LeaderBoardSelectable::input( const Trigger &trigger, const bool &isDown, c
             switch( trigger.data1)
             {
                 case SDLK_LEFT:
-                    ScoreKeeperS::instance()->prevBoard();
-                    AudioS::instance()->playSample( "sounds/click1");
+                    goPrevBoard = true;
                     break;
 
                 case SDLK_RIGHT:
-                    ScoreKeeperS::instance()->nextBoard();
-                    AudioS::instance()->playSample( "sounds/click1");
+                    goNextBoard = true;
                     break;
 
                 default:
@@ -905,15 +907,24 @@ void LeaderBoardSelectable::input( const Trigger &trigger, const bool &isDown, c
                     {
                         if ((mouseX > offset.x + 40 - padding) && (mouseX < offset.x + 80 + padding))
                         {
-                            ScoreKeeperS::instance()->prevBoard();
-                            AudioS::instance()->playSample("sounds/click1");
+                            goPrevBoard = true;
                         }
                         if ((mouseX > offset.x + 450 - padding) && (mouseX < offset.x + 490 + padding))
                         {
-                            ScoreKeeperS::instance()->nextBoard();
-                            AudioS::instance()->playSample("sounds/click1");
+                            goNextBoard = true;
                         }
                     }
+                }
+            }
+            if (trigger.data1 == SDL_MOUSEWHEEL)
+            {
+                if (trigger.data3 > 0)
+                {
+                    goPrevBoard = true;
+                }
+                else
+                {
+                    goNextBoard = true;
                 }
             }
             break;
@@ -933,6 +944,14 @@ void LeaderBoardSelectable::input( const Trigger &trigger, const bool &isDown, c
 
         default:
             break;
+    }
+
+    if (goPrevBoard) {
+        ScoreKeeperS::instance()->nextBoard();
+        AudioS::instance()->playSample("sounds/click1");
+    } else if (goNextBoard) {
+        ScoreKeeperS::instance()->nextBoard();
+        AudioS::instance()->playSample("sounds/click1");
     }
 }
 
@@ -1182,13 +1201,16 @@ void ResolutionSelectable::input( const Trigger &trigger, const bool &isDown, co
                     }
                     else
                     {
-                        if( trigger.data1 == -99) //TODO: handle mouse wheel - sdl1 SDL_BUTTON_WHEELDOWN)
+                        if (trigger.data1 == SDL_MOUSEWHEEL)
                         {
-                            prevResolution();
-                        }
-                        else
-                        {
-                            nextResolution();
+                            if (trigger.data3 > 0)
+                            {
+                                nextResolution();
+                            }
+                            else
+                            {
+                                prevResolution();
+                            }
                         }
                     }
                 }

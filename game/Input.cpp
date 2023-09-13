@@ -599,6 +599,14 @@ bool Input::tryGetTrigger( Trigger &trigger, bool &isDown)
             trigger.fData2 =-event.motion.yrel;
             break;
 
+        case SDL_MOUSEWHEEL:
+            isDown = true;
+            trigger.type = eButtonTrigger;
+            trigger.data1 = SDL_MOUSEWHEEL;
+            trigger.data2 = event.wheel.x;
+            trigger.data3 = event.wheel.y;
+            break;
+
         case SDL_TEXTINPUT:
         // LOG_INFO << "SDL_TEXTINPUT\n";
         trigger.type = eTextInputTrigger;
