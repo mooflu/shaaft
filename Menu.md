@@ -75,10 +75,6 @@ Check this to switch to fullscreen. Make sure that the resolution you selected i
 
 Click on the resolution numbers to change and then click on the check box to activate the resolution you selected.
 
-### Grab mouse
-
-When checked and in windowed mode the mouse cursor will not be able to leave the window.
-
 ### Show FPS
 
 When checked shows the number of frames per second (top right) the game is displaying. It's a crude way to measure how fast your computer and graphics card are.
