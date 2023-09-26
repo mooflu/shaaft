@@ -15,7 +15,7 @@ else()
 endif()
 
 find_library(SDL2_MIXER_LIBRARY
-        NAMES SDL2_mixer
+        NAMES SDL2_mixer SDL2_mixer-static SDL2_mixer-staticd
         HINTS
         ENV SDL2MIXERDIR
         ENV SDL2DIR
