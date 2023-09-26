@@ -5,8 +5,6 @@ include(${PROJECT_SOURCE_DIR}/utilscmake/FindExtras.cmake)
 if(NOT EMSCRIPTEN)
     find_package(ZLIB REQUIRED)
     find_package(PNG REQUIRED)
-    #find_package(JPEG REQUIRED)
-    #find_package(Freetype REQUIRED)
     find_package(SDL2 REQUIRED)
     find_package(SDL2_mixer REQUIRED)
     find_package(SDL2_image REQUIRED)
@@ -54,8 +52,8 @@ if(APPLE)
     )
 endif()
 
+include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${CMAKE_PREFIX_PATH}/include)
-include_directories(${SDL2_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/utils)
 include_directories(${PROJECT_SOURCE_DIR}/utilsfs)
@@ -108,21 +106,20 @@ endif()
 
 if(NOT EMSCRIPTEN)
     set(EXTRA_LIBRARIES_2
-        SDL2_mixer::SDL2_mixer-static
-        SDL2_image::SDL2_image-static
+        ${SDL2_MIXER_LIBRARY}
+        ${SDL2_IMAGE_LIBRARY}
         ${PHYSFS_LIBRARY}
-        ${OGG_LIBRARY}
-        ${VORBIS_LIBRARY}
-        ${VORBISFILE_LIBRARY}
     )
     if(WIN32)
         set(EXTRA_LIBRARIES_2 ${EXTRA_LIBRARIES_2} GLEW::glew_s)
     else()
-        set(EXTRA_LIBRARIES_2 ${EXTRA_LIBRARIES_2} GLEW::glew_s)
-        #set(EXTRA_LIBRARIES_2 ${EXTRA_LIBRARIES_2} ${GLEW_LIBRARIES})
+        if (BUILD_SHARED_LIBS)
+            set(EXTRA_LIBRARIES_2 ${EXTRA_LIBRARIES_2} ${GLEW_LIBRARIES})
+        else()
+            set(EXTRA_LIBRARIES_2 ${EXTRA_LIBRARIES_2} GLEW::glew_s)
+        endif()
     endif()
 else()
-    #FIND_LIBRARY(PHYSFS_LIBRARY physfs)
     set(EXTRA_LIBRARIES_2
         ${SDL2_MIXER_LIBRARY}
         ${SDL2_IMAGE_LIBRARY}

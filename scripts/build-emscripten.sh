@@ -1,7 +1,12 @@
 #!/bin/bash -xe
 if [[ -z "${EMSDK}" ]]; then
     echo EMSDK not set
-    exit
+
+    if [ -f ../emsdk/emsdk_env.sh ]; then
+        source ../emsdk/emsdk_env.sh
+    else
+        exit
+    fi
 fi
 
 export PROJ_FOLDER=`pwd`
