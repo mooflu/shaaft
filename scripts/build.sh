@@ -214,6 +214,8 @@ pushd ${BUILD_DIR}
             -DSDL2IMAGE_SAMPLES:BOOL=OFF
         cmake --build . --config ${BUILD_TYPE} --parallel
         cmake --install . ${INSTALL_CMAKE_BUILD_TYPE}
+        # it installs cmake stuff into framework and then linking thinks that's where the lib is :(
+        rm -rf ${INSTALL_DIR}/SDL2_image.framework
         popd
     popd
 
