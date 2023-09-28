@@ -6,10 +6,9 @@
 //
 #include "Trigger.hpp"
 
-class UIInputHandlerI
-{
+class UIInputHandlerI {
 public:
-    virtual ~UIInputHandlerI(){}
+    virtual ~UIInputHandlerI() {}
 
-    virtual bool handle( const Trigger & trigger ) = 0;
+    virtual bool handle(const Trigger& trigger) = 0;
 };

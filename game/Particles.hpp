@@ -10,33 +10,30 @@
 #include <GLBitmapFont.hpp>
 #include <ParticleType.hpp>
 
-class Particles
-{
+class Particles {
 public:
-    static void Initialize( void);
+    static void Initialize(void);
 };
 
-class BitmapParticleType: public ParticleType
-{
+class BitmapParticleType : public ParticleType {
 public:
-    BitmapParticleType( const std::string &name);
+    BitmapParticleType(const std::string& name);
     virtual ~BitmapParticleType();
 
-    virtual void init( ParticleInfo *p) = 0;
-    virtual bool update( ParticleInfo *p) = 0;
-    virtual void draw( ParticleInfo *p) = 0;
+    virtual void init(ParticleInfo* p) = 0;
+    virtual bool update(ParticleInfo* p) = 0;
+    virtual void draw(ParticleInfo* p) = 0;
 
-    static void bindTexture( void) { _bitmaps->bind();}
+    static void bindTexture(void) { _bitmaps->bind(); }
 
 protected:
-    static GLBitmapCollection *_bitmaps;
-    void LoadBitmaps( void);
+    static GLBitmapCollection* _bitmaps;
+    void LoadBitmaps(void);
 };
 
-class SingleBitmapParticle: public BitmapParticleType
-{
+class SingleBitmapParticle : public BitmapParticleType {
 public:
-    SingleBitmapParticle( const std::string &name, const char *bitmapName);
+    SingleBitmapParticle(const std::string& name, const char* bitmapName);
 
 protected:
     float _bmHalfWidth;
@@ -46,45 +43,42 @@ protected:
     int _bmIndex;
 };
 
-class Spark: public SingleBitmapParticle
-{
+class Spark : public SingleBitmapParticle {
 public:
-    Spark( void);
+    Spark(void);
     virtual ~Spark();
 
-    virtual void init( ParticleInfo *p);
-    virtual bool update( ParticleInfo *p);
-    virtual void draw( ParticleInfo *p);
+    virtual void init(ParticleInfo* p);
+    virtual bool update(ParticleInfo* p);
+    virtual void draw(ParticleInfo* p);
 
 private:
 };
 
-class StatusMessage: public ParticleType
-{
+class StatusMessage : public ParticleType {
 public:
-    StatusMessage( void);
+    StatusMessage(void);
     virtual ~StatusMessage();
 
-    virtual void init( ParticleInfo *p);
-    virtual bool update( ParticleInfo *p);
-    virtual void draw( ParticleInfo *p);
+    virtual void init(ParticleInfo* p);
+    virtual bool update(ParticleInfo* p);
+    virtual void draw(ParticleInfo* p);
 
 protected:
-    GLBitmapFont *_smallFont;
+    GLBitmapFont* _smallFont;
 };
 
-class ScoreHighlight: public ParticleType
-{
+class ScoreHighlight : public ParticleType {
 public:
-    ScoreHighlight( void);
+    ScoreHighlight(void);
     virtual ~ScoreHighlight();
 
-    virtual void init( ParticleInfo *p);
-    virtual bool update( ParticleInfo *p);
-    virtual void draw( ParticleInfo *p);
+    virtual void init(ParticleInfo* p);
+    virtual bool update(ParticleInfo* p);
+    virtual void draw(ParticleInfo* p);
 
 protected:
     vec3 _color;
     std::string _value;
-    GLBitmapFont *_font;
+    GLBitmapFont* _font;
 };

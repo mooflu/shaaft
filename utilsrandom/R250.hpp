@@ -8,22 +8,22 @@
 
 #include "RandomI.hpp"
 
-class R250: public RandomI
-{
-    static const unsigned int _RAND_MAX=0x7fffffff;
+class R250 : public RandomI {
+    static const unsigned int _RAND_MAX = 0x7fffffff;
+
 public:
-    R250( void);
-    R250( unsigned int seed);
+    R250(void);
+    R250(unsigned int seed);
     virtual ~R250(){};
 
-    unsigned int random( void);
-    float rangef0_1( void);
-    double ranged0_1( void);
+    unsigned int random(void);
+    float rangef0_1(void);
+    double ranged0_1(void);
 
     void reset(unsigned int seed);
 
 private:
     unsigned int _index;
-    unsigned int _randomNumbers[ 250];
+    unsigned int _randomNumbers[250];
     unsigned int _seed;
 };

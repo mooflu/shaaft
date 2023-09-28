@@ -36,7 +36,7 @@ frustum(GLdouble left, GLdouble right,
     c = -(farval + nearval) / ( farval - nearval);
     d = -(2.0 * farval * nearval) / (farval - nearval);
 
-#define M(row,col)  m[col*4+row]
+#define M(row, col) m[col * 4 + row]
     M(0,0) = x;     M(0,1) = 0.0F;  M(0,2) = a;      M(0,3) = 0.0F;
     M(1,0) = 0.0F;  M(1,1) = y;     M(1,2) = b;      M(1,3) = 0.0F;
     M(2,0) = 0.0F;  M(2,1) = 0.0F;  M(2,2) = c;      M(2,3) = d;

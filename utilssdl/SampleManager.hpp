@@ -18,21 +18,17 @@
 #include "ResourceCache.hpp"
 #include "SDL2/SDL_mixer.h"
 
-class SampleManager: public ResourceCache<Mix_Chunk>
-{
+class SampleManager : public ResourceCache<Mix_Chunk> {
 public:
-    SampleManager( void);
+    SampleManager(void);
     virtual ~SampleManager();
 
-    Mix_Chunk *getSample( const std::string &sampleName)
-    {
-        return getResource( sampleName);
-    }
+    Mix_Chunk* getSample(const std::string& sampleName) { return getResource(sampleName); }
 
 protected:
-    virtual Mix_Chunk *load( const std::string &wav);
+    virtual Mix_Chunk* load(const std::string& wav);
 
 private:
-    SampleManager( const SampleManager&);
-    SampleManager &operator=(const SampleManager&);
+    SampleManager(const SampleManager&);
+    SampleManager& operator=(const SampleManager&);
 };

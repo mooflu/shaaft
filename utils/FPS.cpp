@@ -17,32 +17,27 @@
 #include <stdio.h>
 #include "Timer.hpp"
 
-WPP::WPP( float period):
+WPP::WPP(float period) :
     _cpp(0.0),
     _period(period),
     _oldTime(0.0),
-    _count(0)
-{
-}
-    
-void WPP::Update( void)
-{
+    _count(0) {}
+
+void WPP::Update(void) {
     float newTime = Timer::getTime();
     _count++;
 
-    if( (newTime-_oldTime) > _period)
-    {
-	_cpp = ((float)_count)/(newTime-_oldTime);
-	_count = 0;
-	_oldTime = newTime;
+    if ((newTime - _oldTime) > _period) {
+        _cpp = ((float)_count) / (newTime - _oldTime);
+        _count = 0;
+        _oldTime = newTime;
     }
 }
 
 WPP FPS::_wpp(1.0);
 char FPS::_fpsString[10];
 
-const char *FPS::GetFPSString( void)
-{
-    sprintf( _fpsString, "%3.1f", FPS::GetFPS());
+const char* FPS::GetFPSString(void) {
+    sprintf(_fpsString, "%3.1f", FPS::GetFPS());
     return _fpsString;
 }

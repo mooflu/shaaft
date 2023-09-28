@@ -32,31 +32,29 @@
 using namespace std;
 
 #ifndef IPHONE
-const int VIDEO_DEFAULT_WIDTH=0;
-const int VIDEO_DEFAULT_HEIGHT=0;
+const int VIDEO_DEFAULT_WIDTH = 0;
+const int VIDEO_DEFAULT_HEIGHT = 0;
 #else
-const int VIDEO_DEFAULT_WIDTH=320;
-const int VIDEO_DEFAULT_HEIGHT=480;
+const int VIDEO_DEFAULT_WIDTH = 320;
+const int VIDEO_DEFAULT_HEIGHT = 480;
 #endif
 
-VideoBase::VideoBase():
-    _isFullscreen( true),
-    _bpp( 0),
-    _width( VIDEO_DEFAULT_WIDTH),
-    _height( VIDEO_DEFAULT_HEIGHT),
-    _prevWidth( VIDEO_DEFAULT_WIDTH),
-    _prevHeight( VIDEO_DEFAULT_HEIGHT),
+VideoBase::VideoBase() :
+    _isFullscreen(true),
+    _bpp(0),
+    _width(VIDEO_DEFAULT_WIDTH),
+    _height(VIDEO_DEFAULT_HEIGHT),
+    _prevWidth(VIDEO_DEFAULT_WIDTH),
+    _prevHeight(VIDEO_DEFAULT_HEIGHT),
     _windowHandle(0),
-    _glContext(0)
-{
+    _glContext(0) {
 #ifdef IPHONE
     _width = gGameState->width;
     _height = gGameState->height;
 #endif
 }
 
-VideoBase::~VideoBase()
-{
+VideoBase::~VideoBase() {
     LOG_INFO << "VideoBase shutdown..." << endl;
 
     BitmapManagerS::cleanup();
@@ -67,12 +65,11 @@ VideoBase::~VideoBase()
 
     CameraS::cleanup();
 
-    SDL_QuitSubSystem( SDL_INIT_VIDEO);
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
     SDL_Quit();
 }
 
-void VideoBase::reload( void)
-{
+void VideoBase::reload(void) {
     BitmapManagerS::instance()->reset();
     FontManagerS::instance()->reset();
     ModelManagerS::instance()->reset();
@@ -82,23 +79,19 @@ void VideoBase::reload( void)
     ModelManagerS::instance()->reload();
 
     std::list<ResolutionChangeObserverI*>::iterator i;
-    for( i=_resolutionObservers.begin(); i!=_resolutionObservers.end(); i++)
-    {
-        (*i)->resolutionChanged( _width, _height);
+    for (i = _resolutionObservers.begin(); i != _resolutionObservers.end(); i++) {
+        (*i)->resolutionChanged(_width, _height);
     }
 }
 
-void VideoBase::registerResolutionObserver( ResolutionChangeObserverI *i)
-{
-    _resolutionObservers.push_back( i);
+void VideoBase::registerResolutionObserver(ResolutionChangeObserverI* i) {
+    _resolutionObservers.push_back(i);
 }
 
-bool VideoBase::init( void)
-{
+bool VideoBase::init(void) {
     LOG_INFO << "Initializing VideoBase..." << endl;
 
-    if( SDL_InitSubSystem( SDL_INIT_VIDEO) < 0 )
-    {
+    if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0) {
         LOG_ERROR << "Init VideoBase: failed # " << SDL_GetError() << endl;
         return false;
     }
@@ -106,8 +99,7 @@ bool VideoBase::init( void)
 
     //const char *vidDriver = SDL_GetCurrentVideoDriver(); //E.g. "Windows"
 
-    if( !setVideoMode())
-    {
+    if (!setVideoMode()) {
         return false;
     }
 #if 0
@@ -123,16 +115,14 @@ bool VideoBase::init( void)
     return true;
 }
 
-bool VideoBase::setVideoMode( void)
-{
-    ConfigS::instance()->getBoolean( "fullscreen", _isFullscreen);
-    ConfigS::instance()->getInteger( "width", _width);
-    ConfigS::instance()->getInteger( "height", _height);
+bool VideoBase::setVideoMode(void) {
+    ConfigS::instance()->getBoolean("fullscreen", _isFullscreen);
+    ConfigS::instance()->getInteger("width", _width);
+    ConfigS::instance()->getInteger("height", _height);
     _prevWidth = _width;
     _prevHeight = _height;
 
-    if( (_width == 0) && (_height == 0) )
-    {
+    if ((_width == 0) && (_height == 0)) {
         SDL_DisplayMode defaultMode;
         SDL_GetDesktopDisplayMode(0, &defaultMode);
 
@@ -163,8 +153,7 @@ bool VideoBase::setVideoMode( void)
 #endif
 
     Uint32 windowFlags = SDL_WINDOW_OPENGL;
-    if( _isFullscreen)
-    {
+    if (_isFullscreen) {
         LOG_INFO << "Fullscreen request." << endl;
         windowFlags |= SDL_WINDOW_FULLSCREEN;
     }
@@ -178,34 +167,28 @@ bool VideoBase::setVideoMode( void)
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 #endif
-    if( _glContext)
-    {
+    if (_glContext) {
         SDL_GL_DeleteContext(_glContext);
         _glContext = 0;
     }
 
-    if( _windowHandle )
-    {
+    if (_windowHandle) {
         SDL_DestroyWindow(_windowHandle);
         _windowHandle = 0;
     }
 
-    _windowHandle = SDL_CreateWindow( GAMETITLE.c_str(),
-            SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-            _width, _height,
-            windowFlags);
-    if( !_windowHandle)
-    {
+    _windowHandle = SDL_CreateWindow(GAMETITLE.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, _width,
+                                     _height, windowFlags);
+    if (!_windowHandle) {
         LOG_ERROR << "Video Mode: failed to create window: " << SDL_GetError() << endl;
-        SDL_QuitSubSystem( SDL_INIT_VIDEO);
+        SDL_QuitSubSystem(SDL_INIT_VIDEO);
         return false;
     }
 
     _glContext = SDL_GL_CreateContext(_windowHandle);
-    if( !_glContext)
-    {
+    if (!_glContext) {
         LOG_ERROR << "Video Mode: failed to create GL context: " << SDL_GetError() << endl;
-        SDL_QuitSubSystem( SDL_INIT_VIDEO);
+        SDL_QuitSubSystem(SDL_INIT_VIDEO);
         return false;
     }
 
@@ -222,34 +205,28 @@ bool VideoBase::setVideoMode( void)
     SDL_GetWindowSize(_windowHandle, &_width, &_height);
 #endif
 
-    glViewport(0,0, _width, _height);
+    glViewport(0, 0, _width, _height);
 
     //reset mouse position ang grab-state
     InputS::instance()->resetMousePosition();
 
 #if 1
-    SDL_SetRelativeMouseMode( SDL_TRUE);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 #else
     // SDL_SetRelativeMouseMode used to only work on Mac
-    SDL_ShowCursor( SDL_DISABLE);
+    SDL_ShowCursor(SDL_DISABLE);
     bool grabMouse = true;
-    ConfigS::instance()->getBoolean( "grabMouse", grabMouse);
-    if( grabMouse || _isFullscreen)
-    {
+    ConfigS::instance()->getBoolean("grabMouse", grabMouse);
+    if (grabMouse || _isFullscreen) {
         SDL_SetWindowGrab(_windowHandle, SDL_TRUE);
-    }
-    else
-    {
+    } else {
         SDL_SetWindowGrab(_windowHandle, SDL_FALSE);
     }
     // LOG_INFO << "MOUSEX " << InputS::instance()->mousePos().x() << "\n";
     // LOG_INFO << "MOUSEY " << InputS::instance()->mousePos().y() << "\n";
-    SDL_WarpMouseInWindow(_windowHandle,
-        InputS::instance()->mousePos().x(),
-        InputS::instance()->mousePos().y());
+    SDL_WarpMouseInWindow(_windowHandle, InputS::instance()->mousePos().x(), InputS::instance()->mousePos().y());
     SDL_Event event;
-    while( SDL_PollEvent( &event))
-    {
+    while (SDL_PollEvent(&event)) {
         //remove any queued up events due to warping, etc.
         ;
     }
@@ -257,10 +234,8 @@ bool VideoBase::setVideoMode( void)
 
     SDL_DisplayMode currentMode;
     SDL_GetCurrentDisplayMode(0, &currentMode);
-    LOG_INFO << "Video Mode: OK ("
-        << _width << "x"
-        << _height << "x"
-        << SDL_BITSPERPIXEL(currentMode.format) << ")" << endl;
+    LOG_INFO << "Video Mode: OK (" << _width << "x" << _height << "x" << SDL_BITSPERPIXEL(currentMode.format) << ")"
+             << endl;
 
     glewInit();
 
@@ -270,9 +245,9 @@ bool VideoBase::setVideoMode( void)
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &minor);
 
     LOG_INFO << "OpenGL info:" << endl;
-    LOG_INFO << "  Vendor  : " << glGetString( GL_VENDOR) << endl;
-    LOG_INFO << "  Renderer: " <<  glGetString( GL_RENDERER) << endl;
-    LOG_INFO << "  Version : " << glGetString( GL_VERSION) << endl;
+    LOG_INFO << "  Vendor  : " << glGetString(GL_VENDOR) << endl;
+    LOG_INFO << "  Renderer: " << glGetString(GL_RENDERER) << endl;
+    LOG_INFO << "  Version : " << glGetString(GL_VERSION) << endl;
     LOG_INFO << "  Context : " << major << "." << minor << endl;
     LOG_INFO << "  GLEW : " << glewGetString(GLEW_VERSION) << endl;
 
@@ -286,19 +261,17 @@ bool VideoBase::setVideoMode( void)
     return true;
 }
 
-bool VideoBase::updateSettings( void)
-{
+bool VideoBase::updateSettings(void) {
     bool fullscreen = true;
-    ConfigS::instance()->getBoolean( "fullscreen", fullscreen);
+    ConfigS::instance()->getBoolean("fullscreen", fullscreen);
     int width = 0;
-    ConfigS::instance()->getInteger( "width", width);
+    ConfigS::instance()->getInteger("width", width);
     int height = 0;
-    ConfigS::instance()->getInteger( "height", height);
+    ConfigS::instance()->getInteger("height", height);
 
-    if( (fullscreen != _isFullscreen) || (width != _prevWidth) || (height != _prevHeight))
-    {
-        LOG_INFO << "current:" << (_isFullscreen?"fs ":"win") << " " << _prevWidth << "x" << _prevHeight << "\n";
-        LOG_INFO << "request:" << (fullscreen?"fs ":"win") << " " << width << "x" << height << "\n";
+    if ((fullscreen != _isFullscreen) || (width != _prevWidth) || (height != _prevHeight)) {
+        LOG_INFO << "current:" << (_isFullscreen ? "fs " : "win") << " " << _prevWidth << "x" << _prevHeight << "\n";
+        LOG_INFO << "request:" << (fullscreen ? "fs " : "win") << " " << width << "x" << height << "\n";
         LOG_INFO << "VideoBase::updateSettings change detected...\n";
 
 #if 0
@@ -318,18 +291,15 @@ bool VideoBase::updateSettings( void)
         bool oldFullscreen = _isFullscreen;
         int oldWidth = _prevWidth;
         int oldHeight = _prevHeight;
-        if( ! setVideoMode())
-        {
+        if (!setVideoMode()) {
             LOG_WARNING << "Unable to set video mode. Trying previous settings.\n";
-            setResolutionConfig( oldWidth, oldHeight, oldFullscreen);
+            setResolutionConfig(oldWidth, oldHeight, oldFullscreen);
 
-            if( ! setVideoMode())
-            {
+            if (!setVideoMode()) {
                 LOG_WARNING << "Unable to set previous video mode. Trying default!\n";
-                setResolutionConfig( 0, 0, true);
+                setResolutionConfig(0, 0, true);
 
-                if( ! setVideoMode())
-                {
+                if (!setVideoMode()) {
                     LOG_ERROR << "Unable to set default video mode. Going down!\n";
                     //no luck, we are going down!
                     return false;
@@ -342,31 +312,27 @@ bool VideoBase::updateSettings( void)
     return true;
 }
 
-void VideoBase::setResolutionConfig( int width, int height, bool fullscreen)
-{
+void VideoBase::setResolutionConfig(int width, int height, bool fullscreen) {
     //going back to desktop res fullscreen
-    Value *w = new Value( width);
-    ConfigS::instance()->updateKeyword( "width", w);
-    Value *h = new Value( height);
-    ConfigS::instance()->updateKeyword( "height", h);
-    Value *fs = new Value( fullscreen);
-    ConfigS::instance()->updateKeyword( "fullscreen", fs);
+    Value* w = new Value(width);
+    ConfigS::instance()->updateKeyword("width", w);
+    Value* h = new Value(height);
+    ConfigS::instance()->updateKeyword("height", h);
+    Value* fs = new Value(fullscreen);
+    ConfigS::instance()->updateKeyword("fullscreen", fs);
 }
 
-bool VideoBase::update( void)
-{
-    static float nextTime = Timer::getTime()+0.5f;
+bool VideoBase::update(void) {
+    static float nextTime = Timer::getTime() + 0.5f;
     float thisTime = Timer::getTime();
-    if( thisTime > nextTime)
-    {
-        nextTime = thisTime+0.5f;
+    if (thisTime > nextTime) {
+        nextTime = thisTime + 0.5f;
         return updateSettings();
     }
     return true;
 }
 
-void VideoBase::draw( bool oneToOne)
-{
+void VideoBase::draw(bool oneToOne) {
 #if 0
     //--- Ortho stuff from here on ---
     glMatrixMode(GL_PROJECTION);
@@ -410,37 +376,29 @@ void VideoBase::draw( bool oneToOne)
 #endif
 }
 
-void VideoBase::takeSnapshot( void)
-{
+void VideoBase::takeSnapshot(void) {
     static int count = 0;
 
     char filename[128];
-    sprintf( filename, "snap%02d.png", count++);
-    SDL_Surface *img;
+    sprintf(filename, "snap%02d.png", count++);
+    SDL_Surface* img;
 
-    img = SDL_CreateRGBSurface( 0, _width, _height, 24,
-            0x00FF0000, 0x0000FF00, 0x000000FF,0);
+    img = SDL_CreateRGBSurface(0, _width, _height, 24, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
 
-    if( img )
-    {
-        glReadPixels( 0, 0, _width, _height, GL_RGB, GL_UNSIGNED_BYTE, img->pixels);
+    if (img) {
+        glReadPixels(0, 0, _width, _height, GL_RGB, GL_UNSIGNED_BYTE, img->pixels);
 
         LOG_INFO << "Writing snapshot: " << filename << endl;
-        if( !PNG::Snapshot( img, filename))
-        {
+        if (!PNG::Snapshot(img, filename)) {
             LOG_ERROR << "Failed to save snapshot." << endl;
         }
-        SDL_FreeSurface( img);
-    }
-    else
-    {
+        SDL_FreeSurface(img);
+    } else {
         LOG_ERROR << "Failed to create surface for snapshot." << endl;
         LOG_ERROR << "SDL: " << SDL_GetError() << "\n";
     }
-
 }
 
-void VideoBase::swap( void )
-{
+void VideoBase::swap(void) {
     SDL_GL_SwapWindow(_windowHandle);
 }

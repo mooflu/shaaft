@@ -11,15 +11,14 @@
 #include "BlockModel.hpp"
 #include "BlockView.hpp"
 
-class BlockController
-{
+class BlockController {
 public:
-    BlockController( BlockModel &model);
+    BlockController(BlockModel& model);
     ~BlockController();
 
 private:
-    BlockController( const BlockController&);
-    BlockController &operator=(const BlockController&);
-    
-    BlockModel &_model;
+    BlockController(const BlockController&);
+    BlockController& operator=(const BlockController&);
+
+    BlockModel& _model;
 };

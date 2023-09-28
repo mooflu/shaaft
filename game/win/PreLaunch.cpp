@@ -1,3 +1,1 @@
-void preLaunch( void)
-{
-}
+void preLaunch(void) {}

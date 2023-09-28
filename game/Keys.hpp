@@ -10,20 +10,18 @@
 
 #include "Trigger.hpp"
 
-class Keys
-{
+class Keys {
 public:
-    Keys( void);
+    Keys(void);
     ~Keys();
     void init();
-    
-    std::string convertTriggerToString( const Trigger & trigger);
-    bool convertStringToTrigger( 
-        std::string & triggerStr, Trigger & trigger);
+
+    std::string convertTriggerToString(const Trigger& trigger);
+    bool convertStringToTrigger(std::string& triggerStr, Trigger& trigger);
 
 private:
-    Keys( const Keys&);
-    Keys &operator=(const Keys&);
+    Keys(const Keys&);
+    Keys& operator=(const Keys&);
 
-    std::string _symmap[ SDL_NUM_SCANCODES];
+    std::string _symmap[SDL_NUM_SCANCODES];
 };

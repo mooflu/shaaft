@@ -26,83 +26,64 @@ class Callback;
 #define ESCAPE_KEY SDLK_ESCAPE
 #endif
 
-namespace HASH_NAMESPACE
-{
-    template<>
-	struct hash<Trigger>
-    {
-	//a simple hash function for Trigger
-	int operator()(const Trigger &t) const
-	{
-	    int hashval;
+namespace HASH_NAMESPACE {
+template <>
+struct hash<Trigger> {
+    //a simple hash function for Trigger
+    int operator()(const Trigger& t) const {
+        int hashval;
 
-	    if( t.type == eMotionTrigger)
-	    {
-		hashval = t.type*1000;
-	    }
-	    else
-	    {
-		hashval = t.type*1000+t.data1;
-	    }
+        if (t.type == eMotionTrigger) {
+            hashval = t.type * 1000;
+        } else {
+            hashval = t.type * 1000 + t.data1;
+        }
 
-	    return hashval;
-	}
-    };
-}
+        return hashval;
+    }
+};
+}  // namespace HASH_NAMESPACE
 
-struct TouchInfo
-{
-    TouchInfo( void *t, const vec2i &p):
+struct TouchInfo {
+    TouchInfo(void* t, const vec2i& p) :
         touch(t),
         pos(p),
         currentPos(p),
-        active(true)
-    {
-    }
+        active(true) {}
 
-    void *touch;
+    void* touch;
     vec2i pos;
     vec2i currentPos;
     bool active;
 };
 
-class Input: public ConfigHandler
-{
-friend class Singleton<Input>;
+class Input : public ConfigHandler {
+    friend class Singleton<Input>;
+
 public:
-    bool init( void);
-    bool update( void);
+    bool init(void);
+    bool update(void);
 
     //used for loading/saving bindings
-    virtual void handleLine( const std::string line);
-    virtual void save( std::ostream &of);
+    virtual void handleLine(const std::string line);
+    virtual void save(std::ostream& of);
 
     //Input takes ownership of callback
-    void bindNextTrigger( const std::string &action)
-    {
+    void bindNextTrigger(const std::string& action) {
         _bindMode = true;
         _action = action;
         LOG_INFO << "bindNextTrigger -> " << _action << "\n";
     }
 
-    bool waitingForBind( void)
-    {
-        return _bindMode;
-    }
+    bool waitingForBind(void) { return _bindMode; }
 
-    void addCallback( Callback *cb);
+    void addCallback(Callback* cb);
 
-    std::string getTriggerName( std::string &action);
+    std::string getTriggerName(std::string& action);
 
-    void enableInterceptor( InterceptorI *i)
-    {
-	_interceptor = i;
-    }
+    void enableInterceptor(InterceptorI* i) { _interceptor = i; }
 
-    void disableInterceptor( void)
-    {
-	_interceptor = 0;
-    }
+    void disableInterceptor(void) { _interceptor = 0; }
 
     const vec2f& mousePos(void);
     void resetMousePosition();
@@ -111,16 +92,16 @@ public:
 
 private:
     virtual ~Input();
-    Input( void);
-    Input( const Input&);
-    Input &operator=(const Input&);
+    Input(void);
+    Input(const Input&);
+    Input& operator=(const Input&);
 
-    void bind( Trigger &t, Callback *action);
-    bool tryGetTrigger( Trigger &trigger, bool &isDown);
-    void updateMouseSettings( void);
+    void bind(Trigger& t, Callback* action);
+    bool tryGetTrigger(Trigger& trigger, bool& isDown);
+    void updateMouseSettings(void);
 
 #ifdef IPHONE
-    void handleTouch( SDL_TouchEvent &touch);
+    void handleTouch(SDL_TouchEvent& touch);
 #endif
 
     bool _bindMode;
@@ -128,27 +109,27 @@ private:
     CallbackManager _callbackManager;
     Keys _keys;
 
-	typedef  hash_map< std::string, Trigger*, hash<std::string>, std::equal_to<std::string> > ATMap;
+    typedef hash_map<std::string, Trigger*, hash<std::string>, std::equal_to<std::string>> ATMap;
     ATMap _actionTriggerMap;
 
-	hash_map< Trigger, Callback*, hash<Trigger>, std::equal_to<Trigger> > _callbackMap;
+    hash_map<Trigger, Callback*, hash<Trigger>, std::equal_to<Trigger>> _callbackMap;
 
     //mouse position [0..1]
     vec2f _mousePos;
     vec2f _mouseDelta;
 
     //intercept raw input
-    InterceptorI *_interceptor;
+    InterceptorI* _interceptor;
 
     //Touch information
     int _touchCount;
     std::vector<TouchInfo> _touches;
 
 #ifdef IPHONE
-    int addTouch( void *t, const vec2i &p);
-    void removeTouch( int button);
-    int removeTouch( void *t);
-    int findTouch( void *t, const vec2i &currentPos);
+    int addTouch(void* t, const vec2i& p);
+    void removeTouch(int button);
+    int removeTouch(void* t);
+    int findTouch(void* t, const vec2i& currentPos);
 #endif
 };
 

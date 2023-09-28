@@ -15,107 +15,101 @@
 #include "Camera.hpp"
 
 #ifdef WIN32
-#define _USE_MATH_DEFINES //needed to get M_PI
+#define _USE_MATH_DEFINES  //needed to get M_PI
 #endif
 #include <math.h>
 
 const float defaultAngleSensitivity = 1.0;
 
-void Camera::place( void)
-{
-//    XTRACE();
-//    if( GameState::context != Context::eCameraFlyby) return;
+void Camera::place(void) {
+    //    XTRACE();
+    //    if( GameState::context != Context::eCameraFlyby) return;
 
-    glRotatef( -_cameraPitch, 1.0, 0.0, 0.0 );
-    glRotatef( -_cameraYaw, 0.0, 1.0, 0.0 );
-    glTranslatef( -_cameraX, -_cameraY, -_cameraZ );
+    glRotatef(-_cameraPitch, 1.0, 0.0, 0.0);
+    glRotatef(-_cameraYaw, 0.0, 1.0, 0.0);
+    glTranslatef(-_cameraX, -_cameraY, -_cameraZ);
 }
 
-void Camera::billboard( void)
-{
-//    XTRACE();
-    glRotatef( _cameraYaw, 0.0, 1.0, 0.0 );
-    glRotatef( _cameraPitch, 1.0, 0.0, 0.0 );
+void Camera::billboard(void) {
+    //    XTRACE();
+    glRotatef(_cameraYaw, 0.0, 1.0, 0.0);
+    glRotatef(_cameraPitch, 1.0, 0.0, 0.0);
 }
 
-void Camera::mouseLook( float dx, float dy)
-{
-//    XTRACE();
-    if( (dx!=0) || (dy!=0))
-    {
-	_cameraYaw -= defaultAngleSensitivity * dx;
-	_cameraPitch += defaultAngleSensitivity * dy;
-	clampCamera();
+void Camera::mouseLook(float dx, float dy) {
+    //    XTRACE();
+    if ((dx != 0) || (dy != 0)) {
+        _cameraYaw -= defaultAngleSensitivity * dx;
+        _cameraPitch += defaultAngleSensitivity * dy;
+        clampCamera();
     }
 }
 
-void Camera::update( void)
-{
-//    XTRACE();
-    if( _moveCam)
-    {
-	move( 0.3f/*_stepSize*/, _cameraMove); 
+void Camera::update(void) {
+    //    XTRACE();
+    if (_moveCam) {
+        move(0.3f /*_stepSize*/, _cameraMove);
     }
 }
 
-void Camera::move( Direction::DirectionEnum dir, bool isDown)
-{
-//    XTRACE();
+void Camera::move(Direction::DirectionEnum dir, bool isDown) {
+    //    XTRACE();
     _moveCam = isDown;
 
-    switch( dir)
-    {
-	case Direction::eDown:
-	    _cameraMove = 180.0;
-	    break;
-	case Direction::eUp:
-	    _cameraMove = 0.0;
-	    break;
+    switch (dir) {
+        case Direction::eDown:
+            _cameraMove = 180.0;
+            break;
+        case Direction::eUp:
+            _cameraMove = 0.0;
+            break;
 
-	case Direction::eLeft:
-	    _cameraMove = 90.0;
-	    break;
-	case Direction::eRight:
-	    _cameraMove = 270.0;
-	    break;
+        case Direction::eLeft:
+            _cameraMove = 90.0;
+            break;
+        case Direction::eRight:
+            _cameraMove = 270.0;
+            break;
 
-	default:
-	    break;
+        default:
+            break;
     }
 }
 
-void Camera::move( GLfloat stepSize, GLfloat angle)
-{
-//    XTRACE();
+void Camera::move(GLfloat stepSize, GLfloat angle) {
+    //    XTRACE();
     GLfloat cosPitch = 1.0;
 
-    if( (angle==0) || (angle==180))
-    {
-	GLfloat sinPitch;
-	GLfloat actualAngleInRadians2( ( _cameraPitch+angle) * (float)M_PI / 180.0f );
-	sinPitch = sin( actualAngleInRadians2 );
-	cosPitch = cos( actualAngleInRadians2 );
-	_cameraY += sinPitch * stepSize;
+    if ((angle == 0) || (angle == 180)) {
+        GLfloat sinPitch;
+        GLfloat actualAngleInRadians2((_cameraPitch + angle) * (float)M_PI / 180.0f);
+        sinPitch = sin(actualAngleInRadians2);
+        cosPitch = cos(actualAngleInRadians2);
+        _cameraY += sinPitch * stepSize;
     }
 
-    if( angle==180) cosPitch = -cosPitch;
+    if (angle == 180) {
+        cosPitch = -cosPitch;
+    }
 
-    GLfloat actualAngleInRadians( ( _cameraYaw + angle ) * (float)M_PI / 180.0f );
-    _cameraX -= sin( actualAngleInRadians ) * stepSize * cosPitch;
-    _cameraZ -= cos( actualAngleInRadians ) * stepSize * cosPitch;
+    GLfloat actualAngleInRadians((_cameraYaw + angle) * (float)M_PI / 180.0f);
+    _cameraX -= sin(actualAngleInRadians) * stepSize * cosPitch;
+    _cameraZ -= cos(actualAngleInRadians) * stepSize * cosPitch;
 }
 
-void Camera::clampCamera( void)
-{
+void Camera::clampCamera(void) {
     // Clamp the _cameraera's pitch.
-    if( _cameraPitch > 90.0 )
-	_cameraPitch = 90.0;
-    else if( _cameraPitch < -90.0 )
-	_cameraPitch = -90.0;
+    if (_cameraPitch > 90.0) {
+        _cameraPitch = 90.0;
+    } else if (_cameraPitch < -90.0) {
+        _cameraPitch = -90.0;
+    }
 
     // wrap the yaw/heading
-    while( _cameraYaw < 0.0 )
-	_cameraYaw += 360.0;
-    while( _cameraYaw >= 360.0 )
-	_cameraYaw -= 360.0;
+    while (_cameraYaw < 0.0) {
+        _cameraYaw += 360.0;
+    }
+    while (_cameraYaw >= 360.0) {
+        _cameraYaw -= 360.0;
+    }
 }

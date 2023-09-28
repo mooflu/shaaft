@@ -9,45 +9,47 @@
 
 #include <list>
 
-class ResolutionChangeObserverI
-{
+class ResolutionChangeObserverI {
 public:
-    virtual void resolutionChanged( int w, int h) = 0;
+    virtual void resolutionChanged(int w, int h) = 0;
+
     virtual ~ResolutionChangeObserverI() {}
 };
 
-class VideoBase
-{
-friend class Singleton<VideoBase>;
+class VideoBase {
+    friend class Singleton<VideoBase>;
+
 public:
-    VideoBase( void);
+    VideoBase(void);
     virtual ~VideoBase();
 
-    bool init( void);
-    void draw( bool oneToOne=true);
-    void swap( void);
- 
-    int getWidth( void) { return _width;}
-    int getHeight( void) { return _height;}
-    bool isFullscreen( void) { return _isFullscreen; }
+    bool init(void);
+    void draw(bool oneToOne = true);
+    void swap(void);
 
-    void takeSnapshot( void);
-    void setResolutionConfig( int w, int h, bool fs);
+    int getWidth(void) { return _width; }
+
+    int getHeight(void) { return _height; }
+
+    bool isFullscreen(void) { return _isFullscreen; }
+
+    void takeSnapshot(void);
+    void setResolutionConfig(int w, int h, bool fs);
 
     //This should be called if fullscreen or resolution were changed
     //The actual values are retrieved from config (width, height, fullscreen)
-    bool updateSettings( void);
+    bool updateSettings(void);
 
-    bool update( void);
-    
-    void registerResolutionObserver( ResolutionChangeObserverI *i);
+    bool update(void);
+
+    void registerResolutionObserver(ResolutionChangeObserverI* i);
 
 private:
-    VideoBase( const VideoBase&);
-    VideoBase &operator=(const VideoBase&);
+    VideoBase(const VideoBase&);
+    VideoBase& operator=(const VideoBase&);
 
-    void reload( void);
-    bool setVideoMode( void);
+    void reload(void);
+    bool setVideoMode(void);
 
     bool _isFullscreen;
 
@@ -58,11 +60,11 @@ private:
     int _prevWidth;
     int _prevHeight;
 
-    SDL_Window *_windowHandle;
+    SDL_Window* _windowHandle;
     SDL_GLContext _glContext;
 
     int _pointer;
-    
+
     std::list<ResolutionChangeObserverI*> _resolutionObservers;
 };
 

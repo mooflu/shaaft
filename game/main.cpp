@@ -4,7 +4,7 @@
 // Copyright (C) 2008 Frank Becker
 //
 
-#include "SDL.h" //needed for SDL_main
+#include "SDL.h"  //needed for SDL_main
 
 #include "Trace.hpp"
 #include "Constants.hpp"
@@ -21,37 +21,25 @@
 #endif
 using namespace std;
 
-class NoopStreamBuf : public std::streambuf
-{
+class NoopStreamBuf : public std::streambuf {
 public:
-    NoopStreamBuf()
-    {
-    }
+    NoopStreamBuf() {}
+
 protected:
-    virtual int_type overflow (int_type c)
-    {
-        return c;
-    }
+    virtual int_type overflow(int_type c) { return c; }
 };
 
-void checkEndian( void)
-{
-    if( ::isLittleEndian())
-    {
+void checkEndian(void) {
+    if (::isLittleEndian()) {
         LOG_INFO << "Setting up for little endian." << endl;
-    }
-    else
-    {
+    } else {
         LOG_INFO << "Setting up for big endian." << endl;
     }
 }
 #ifndef IPHONE
-void showInfo()
-{
+void showInfo() {
     LOG_INFO << "----------------------------------" << endl;
-    LOG_INFO << GAMETITLE << " " << GAMEVERSION
-        << " - " << __TIME__ << " " << __DATE__
-        << endl;
+    LOG_INFO << GAMETITLE << " " << GAMEVERSION << " - " << __TIME__ << " " << __DATE__ << endl;
     LOG_INFO << "Copyright (C) 2004-2023 by Frank Becker" << endl;
     LOG_INFO << "Visit http://games.mooflu.com" << endl;
     LOG_INFO << "----------------------------------" << endl;
@@ -62,8 +50,8 @@ void showInfo()
 #include <png.h>
 #include <zlib.h>
 #include <physfs.h>
-void showVersions( void)
-{
+
+void showVersions(void) {
     SDL_version sdlVer;
     SDL_GetVersion(&sdlVer);
 
@@ -93,11 +81,10 @@ void showVersions( void)
 }
 #endif
 
-void init(int argc, char *argv[])
-{
+void init(int argc, char* argv[]) {
 #ifdef IPHONEDIST
 #warning Logging off
-    Trace::SetStreamBuffer( new NoopStreamBuf());
+    Trace::SetStreamBuffer(new NoopStreamBuf());
 #endif
 
 #ifndef IPHONE
@@ -112,64 +99,55 @@ void init(int argc, char *argv[])
 #else
     string writeSubdir = ".shaaft";
 #endif
-    ResourceManagerS::instance()->setWriteDirectory(writeSubdir); // TODO: handle windows
+    ResourceManagerS::instance()->setWriteDirectory(writeSubdir);  // TODO: handle windows
 
-    if( !ResourceManagerS::instance()->
-          addResourceBundle(getDataPath() + resourceFilePath, "/"))
-    {
+    if (!ResourceManagerS::instance()->addResourceBundle(getDataPath() + resourceFilePath, "/")) {
         LOG_WARNING << "resource.dat not found. Trying data directory." << endl;
 #ifdef VCPP
-        ResourceManagerS::instance()->addResourceDirectory( "../../data");
+        ResourceManagerS::instance()->addResourceDirectory("../../data");
 #else
-        ResourceManagerS::instance()->addResourceBundle( "data", "/");
+        ResourceManagerS::instance()->addResourceBundle("data", "/");
 #endif
-        if( ResourceManagerS::instance()->getResourceSize("system/config.txt") < 0)
-        {
+        if (ResourceManagerS::instance()->getResourceSize("system/config.txt") < 0) {
             LOG_ERROR << "Sorry, unable to find game data!" << endl;
             return;
         }
     }
 
-    Config *cfg = ConfigS::instance();
+    Config* cfg = ConfigS::instance();
     //cfg->setSubdirectory(writeSubdir);
 
     // read config file...
     cfg->updateFromFile();
 
     // process command line arguments...
-    cfg->updateFromCommandLine( argc, argv);
+    cfg->updateFromCommandLine(argc, argv);
 
     // to dump or not to dump...
-    cfg->getBoolean( "developer", GameState::isDeveloper);
-    if( GameState::isDeveloper)
-    {
+    cfg->getBoolean("developer", GameState::isDeveloper);
+    if (GameState::isDeveloper) {
         cfg->dump();
     }
 }
-#if defined (EMSCRIPTEN)
+#if defined(EMSCRIPTEN)
 #include <emscripten.h>
 #include <emscripten/html5.h>
 bool configInitialized = false;
-void emPreInitLoop() {
-    int fsReady = EM_ASM_INT({
-        return Module.readyToStart;
-    }, 100);
 
-    if (fsReady)
-    {
-        if( !configInitialized ) {
+void emPreInitLoop() {
+    int fsReady = EM_ASM_INT({ return Module.readyToStart; }, 100);
+
+    if (fsReady) {
+        if (!configInitialized) {
             init(0, 0);
             configInitialized = true;
 
-            if( ! GameS::instance()->init())
-            {
+            if (!GameS::instance()->init()) {
                 emscripten_cancel_main_loop();
                 //emscripten_exit_with_live_runtime();
             }
-        }
-        else
-        {
-	        emscripten_request_pointerlock("#canvas", true);
+        } else {
+            emscripten_request_pointerlock("#canvas", true);
             Game::gameLoop();
         }
     }
@@ -177,31 +155,32 @@ void emPreInitLoop() {
 #endif
 
 #ifdef IPHONE
-bool startupGame( int argc, char *argv[])
+bool startupGame(int argc, char* argv[])
 #else
-int main( int argc, char *argv[])
+int main(int argc, char* argv[])
 #endif
 {
 #ifndef IPHONE
 
-#if defined (EMSCRIPTEN)
-    EM_ASM  (
-        var path = Module.UTF8ToString($0);
-        // Make a directory other than '/'
-        FS.mkdir(path);
-        // Then mount with IDBFS type
-        FS.mount(IDBFS, {}, path);
+#if defined(EMSCRIPTEN)
+    EM_ASM(var path = Module.UTF8ToString($0);
+           // Make a directory other than '/'
+           FS.mkdir(path);
+           // Then mount with IDBFS type
+           FS.mount(IDBFS, {}, path);
 
-        // Then sync
-        FS.syncfs(true, function (err) {
-            if (err) {
-                console.log('FS.syncfs error: ' + err)
-            } else {
-                console.log('Mounted IDBFS at: ' + path);
-                Module.askUserToStart();
-            }
-        });
-    ,  "Shaaft");
+           // Then sync
+           FS.syncfs(
+               true,
+               function(err) {
+                   if (err) {
+                       console.log('FS.syncfs error: ' + err)
+                   } else {
+                       console.log('Mounted IDBFS at: ' + path);
+                       Module.askUserToStart();
+                   }
+               });
+           , "Shaaft");
 
     // 0 fps means to use requestAnimationFrame; non-0 means to use setTimeout.
     emscripten_set_main_loop(emPreInitLoop, 0, 1);
@@ -209,10 +188,9 @@ int main( int argc, char *argv[])
 #else
     init(argc, argv);
 
-    preLaunch(); //show demo dialog or splash screen
+    preLaunch();  //show demo dialog or splash screen
     // get ready!
-    if( GameS::instance()->init())
-    {
+    if (GameS::instance()->init()) {
         // let's go!
         GameS::instance()->run();
     }
@@ -222,15 +200,14 @@ int main( int argc, char *argv[])
     return GameS::instance()->init();
 }
 
-int shutdownGame(void)
-{
+int shutdownGame(void) {
 #endif
 
     // Fun is over. Cleanup time...
     GameS::cleanup();
 
 #ifndef IPHONE
-    postLaunch(); //show demo "Buy Now" dialog
+    postLaunch();  //show demo "Buy Now" dialog
 #endif
     ConfigS::cleanup();
     ResourceManagerS::cleanup();

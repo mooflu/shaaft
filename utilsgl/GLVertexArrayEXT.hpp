@@ -15,6 +15,7 @@
 //
 
 #include "GLExtension.hpp"
+
 /*
 typedef void (APIENTRY * PFNGLARRAYELEMENTEXTPROC) (GLint i);
 typedef void (APIENTRY * PFNGLCOLORPOINTEREXTPROC) (GLint size, GLenum type, GLsizei stride, GLsizei count, const GLvoid *pointer);
@@ -26,30 +27,43 @@ typedef void (APIENTRY * PFNGLNORMALPOINTEREXTPROC) (GLenum type, GLsizei stride
 typedef void (APIENTRY * PFNGLTEXCOORDPOINTEREXTPROC) (GLint size, GLenum type, GLsizei stride, GLsizei count, const GLvoid *pointer);
 typedef void (APIENTRY * PFNGLVERTEXPOINTEREXTPROC) (GLint size, GLenum type, GLsizei stride, GLsizei count, const GLvoid *pointer);
 */
-class GLVertexArrayEXT: public GLExtension
-{
+class GLVertexArrayEXT : public GLExtension {
 public:
-    GLVertexArrayEXT( void);
-    virtual const char *getName( void){ return "GL_EXT_vertex_array ";}
+    GLVertexArrayEXT(void);
 
-    static void glArrayElementEXT   (GLint i) {_glArrayElementEXT(i);}
-    static void glColorPointerEXT   (GLint a, GLenum b, GLsizei c, GLsizei d, const GLvoid *e){_glColorPointerEXT(a,b,c,d,e);}
-    static void glDrawArraysEXT     (GLenum a, GLint b, GLsizei c){_glDrawArraysEXT(a,b,c);}
-    static void glEdgeFlagPointerEXT(GLsizei a, GLsizei b, const GLboolean *c){_glEdgeFlagPointerEXT(a,b,c);}
+    virtual const char* getName(void) { return "GL_EXT_vertex_array "; }
+
+    static void glArrayElementEXT(GLint i) { _glArrayElementEXT(i); }
+
+    static void glColorPointerEXT(GLint a, GLenum b, GLsizei c, GLsizei d, const GLvoid* e) {
+        _glColorPointerEXT(a, b, c, d, e);
+    }
+
+    static void glDrawArraysEXT(GLenum a, GLint b, GLsizei c) { _glDrawArraysEXT(a, b, c); }
+
+    static void glEdgeFlagPointerEXT(GLsizei a, GLsizei b, const GLboolean* c) { _glEdgeFlagPointerEXT(a, b, c); }
+
     //static void glGetPointervEXT    (GLenum a, GLvoid* *b){_glGetPointervEXT(a,b);}
-    static void glIndexPointerEXT   (GLenum a, GLsizei b, GLsizei c, const GLvoid *d){_glIndexPointerEXT(a,b,c,d);}
-    static void glNormalPointerEXT  (GLenum a, GLsizei b, GLsizei c, const GLvoid *d){_glNormalPointerEXT(a,b,c,d);}
-    static void glTexCoordPointerEXT(GLint a, GLenum b, GLsizei c, GLsizei d, const GLvoid *e){_glTexCoordPointerEXT(a,b,c,d,e);}
-    static void glVertexPointerEXT  (GLint a, GLenum b, GLsizei c, GLsizei d, const GLvoid *e){_glVertexPointerEXT(a,b,c,d,e);}
+    static void glIndexPointerEXT(GLenum a, GLsizei b, GLsizei c, const GLvoid* d) { _glIndexPointerEXT(a, b, c, d); }
+
+    static void glNormalPointerEXT(GLenum a, GLsizei b, GLsizei c, const GLvoid* d) { _glNormalPointerEXT(a, b, c, d); }
+
+    static void glTexCoordPointerEXT(GLint a, GLenum b, GLsizei c, GLsizei d, const GLvoid* e) {
+        _glTexCoordPointerEXT(a, b, c, d, e);
+    }
+
+    static void glVertexPointerEXT(GLint a, GLenum b, GLsizei c, GLsizei d, const GLvoid* e) {
+        _glVertexPointerEXT(a, b, c, d, e);
+    }
 
 private:
-    static PFNGLARRAYELEMENTEXTPROC    _glArrayElementEXT;
-    static PFNGLCOLORPOINTEREXTPROC    _glColorPointerEXT;
-    static PFNGLDRAWARRAYSEXTPROC      _glDrawArraysEXT;
+    static PFNGLARRAYELEMENTEXTPROC _glArrayElementEXT;
+    static PFNGLCOLORPOINTEREXTPROC _glColorPointerEXT;
+    static PFNGLDRAWARRAYSEXTPROC _glDrawArraysEXT;
     static PFNGLEDGEFLAGPOINTEREXTPROC _glEdgeFlagPointerEXT;
     //static PFNGLGETPOINTERVEXTPROC     _glGetPointervEXT;
-    static PFNGLINDEXPOINTEREXTPROC    _glIndexPointerEXT;
-    static PFNGLNORMALPOINTEREXTPROC   _glNormalPointerEXT;
+    static PFNGLINDEXPOINTEREXTPROC _glIndexPointerEXT;
+    static PFNGLNORMALPOINTEREXTPROC _glNormalPointerEXT;
     static PFNGLTEXCOORDPOINTEREXTPROC _glTexCoordPointerEXT;
-    static PFNGLVERTEXPOINTEREXTPROC   _glVertexPointerEXT;
+    static PFNGLVERTEXPOINTEREXTPROC _glVertexPointerEXT;
 };

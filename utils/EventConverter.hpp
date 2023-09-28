@@ -6,10 +6,9 @@
 //
 #include "Trigger.hpp"
 
-class EventConverterI
-{
+class EventConverterI {
 public:
-    virtual ~EventConverterI(){}
+    virtual ~EventConverterI() {}
 
-    virtual bool getNext( Trigger &trigger ) = 0; 
+    virtual bool getNext(Trigger& trigger) = 0;
 };

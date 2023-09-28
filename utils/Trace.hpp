@@ -21,16 +21,13 @@
 #define XTRACE() Trace __TRACE_pretty_Function__((__PRETTY_FUNCTION__))
 
 //Method trace
-#define MTRACE(_class_,_method_,_params_) \
-  Trace __TRACE_MeThOd__((_class_),(_method_),(_params_))
+#define MTRACE(_class_, _method_, _params_) Trace __TRACE_MeThOd__((_class_), (_method_), (_params_))
 
 //Function trace
-#define FTRACE(_func_,_params_) \
-  Trace __TRACE_FuNcTiOn__((_func_),(_params_))
+#define FTRACE(_func_, _params_) Trace __TRACE_FuNcTiOn__((_func_), (_params_))
 
 //String trace
-#define STRACE(_string_) \
-  Trace __TRACE_StRiNg__((_string_))
+#define STRACE(_string_) Trace __TRACE_StRiNg__((_string_))
 
 #define LOG(_severity_) Trace::Log(_severity_)
 #define LOG_DEBUG       Trace::Log(Trace::eDEBUG)
@@ -40,13 +37,13 @@
 #define LOG_FATAL       Trace::Log(Trace::eFATAL)
 #define LOG_VOID        Trace::Log(Trace::eVOID)
 
-#define LOG_FILELINE    (Trace::Log(Trace::eWARNING) << __FILE__ << ":" << __LINE__ << " ")
+#define LOG_FILELINE (Trace::Log(Trace::eWARNING) << __FILE__ << ":" << __LINE__ << " ")
 
 #else
 
 #define XTRACE()
-#define MTRACE(_class_,_method_,_params_)
-#define FTRACE(_funct_,_params_)
+#define MTRACE(_class_, _method_, _params_)
+#define FTRACE(_funct_, _params_)
 #define STRACE(_string_)
 
 #define LOG(_severity) if(1);else Trace::Log(_severity_)
@@ -58,7 +55,7 @@
 #define LOG_FATAL      Trace::Log(Trace::eFATAL)
 #define LOG_VOID       Trace::Log(Trace::eVOID)
 
-#define LOG_FILELINE    (Trace::Log(Trace::eWARNING) << __FILE__ << ":" << __LINE__ << " ")
+#define LOG_FILELINE (Trace::Log(Trace::eWARNING) << __FILE__ << ":" << __LINE__ << " ")
 
 #if 0
 #define LOG_INFO       if(1);else Trace::Log(Trace::eINFO)
@@ -69,27 +66,25 @@
 
 #endif
 
-class Trace
-{
+class Trace {
 public:
-    enum
-    {
-	eDEBUG,
-	eINFO,
-	eWARNING,
-	eERROR,
-	eFATAL,
-	eVOID
+    enum {
+        eDEBUG,
+        eINFO,
+        eWARNING,
+        eERROR,
+        eFATAL,
+        eVOID
     };
 
-    Trace( const char *class_name, const char *method, const char *params);
-    Trace( const char *function, const char *params);
-    Trace( const char *str);
+    Trace(const char* class_name, const char* method, const char* params);
+    Trace(const char* function, const char* params);
+    Trace(const char* str);
     ~Trace();
 
-    static void SetStreamBuffer( std::streambuf *newBuffer);
+    static void SetStreamBuffer(std::streambuf* newBuffer);
 
-    static std::ostream &Log( int severity);
+    static std::ostream& Log(int severity);
 
     static int indent_;
 };

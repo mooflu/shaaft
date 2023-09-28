@@ -12,35 +12,32 @@
 
 using namespace std;
 
-TiXmlDocument *XMLHelper::load( const string &filename)
-{
+TiXmlDocument* XMLHelper::load(const string& filename) {
     XTRACE();
 
-    int rSize = ResourceManagerS::instance()->getResourceSize( filename);
+    int rSize = ResourceManagerS::instance()->getResourceSize(filename);
     std::unique_ptr<ziStream> infileP(ResourceManagerS::instance()->getInputStream(filename));
-    if( ! infileP)
-    {
+    if (!infileP) {
         LOG_ERROR << "Unable to open: [" << filename << "]" << endl;
         return 0;
     }
-    ziStream &infile = *infileP;
+    ziStream& infile = *infileP;
 
-    char* buf = new char[rSize+1];
-    infile.read( buf, rSize);
+    char* buf = new char[rSize + 1];
+    infile.read(buf, rSize);
     streamsize c = infile.gcount();
 
-//    LOG_INFO << "LevePack : " << filename
-//             << " (" << c << "/" << rSize << ")" << endl;
-//    LOG_INFO << buf << endl;
-    buf[ c] = '\0';
+    //    LOG_INFO << "LevePack : " << filename
+    //             << " (" << c << "/" << rSize << ")" << endl;
+    //    LOG_INFO << buf << endl;
+    buf[c] = '\0';
 
-    TiXmlDocument *doc = new TiXmlDocument();
-    doc->Parse( buf );
-    delete [] buf;
-//    doc->Print(stdout);
+    TiXmlDocument* doc = new TiXmlDocument();
+    doc->Parse(buf);
+    delete[] buf;
+    //    doc->Print(stdout);
 
-    if( doc->Error())
-    {
+    if (doc->Error()) {
         LOG_ERROR << "Failed to parse xml file: [" << filename << "]" << endl;
         LOG_ERROR << "--> XML: " << doc->ErrorDesc() << endl;
         delete doc;

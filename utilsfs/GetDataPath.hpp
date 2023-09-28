@@ -14,9 +14,9 @@
 // FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details
 //
 #include <string>
-void openURL(const std::string &url);
-std::string getDataPath( void);
-std::string getPreferencesPath( void);
-std::string getDesktopPath( void);
-std::string getHomePath( void);
-std::string getWritableDataPath( const std::string subDir);
+void openURL(const std::string& url);
+std::string getDataPath(void);
+std::string getPreferencesPath(void);
+std::string getDesktopPath(void);
+std::string getHomePath(void);
+std::string getWritableDataPath(const std::string subDir);

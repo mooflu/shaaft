@@ -24,38 +24,35 @@
 #include "Model.hpp"
 #include "Singleton.hpp"
 
-class ModelManager
-{
-friend class Singleton<ModelManager>;
+class ModelManager {
+    friend class Singleton<ModelManager>;
+
 public:
-    Model *getModel( std::string modelName)
-    {
-        Model *model = findHash( modelName, _modelMap);
-        if( !model)
-        {
-	    model = load( modelName);
-	    if( !model)
-	    {
-		LOG_ERROR << "Unable to find model " << modelName << "\n";
-		return 0;
-	    }
-	    _modelMap[ modelName] = model;
+    Model* getModel(std::string modelName) {
+        Model* model = findHash(modelName, _modelMap);
+        if (!model) {
+            model = load(modelName);
+            if (!model) {
+                LOG_ERROR << "Unable to find model " << modelName << "\n";
+                return 0;
+            }
+            _modelMap[modelName] = model;
         }
         return model;
     }
 
-    void reset( void);
-    void reload( void);
+    void reset(void);
+    void reload(void);
 
 private:
     ~ModelManager();
-    ModelManager( void);
-    ModelManager( const ModelManager&);
-    ModelManager &operator=(const ModelManager&);
+    ModelManager(void);
+    ModelManager(const ModelManager&);
+    ModelManager& operator=(const ModelManager&);
 
-    Model *load( const std::string &model);
+    Model* load(const std::string& model);
 
-    hash_map< std::string, Model*, hash<std::string>, std::equal_to<std::string> > _modelMap;
+    hash_map<std::string, Model*, hash<std::string>, std::equal_to<std::string>> _modelMap;
 };
 
 typedef Singleton<ModelManager> ModelManagerS;

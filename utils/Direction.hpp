@@ -15,18 +15,16 @@
 //
 
 #ifdef HAS_NAMESPACE
-namespace 
+namespace
 #else
 struct
 #endif
-Direction
-{
-    enum DirectionEnum
-    {
-        eUnknown,
-        eLeft,
-        eUp,
-        eDown,
-        eRight
-    };
+    Direction {
+enum DirectionEnum {
+    eUnknown,
+    eLeft,
+    eUp,
+    eDown,
+    eRight
 };
+};  // namespace Direction

@@ -18,23 +18,20 @@
 #include <Winsock2.h>
 #include <sys/timeb.h>
 
-struct timezone 
-{
+struct timezone {
     int tz_minuteswest;
     int tz_dsttime;
 };
 
-static inline 
-int gettimeofday(struct timeval *tv, struct timezone * /*tz*/)
-{
+static inline int gettimeofday(struct timeval* tv, struct timezone* /*tz*/) {
     struct timeb t;
-    ftime (&t);
+    ftime(&t);
 
-    tv->tv_sec  = (long)t.time;
-    tv->tv_usec = t.millitm*1000;
+    tv->tv_sec = (long)t.time;
+    tv->tv_usec = t.millitm * 1000;
 
     return 0;
 }
 #else
-#  include <sys/time.h>
+#include <sys/time.h>
 #endif

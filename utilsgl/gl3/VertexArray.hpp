@@ -4,8 +4,7 @@
 
 class Buffer;
 
-class VertexArray
-{
+class VertexArray {
 public:
     VertexArray();
     virtual ~VertexArray();
@@ -15,7 +14,7 @@ public:
     void bind() const;
     static void unbind();
 
-    void bindElementBuffer(const Buffer * buffer);
+    void bindElementBuffer(const Buffer* buffer);
 
     void enable(GLint attributeIndex);
     void disable(GLint attributeIndex);

@@ -1,36 +1,29 @@
 #include "Buffer.hpp"
 
-Buffer::Buffer()
-{
-    glGenBuffers( 1, &_id );
+Buffer::Buffer() {
+    glGenBuffers(1, &_id);
 }
 
-Buffer::~Buffer()
-{
+Buffer::~Buffer() {
     glDeleteBuffers(1, &_id);
 }
 
-GLuint Buffer::id() const
-{
+GLuint Buffer::id() const {
     return _id;
 }
 
-void Buffer::bind(const GLenum target) const
-{
+void Buffer::bind(const GLenum target) const {
     glBindBuffer(target, id());
 }
 
-void Buffer::unbind(const GLenum target)
-{
+void Buffer::unbind(const GLenum target) {
     glBindBuffer(target, 0);
 }
 
-void Buffer::unbind(const GLenum target, const GLuint index)
-{
+void Buffer::unbind(const GLenum target, const GLuint index) {
     glBindBufferBase(target, index, 0);
 }
 
-void Buffer::setData(GLenum target, int size, void *data, GLenum usage)
-{
-    glBufferData( target, size, data, usage );
+void Buffer::setData(GLenum target, int size, void* data, GLenum usage) {
+    glBufferData(target, size, data, usage);
 }

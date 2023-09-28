@@ -9,58 +9,75 @@
 #include "Callback.hpp"
 #include "GameState.hpp"
 
-class MotionAction: public Callback
-{
+class MotionAction : public Callback {
 public:
-    MotionAction( void): Callback( "Motion", "MOTION") { XTRACE(); }
-    virtual ~MotionAction() { XTRACE(); }
-    virtual void performAction( Trigger &trigger, bool isDown);
-};
-
-class SnapshotAction: public Callback
-{
-public:
-    SnapshotAction( void): Callback( "Snapshot", "F6") { XTRACE(); }
-    virtual ~SnapshotAction() { XTRACE(); }
-    virtual void performAction( Trigger &trigger, bool isDown);
-};
-
-class ConfirmAction: public Callback
-{
-public:
-    ConfirmAction( void): Callback( "Confirm", "RETURN") { XTRACE(); }
-    virtual ~ConfirmAction() { XTRACE(); }
-    virtual void performAction( Trigger &, bool isDown);
-};
-
-class PauseGame: public Callback
-{
-public:
-    PauseGame( void): Callback( "PauseGame", "P"),
-        _prevContext( Context::eUnknown)
-    {
+    MotionAction(void) :
+        Callback("Motion", "MOTION") {
         XTRACE();
     }
+
+    virtual ~MotionAction() { XTRACE(); }
+
+    virtual void performAction(Trigger& trigger, bool isDown);
+};
+
+class SnapshotAction : public Callback {
+public:
+    SnapshotAction(void) :
+        Callback("Snapshot", "F6") {
+        XTRACE();
+    }
+
+    virtual ~SnapshotAction() { XTRACE(); }
+
+    virtual void performAction(Trigger& trigger, bool isDown);
+};
+
+class ConfirmAction : public Callback {
+public:
+    ConfirmAction(void) :
+        Callback("Confirm", "RETURN") {
+        XTRACE();
+    }
+
+    virtual ~ConfirmAction() { XTRACE(); }
+
+    virtual void performAction(Trigger&, bool isDown);
+};
+
+class PauseGame : public Callback {
+public:
+    PauseGame(void) :
+        Callback("PauseGame", "P"),
+        _prevContext(Context::eUnknown) {
+        XTRACE();
+    }
+
     virtual ~PauseGame() { XTRACE(); }
-    virtual void performAction( Trigger &, bool isDown);
+
+    virtual void performAction(Trigger&, bool isDown);
+
 private:
     Context::ContextEnum _prevContext;
 };
 
-class EscapeAction: public Callback
-{
+class EscapeAction : public Callback {
 public:
 #if defined(EMSCRIPTEN)
-    EscapeAction( void): Callback( "EscapeAction", "BACKSPACE"),
+    EscapeAction(void) :
+        Callback("EscapeAction", "BACKSPACE"),
 #else
-    EscapeAction( void): Callback( "EscapeAction", "ESCAPE"),
+    EscapeAction(void) :
+        Callback("EscapeAction", "ESCAPE"),
 #endif
-        _prevContext( Context::eUnknown)
-    {
+        _prevContext(Context::eUnknown) {
         XTRACE();
     }
+
     virtual ~EscapeAction() { XTRACE(); }
-    virtual void performAction( Trigger &, bool isDown);
+
+    virtual void performAction(Trigger&, bool isDown);
+
 private:
     Context::ContextEnum _prevContext;
 };

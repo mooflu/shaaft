@@ -19,39 +19,35 @@
 #include "Direction.hpp"
 #include "Singleton.hpp"
 
-class Camera
-{
-friend class Singleton<Camera>;
+class Camera {
+    friend class Singleton<Camera>;
 
 public:
-    void place( void);
-    void billboard( void);
-    void mouseLook( float dx, float dy);
-    void update( void);
-    void move( Direction::DirectionEnum dir, bool isDown);
+    void place(void);
+    void billboard(void);
+    void mouseLook(float dx, float dy);
+    void update(void);
+    void move(Direction::DirectionEnum dir, bool isDown);
 
 private:
-    ~Camera()
-    {
-	XTRACE();
-    }
-    Camera( void):
-	_moveCam( false),
-	_cameraMove(0.0),
+    ~Camera() { XTRACE(); }
+
+    Camera(void) :
+        _moveCam(false),
+        _cameraMove(0.0),
         _cameraX(0.0),
         _cameraY(0.0),
         _cameraZ(0.0),
         _cameraYaw(0.0),
-        _cameraPitch(0.0)
-    {
-	XTRACE();
+        _cameraPitch(0.0) {
+        XTRACE();
     }
 
-    Camera( const Camera&);
-    Camera &operator=(const Camera&);
+    Camera(const Camera&);
+    Camera& operator=(const Camera&);
 
-    void move( GLfloat stepSize, GLfloat angle);
-    void clampCamera( void);
+    void move(GLfloat stepSize, GLfloat angle);
+    void clampCamera(void);
 
     bool _moveCam;
     GLfloat _cameraMove;
@@ -60,7 +56,6 @@ private:
     GLfloat _cameraZ;
     GLfloat _cameraYaw;
     GLfloat _cameraPitch;
-
 };
 
 typedef Singleton<Camera> CameraS;

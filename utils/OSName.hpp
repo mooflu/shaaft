@@ -14,29 +14,25 @@
 // FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details
 //
 
-#if defined (WIN32)
+#if defined(WIN32)
 #include <Windows.h>
 #include <sstream>
-static inline std::string OSNAME()
-{
-    BOOL bIsWow64 = FALSE;
-    typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
 
-    LPFN_ISWOW64PROCESS 
-    fnIsWow64Process = (LPFN_ISWOW64PROCESS)GetProcAddress(
-    GetModuleHandle(L"kernel32"),"IsWow64Process");
- 
-    if (NULL != fnIsWow64Process)
-    {
-        if (!fnIsWow64Process(GetCurrentProcess(),&bIsWow64))
-        {
+static inline std::string OSNAME() {
+    BOOL bIsWow64 = FALSE;
+    typedef BOOL(WINAPI * LPFN_ISWOW64PROCESS)(HANDLE, PBOOL);
+
+    LPFN_ISWOW64PROCESS
+    fnIsWow64Process = (LPFN_ISWOW64PROCESS)GetProcAddress(GetModuleHandle(L"kernel32"), "IsWow64Process");
+
+    if (NULL != fnIsWow64Process) {
+        if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64)) {
             // handle error
         }
     }
     std::string bitness = "32";
-    if( bIsWow64 )
-    {
-	bitness = "64";
+    if (bIsWow64) {
+        bitness = "64";
     }
 
     OSVERSIONINFO osvi;

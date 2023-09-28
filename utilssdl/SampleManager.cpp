@@ -23,54 +23,47 @@
 #include <memory>
 using namespace std;
 
-SampleManager::SampleManager( void)
-{
+SampleManager::SampleManager(void) {
     XTRACE();
 }
 
-SampleManager::~SampleManager()
-{
+SampleManager::~SampleManager() {
     //need to override base destructor behaviour, since we need
     //to Mix_FreeChunk not delete.
 
-    hash_map< const string, Mix_Chunk*, hash<const string> >::const_iterator ci;
-    for( ci=_resourceMap.begin(); ci!=_resourceMap.end(); ci++)
-    {
-        Mix_Chunk *res = ci->second;
-        Mix_FreeChunk( res);
+    hash_map<const string, Mix_Chunk*, hash<const string>>::const_iterator ci;
+    for (ci = _resourceMap.begin(); ci != _resourceMap.end(); ci++) {
+        Mix_Chunk* res = ci->second;
+        Mix_FreeChunk(res);
     }
     _resourceMap.clear();
 }
 
-Mix_Chunk *SampleManager::load( const string &wav)
-{
+Mix_Chunk* SampleManager::load(const string& wav) {
     XTRACE();
 #ifdef IPHONE
-    Mix_Chunk *mix = Mix_Load(wav);
+    Mix_Chunk* mix = Mix_Load(wav);
 #else
     string theWav = wav;
-    if( !ResourceManagerS::instance()->hasResource( theWav))
-    {
+    if (!ResourceManagerS::instance()->hasResource(theWav)) {
         theWav += ".wav";
-        if( !ResourceManagerS::instance()->hasResource( theWav))
-        {
+        if (!ResourceManagerS::instance()->hasResource(theWav)) {
             LOG_ERROR << "Wav file [" << wav << "] not found." << endl;
             return 0;
         }
     }
 
-    std::shared_ptr<ziStream> infilePtr( ResourceManagerS::instance()->getInputStream(theWav));
-    ziStream &infile = *infilePtr;
-    SDL_RWops *src = RWops_from_ziStream( infile);
+    std::shared_ptr<ziStream> infilePtr(ResourceManagerS::instance()->getInputStream(theWav));
+    ziStream& infile = *infilePtr;
+    SDL_RWops* src = RWops_from_ziStream(infile);
 
-    Mix_Chunk *mix = Mix_LoadWAV_RW(src, 0);
-    if( !mix)
-    {
+    Mix_Chunk* mix = Mix_LoadWAV_RW(src, 0);
+    if (!mix) {
         LOG_ERROR << "Failed to load wav: [" << wav << "]" << endl;
         LOG_ERROR << SDL_GetError() << endl;
         return 0;
     }
-    SDL_RWclose( src);
+    SDL_RWclose(src);
 #endif
     return mix;
 }

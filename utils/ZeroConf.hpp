@@ -5,30 +5,27 @@
 
 #include <dns_sd.h>
 
-class ZeroConf
-{
+class ZeroConf {
 public:
-    struct ServiceRecord
-    {
-	std::string Name;
-	std::string Type;
-	std::string Domain;
+    struct ServiceRecord {
+        std::string Name;
+        std::string Type;
+        std::string Domain;
     };
 
-    struct ResolvedServiceRecord
-    {
-	std::string FullName;
-	std::string HostName;
-	int Port;
+    struct ResolvedServiceRecord {
+        std::string FullName;
+        std::string HostName;
+        int Port;
     };
 
-    ZeroConf( const std::string &serviceType, const std::string &domain="", int interfaceIndex=0);
+    ZeroConf(const std::string& serviceType, const std::string& domain = "", int interfaceIndex = 0);
     ~ZeroConf();
 
-    const std::vector<ServiceRecord>& getServices( void);
-    bool resolveService( const ServiceRecord &serviceRecord, ResolvedServiceRecord &result);
+    const std::vector<ServiceRecord>& getServices(void);
+    bool resolveService(const ServiceRecord& serviceRecord, ResolvedServiceRecord& result);
 
-    bool registerService( const std::string &name, const std::string &host, int port);
+    bool registerService(const std::string& name, const std::string& host, int port);
 
 protected:
     void handleEvents(void);
@@ -49,34 +46,14 @@ private:
 
     ServiceRecord _service;
 
-    static void ServiceBrowseReply(
-	DNSServiceRef             sdRef,
-	DNSServiceFlags           flags,
-	uint32_t                  interfaceIndex,
-	DNSServiceErrorType       errorCode,
-	const char                *serviceName,
-	const char                *regtype,
-	const char                *replyDomain,
-	void                      *context);
+    static void ServiceBrowseReply(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t interfaceIndex,
+                                   DNSServiceErrorType errorCode, const char* serviceName, const char* regtype,
+                                   const char* replyDomain, void* context);
 
-    static void ServiceResolveReply(
-	 DNSServiceRef            sdRef,
-	 DNSServiceFlags          flags,
-	 uint32_t                 interfaceIndex,
-	 DNSServiceErrorType      errorCode,
-	 const char               *fullname,
-	 const char               *hosttarget,
-	 uint16_t                 port,
-	 uint16_t                 txtLen,
-	 const unsigned char      *txtRecord,
-	 void                     *context);
+    static void ServiceResolveReply(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t interfaceIndex,
+                                    DNSServiceErrorType errorCode, const char* fullname, const char* hosttarget,
+                                    uint16_t port, uint16_t txtLen, const unsigned char* txtRecord, void* context);
 
-    static void ServiceRegisterReply(
-	 DNSServiceRef            sdRef,
-	 DNSServiceFlags          flags,
-	 DNSServiceErrorType      errorCode,
-	 const char               *name,
-	 const char               *regtype,
-	 const char               *domain,
-	 void                     *context);
+    static void ServiceRegisterReply(DNSServiceRef sdRef, DNSServiceFlags flags, DNSServiceErrorType errorCode,
+                                     const char* name, const char* regtype, const char* domain, void* context);
 };

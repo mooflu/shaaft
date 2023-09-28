@@ -17,48 +17,40 @@
 
 using namespace std;
 
-FontManager::FontManager( void)
-{
+FontManager::FontManager(void) {
     XTRACE();
 }
 
-FontManager::~FontManager()
-{
+FontManager::~FontManager() {
     XTRACE();
 }
 
-void FontManager::reset( void)
-{
+void FontManager::reset(void) {
     XTRACE();
-    hash_map< const string, GLBitmapFont*, hash<const string> >::const_iterator ci;
-    for( ci=_resourceMap.begin(); ci!=_resourceMap.end(); ci++)
-    {
-        GLBitmapFont *font = ci->second;
+    hash_map<const string, GLBitmapFont*, hash<const string>>::const_iterator ci;
+    for (ci = _resourceMap.begin(); ci != _resourceMap.end(); ci++) {
+        GLBitmapFont* font = ci->second;
         font->reset();
     }
 }
 
-void FontManager::reload( void)
-{
+void FontManager::reload(void) {
     XTRACE();
-    hash_map< const string, GLBitmapFont*, hash<const string> >::const_iterator ci;
-    for( ci=_resourceMap.begin(); ci!=_resourceMap.end(); ci++)
-    {
-        GLBitmapFont *font = ci->second;
+    hash_map<const string, GLBitmapFont*, hash<const string>>::const_iterator ci;
+    for (ci = _resourceMap.begin(); ci != _resourceMap.end(); ci++) {
+        GLBitmapFont* font = ci->second;
         font->reload();
     }
 }
 
-GLBitmapFont *FontManager::load( const string &fontName)
-{
+GLBitmapFont* FontManager::load(const string& fontName) {
     XTRACE();
-    GLBitmapFont *font = new GLBitmapFont();
+    GLBitmapFont* font = new GLBitmapFont();
 
-    string fontPNG = fontName+".font";
-    string fontData = fontName+".data";
+    string fontPNG = fontName + ".font";
+    string fontData = fontName + ".data";
 
-    if( !font->Load( fontPNG.c_str(), fontData.c_str()))
-    {
+    if (!font->Load(fontPNG.c_str(), fontData.c_str())) {
         LOG_ERROR << "Unable to load font: " << fontName << endl;
         delete font;
         return 0;

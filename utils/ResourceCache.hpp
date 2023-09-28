@@ -21,28 +21,23 @@
 #include "FindHash.hpp"
 #include "Trace.hpp"
 
-template< class ResourceT >
-class ResourceCache
-{
+template <class ResourceT>
+class ResourceCache {
 public:
-    ResourceT *getResource( const std::string &resourceName)
-    {
-        ResourceT *resource = findHash<const std::string>( resourceName, _resourceMap);
-        if( !resource)
-        {
+    ResourceT* getResource(const std::string& resourceName) {
+        ResourceT* resource = findHash<const std::string>(resourceName, _resourceMap);
+        if (!resource) {
             LOG_INFO << resourceName << " not cached -> loading...\n";
-            resource = load( resourceName);
-            if( !resource)
-            {
+            resource = load(resourceName);
+            if (!resource) {
                 return 0;
             }
-            _resourceMap[ resourceName] = resource;
+            _resourceMap[resourceName] = resource;
         }
         return resource;
     }
 
-    virtual void reload( void)
-    {
+    virtual void reload(void) {
 #if 0
         hash_map< std::string, ResourceT*, hash<std::string>, std::equal_to<std::string> >::const_iterator ci;
         for( ci=_resourceMap.begin(); ci!=_resourceMap.end(); ci++)
@@ -54,24 +49,22 @@ public:
     }
 
 protected:
-    ResourceCache( void)
-    {
-    }
-    virtual ~ResourceCache()
-    {
-        typename hash_map< const std::string, ResourceT*, hash<const std::string>, std::equal_to<const std::string> >::const_iterator ci;
-        for( ci=_resourceMap.begin(); ci!=_resourceMap.end(); ci++)
-        {
-            ResourceT *res = ci->second;
+    ResourceCache(void) {}
+
+    virtual ~ResourceCache() {
+        typename hash_map<const std::string, ResourceT*, hash<const std::string>,
+                          std::equal_to<const std::string>>::const_iterator ci;
+        for (ci = _resourceMap.begin(); ci != _resourceMap.end(); ci++) {
+            ResourceT* res = ci->second;
             delete res;
         }
         _resourceMap.clear();
     }
 
-    virtual ResourceT *load( const std::string &resource) = 0;
-    hash_map< const std::string, ResourceT*, hash<const std::string>, std::equal_to<const std::string> > _resourceMap;
+    virtual ResourceT* load(const std::string& resource) = 0;
+    hash_map<const std::string, ResourceT*, hash<const std::string>, std::equal_to<const std::string>> _resourceMap;
 
 private:
-    ResourceCache( const ResourceCache&);
-    ResourceCache &operator=(const ResourceCache&);
+    ResourceCache(const ResourceCache&);
+    ResourceCache& operator=(const ResourceCache&);
 };

@@ -7,10 +7,11 @@
 #include <string>
 #include <streambuf>
 
-extern "C" { struct PHYSFS_File; }
+extern "C" {
+struct PHYSFS_File;
+}
 
-class ziStreamBuffer : public std::streambuf
-{
+class ziStreamBuffer : public std::streambuf {
     typedef int int_type;
 
 public:
@@ -18,9 +19,10 @@ public:
     ~ziStreamBuffer();
 
     bool isOK(void) { return _isOK; }
+
     int fileSize(void);
 
-    void *getHandle(void) { return _physFile; }
+    void* getHandle(void) { return _physFile; }
 
 protected:
     virtual int_type underflow(void);
@@ -41,15 +43,14 @@ private:
     ziStreamBuffer& operator=(const ziStreamBuffer&);
 };
 
-class zoStreamBuffer : public std::streambuf
-{
+class zoStreamBuffer : public std::streambuf {
 public:
     zoStreamBuffer(const std::string& filename);
     ~zoStreamBuffer();
 
     bool isOK(void) { return _isOK; }
 
-    void *getHandle(void) { return _physFile; }
+    void* getHandle(void) { return _physFile; }
 
 protected:
     virtual int overflow(int c);
@@ -68,5 +69,3 @@ private:
     zoStreamBuffer(const zoStreamBuffer&);
     zoStreamBuffer& operator=(const zoStreamBuffer&);
 };
-
-

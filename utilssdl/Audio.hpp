@@ -24,43 +24,38 @@ using std::string;
 
 class SampleManager;
 
-class Audio
-{
-friend class Singleton<Audio>;
+class Audio {
+    friend class Singleton<Audio>;
+
 public:
-    bool init( void);
-    bool update( void);
-    void playSample( const string &sampleName);
-    void setDefaultSoundtrack( const string &fileName);
+    bool init(void);
+    bool update(void);
+    void playSample(const string& sampleName);
+    void setDefaultSoundtrack(const string& fileName);
 
-    void toggleAudioEnabled()
-    {
-        _audioEnabled = !_audioEnabled;
-    }
+    void toggleAudioEnabled() { _audioEnabled = !_audioEnabled; }
 
-    bool isAudioEnabled()
-    {
-        return _audioEnabled;
-    }
+    bool isAudioEnabled() { return _audioEnabled; }
 
-    void musicFinished( void);
+    void musicFinished(void);
+
 private:
     ~Audio();
-    Audio( void);
-    Audio( const Audio&);
-    Audio &operator=(const Audio&);
+    Audio(void);
+    Audio(const Audio&);
+    Audio& operator=(const Audio&);
 
-    void loadMusic( const string &mod);
-    void unloadMusic( void);
-    void turnMusicOff( void);
-    void startMusic( void);
-    void updateSettings( void);
-    void updateVolume( void);
+    void loadMusic(const string& mod);
+    void unloadMusic(void);
+    void turnMusicOff(void);
+    void startMusic(void);
+    void updateSettings(void);
+    void updateVolume(void);
 
-    SampleManager *_sampleManager;
+    SampleManager* _sampleManager;
 
-    Mix_Music *_soundTrack;
-    char *_soundTrackData;
+    Mix_Music* _soundTrack;
+    char* _soundTrackData;
 
     string _defaultSoundtrack;
     bool _playDefaultSoundtrack;

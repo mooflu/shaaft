@@ -46,9 +46,8 @@
 #include <sys/types.h>
 
 #ifdef __APPLE__
-void openURL(const std::string &url)
-{
-    NSURL *nsURL = [NSURL URLWithString:[NSString stringWithCString:url.c_str() encoding:NSUTF8StringEncoding]];
+void openURL(const std::string& url) {
+    NSURL* nsURL = [NSURL URLWithString:[NSString stringWithCString:url.c_str() encoding:NSUTF8StringEncoding]];
 #ifdef IPHONE
     [[UIApplication sharedApplication] openURL:nsURL];
 #else
@@ -56,28 +55,21 @@ void openURL(const std::string &url)
 #endif
 }
 
-static inline std::string getPath( OSType folderType, bool create = true)
-{
+static inline std::string getPath(OSType folderType, bool create = true) {
     std::string thePath;
 #ifndef IPHONE
     FSRef pathRef;
     OSErr err = FSFindFolder(kUserDomain, folderType, create ? kCreateFolder : kDontCreateFolder, &pathRef);
-    if( err == noErr)
-    {
+    if (err == noErr) {
         char path[PATH_MAX];
         FSRefMakePath(&pathRef, (UInt8*)path, sizeof(path));
         thePath = path;
     }
 #else
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(
-        NSApplicationSupportDirectory,
-        NSUserDomainMask,
-        YES
-    );
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
 
-    if ([paths count] > 0)
-    {
-        NSMutableString *appSupportPath = [NSMutableString stringWithString:[paths objectAtIndex:0]];
+    if ([paths count] > 0) {
+        NSMutableString* appSupportPath = [NSMutableString stringWithString:[paths objectAtIndex:0]];
         thePath = [appSupportPath cStringUsingEncoding:NSUTF8StringEncoding];
         [[NSFileManager defaultManager] createDirectoryAtPath:appSupportPath
                                   withIntermediateDirectories:YES
@@ -89,50 +81,37 @@ static inline std::string getPath( OSType folderType, bool create = true)
     return thePath;
 }
 #elif defined(WIN32)
-void openURL(const std::string &url)
-{
-    ShellExecuteA(NULL, "open", url.c_str(),NULL, NULL, SW_SHOWNORMAL);
+void openURL(const std::string& url) {
+    ShellExecuteA(NULL, "open", url.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }
 
-static inline std::string getPath( int folderType )
-{
+static inline std::string getPath(int folderType) {
     std::string thePath;
 
     CHAR szPath[MAX_PATH];
-    if(SUCCEEDED(SHGetFolderPathA(NULL,
-                             folderType | CSIDL_FLAG_CREATE,
-                             NULL,
-                             0,
-                             szPath)))
-    {
+    if (SUCCEEDED(SHGetFolderPathA(NULL, folderType | CSIDL_FLAG_CREATE, NULL, 0, szPath))) {
         thePath = szPath;
-    }
-    else
-    {
+    } else {
         thePath = "./";
     }
     return thePath;
 }
 #else
-void openURL(const std::string &url)
-{
-}
+void openURL(const std::string& url) {}
 #endif
 
-std::string getDataPath( void)
-{
+std::string getDataPath(void) {
 #if defined(EMSCRIPTEN)
     return std::string("/");
 #endif
     std::string appPath = "";
 #ifdef __APPLE__
     CFURLRef appURLRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-    CFStringRef macPath = CFURLCopyFileSystemPath(appURLRef,
-            kCFURLPOSIXPathStyle);
-    const char *pathPtr = CFStringGetCStringPtr(macPath,
-            CFStringGetSystemEncoding());
-    if( pathPtr)
+    CFStringRef macPath = CFURLCopyFileSystemPath(appURLRef, kCFURLPOSIXPathStyle);
+    const char* pathPtr = CFStringGetCStringPtr(macPath, CFStringGetSystemEncoding());
+    if (pathPtr) {
         appPath = pathPtr;
+    }
 
     CFRelease(appURLRef);
     CFRelease(macPath);
@@ -146,41 +125,37 @@ std::string getDataPath( void)
     appPath = std::string("./");
 #else
 #if !defined(DATA_DIR)
-#define DATA_DIR "./" //TODO: make this a config item?
+#define DATA_DIR "./"  //TODO: make this a config item?
 #endif
     appPath = std::string(DATA_DIR);
 #endif
     return appPath;
 }
 
-std::string getPreferencesPath( void)
-{
+std::string getPreferencesPath(void) {
     std::string prefPath = "";
 #ifdef __APPLE__
-    prefPath = getPath( kPreferencesFolderType);
-    if( prefPath.empty())
-    {
-        prefPath = getPath( kCurrentUserFolderType);
+    prefPath = getPath(kPreferencesFolderType);
+    if (prefPath.empty()) {
+        prefPath = getPath(kCurrentUserFolderType);
     }
 #elif defined(WIN32)
-    prefPath = getPath( CSIDL_APPDATA);
+    prefPath = getPath(CSIDL_APPDATA);
 #else
     prefPath = getenv("HOME");
 #endif
     return prefPath;
 }
 
-std::string getDesktopPath( void)
-{
+std::string getDesktopPath(void) {
     std::string dtPath = "";
 #ifdef __APPLE__
-    dtPath = getPath( kDesktopFolderType);
-    if( dtPath.empty())
-    {
-        dtPath = getPath( kCurrentUserFolderType);
+    dtPath = getPath(kDesktopFolderType);
+    if (dtPath.empty()) {
+        dtPath = getPath(kCurrentUserFolderType);
     }
 #elif defined(WIN32)
-    dtPath = getPath( CSIDL_DESKTOPDIRECTORY);
+    dtPath = getPath(CSIDL_DESKTOPDIRECTORY);
 #else
     dtPath = getenv("HOME");
     dtPath += "/Desktop";
@@ -188,58 +163,51 @@ std::string getDesktopPath( void)
     return dtPath;
 }
 
-std::string getHomePath( void)
-{
+std::string getHomePath(void) {
     std::string homePath = "";
 #ifdef __APPLE__
-    homePath = getPath( kCurrentUserFolderType);
+    homePath = getPath(kCurrentUserFolderType);
 #elif defined(WIN32)
-    homePath = getPath( CSIDL_MYDOCUMENTS);
+    homePath = getPath(CSIDL_MYDOCUMENTS);
 #else
     homePath = getenv("HOME");
 #endif
     return homePath;
 }
 
-std::string getWritableDataPath( const std::string subDir)
-{
+std::string getWritableDataPath(const std::string subDir) {
 #if defined(EMSCRIPTEN)
     return std::string(subDir);
 #endif
 
     std::string writableDataPath = "";
 #ifdef __APPLE__
-    writableDataPath = getPath( kApplicationSupportFolderType);
-    if( writableDataPath.empty())
-    {
-        writableDataPath = getPath( kCurrentUserFolderType);
+    writableDataPath = getPath(kApplicationSupportFolderType);
+    if (writableDataPath.empty()) {
+        writableDataPath = getPath(kCurrentUserFolderType);
     }
     writableDataPath += "/" + subDir;
 #elif defined(WIN32)
-    writableDataPath = getPath( CSIDL_APPDATA) + "/" + subDir;
+    writableDataPath = getPath(CSIDL_APPDATA) + "/" + subDir;
 #else
     writableDataPath = std::string(getenv("HOME")) + "/" + subDir;
 #endif
-    if( ! subDir.empty())
-    {
+    if (!subDir.empty()) {
         writableDataPath += "/";
     }
 
-    std::string::size_type start = writableDataPath.find_last_of( '/');
-    if( start > 0)
-    {
+    std::string::size_type start = writableDataPath.find_last_of('/');
+    if (start > 0) {
         struct stat statInfo;
-        std::string path = writableDataPath.substr( 0, start);
-        if( (stat( path.c_str(), &statInfo) == -1) )
-        {
+        std::string path = writableDataPath.substr(0, start);
+        if ((stat(path.c_str(), &statInfo) == -1)) {
 #if defined(WIN32)
-            _mkdir( path.c_str());
+            _mkdir(path.c_str());
 #else
-            mkdir( path.c_str(), 0777);
+            mkdir(path.c_str(), 0777);
 #endif
         }
     }
 
     return writableDataPath;
 }
-

@@ -30,62 +30,56 @@ const string DEFAULT_SECTION = "config";
 class Value;
 class ConfigHandler;
 
-class Config
-{
+class Config {
     friend class Singleton<Config>;
+
 public:
-    struct ConfigItem
-    {
+    struct ConfigItem {
         std::string key;
         std::string value;
     };
 
     //Persistent keyword/values start with a "+", transitory with a "-"
-    void updateFromCommandLine( int argc, char *argv[]);
+    void updateFromCommandLine(int argc, char* argv[]);
 
-    void updateFromFile( void);
-    void updateKeyword( const std::string &keyword, const std::string &value, const std::string &section=DEFAULT_SECTION);
-    void updateKeyword( const std::string &keyword, Value *value, const std::string &section=DEFAULT_SECTION);
-    void remove( const std::string &keyword);
+    void updateFromFile(void);
+    void updateKeyword(const std::string& keyword, const std::string& value,
+                       const std::string& section = DEFAULT_SECTION);
+    void updateKeyword(const std::string& keyword, Value* value, const std::string& section = DEFAULT_SECTION);
+    void remove(const std::string& keyword);
 
     //Transitory items are not saved. They override persistent values.
-    void updateTransitoryKeyword( const std::string &keyword, const std::string &value);
-    void updateTransitoryKeyword( const std::string &keyword, Value *value);
-    void removeTrans( const std::string &keyword);
+    void updateTransitoryKeyword(const std::string& keyword, const std::string& value);
+    void updateTransitoryKeyword(const std::string& keyword, Value* value);
+    void removeTrans(const std::string& keyword);
 
-    bool getString( const std::string &keyword, std::string &value);
-    bool getInteger( const std::string &keyword, int &value);
-    bool getFloat( const std::string &keyword, float &value);
-    bool getBoolean( const std::string &keyword, bool &value);
+    bool getString(const std::string& keyword, std::string& value);
+    bool getInteger(const std::string& keyword, int& value);
+    bool getFloat(const std::string& keyword, float& value);
+    bool getBoolean(const std::string& keyword, bool& value);
 
-    bool getList( const std::string &section, std::vector<ConfigItem> &items);
+    bool getList(const std::string& section, std::vector<ConfigItem>& items);
 
-    void saveToFile( void);
-    void dump( void);
-    void getConfigItemList( std::list<ConfigItem> &ciList);
+    void saveToFile(void);
+    void dump(void);
+    void getConfigItemList(std::list<ConfigItem>& ciList);
 
-    const std::string &getConfigFileName( void);
-    void setDefaultConfigFileName( char *defaultName)
-    {
-        _defaultConfigFileName = defaultName;
-    }
-    void setSubdirectory( const std::string &dirname)
-    {
-        _subdir = dirname;
-    }
-    std::string getConfigDirectory( void)
-    {
-        return _configDirectory;
-    }
+    const std::string& getConfigFileName(void);
+
+    void setDefaultConfigFileName(char* defaultName) { _defaultConfigFileName = defaultName; }
+
+    void setSubdirectory(const std::string& dirname) { _subdir = dirname; }
+
+    std::string getConfigDirectory(void) { return _configDirectory; }
 
 private:
     ~Config();
-    Config( void);
-    Config( const Config&);
-    Config &operator=(const Config&);
+    Config(void);
+    Config(const Config&);
+    Config& operator=(const Config&);
 
-    template<typename T>
-    bool get( const std::string &keyword, T&value);
+    template <typename T>
+    bool get(const std::string& keyword, T& value);
 
     std::string _configFileName;
 

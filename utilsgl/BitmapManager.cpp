@@ -17,47 +17,39 @@
 
 using namespace std;
 
-BitmapManager::BitmapManager( void)
-{
+BitmapManager::BitmapManager(void) {
     XTRACE();
 }
 
-BitmapManager::~BitmapManager()
-{
+BitmapManager::~BitmapManager() {
     XTRACE();
 }
 
-void BitmapManager::reset( void)
-{
+void BitmapManager::reset(void) {
     XTRACE();
-    hash_map< const string, GLBitmapCollection*, hash<const string> >::const_iterator ci;
-    for( ci=_resourceMap.begin(); ci!=_resourceMap.end(); ci++)
-    {
-        GLBitmapCollection *bitmap = ci->second;
+    hash_map<const string, GLBitmapCollection*, hash<const string>>::const_iterator ci;
+    for (ci = _resourceMap.begin(); ci != _resourceMap.end(); ci++) {
+        GLBitmapCollection* bitmap = ci->second;
         bitmap->reset();
     }
 }
 
-void BitmapManager::reload( void)
-{
+void BitmapManager::reload(void) {
     XTRACE();
-    hash_map< const string, GLBitmapCollection*, hash<const string> >::const_iterator ci;
-    for( ci=_resourceMap.begin(); ci!=_resourceMap.end(); ci++)
-    {
-        GLBitmapCollection *bitmap = ci->second;
+    hash_map<const string, GLBitmapCollection*, hash<const string>>::const_iterator ci;
+    for (ci = _resourceMap.begin(); ci != _resourceMap.end(); ci++) {
+        GLBitmapCollection* bitmap = ci->second;
         bitmap->reload();
     }
 }
 
-GLBitmapCollection *BitmapManager::load( const string &bitmapName)
-{
+GLBitmapCollection* BitmapManager::load(const string& bitmapName) {
     XTRACE();
-    GLBitmapCollection *bitmap = new GLBitmapCollection();
+    GLBitmapCollection* bitmap = new GLBitmapCollection();
 
-    string bitmapData = bitmapName+".data";
+    string bitmapData = bitmapName + ".data";
 
-    if( !bitmap->Load( bitmapName.c_str(), bitmapData.c_str()))
-    {
+    if (!bitmap->Load(bitmapName.c_str(), bitmapData.c_str())) {
         LOG_ERROR << "Unable to load bitmap collection: " << bitmapName << endl;
         delete bitmap;
         bitmap = 0;

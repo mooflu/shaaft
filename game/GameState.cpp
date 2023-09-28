@@ -6,7 +6,7 @@
 
 #include "GameState.hpp"
 
-char *GameState::licData = 0;
+char* GameState::licData = 0;
 int GameState::licLength = 0;
 
 bool GameState::isDeveloper = false;

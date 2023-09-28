@@ -1,8 +1,6 @@
-void postLaunch( void);
+void postLaunch(void);
 
 //#ifdef __linux__
-inline
-void postLaunch( void)
-{
-}
+inline void postLaunch(void) {}
+
 //#endif

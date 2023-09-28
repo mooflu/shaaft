@@ -23,72 +23,75 @@
 
 #include "Trace.hpp"
 
-WalkDirectory::WalkDirectory(const std::string &dir)
-{
+WalkDirectory::WalkDirectory(const std::string& dir) {
 #ifdef _MSC_VER
     _nextAvail = false;
     std::string wildCardDir = dir + "\\*.*";
-    _dirHandle = FindFirstFileA( wildCardDir.c_str(), &_dirEntry);
-    if( _dirHandle != INVALID_HANDLE_VALUE)
-	_nextAvail = true;
+    _dirHandle = FindFirstFileA(wildCardDir.c_str(), &_dirEntry);
+    if (_dirHandle != INVALID_HANDLE_VALUE) {
+        _nextAvail = true;
+    }
 #else
     _directory = dir;
     _dirHandle = opendir(dir.c_str());
 #endif
 }
 
-WalkDirectory::~WalkDirectory()
-{
+WalkDirectory::~WalkDirectory() {
 #ifdef _MSC_VER
-    if( _dirHandle != INVALID_HANDLE_VALUE) FindClose(_dirHandle);
+    if (_dirHandle != INVALID_HANDLE_VALUE) {
+        FindClose(_dirHandle);
+    }
 #else
-    if( _dirHandle) closedir(_dirHandle);
+    if (_dirHandle) {
+        closedir(_dirHandle);
+    }
 #endif
 }
 
-bool WalkDirectory::getNext( DirEntry &dirEntry)
-{
+bool WalkDirectory::getNext(DirEntry& dirEntry) {
 #ifdef _MSC_VER
-    if( !_nextAvail) return false;
-
-    dirEntry.name = _dirEntry.cFileName;
-    if( _dirEntry.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-	dirEntry.type = DirEntry::eDirectory;
-    else if( _dirEntry.dwFileAttributes & (FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_ARCHIVE))
-	dirEntry.type = DirEntry::eFile;
-    else
-	dirEntry.type = DirEntry::eOther;
-
-    dirEntry.size = _dirEntry.nFileSizeLow; 
-
-    _nextAvail = FindNextFileA( _dirHandle, &_dirEntry);
-#else
-    if( ! _dirHandle)
-    {
-	return false;
+    if (!_nextAvail) {
+        return false;
     }
 
-    struct dirent *dirEnt = readdir( _dirHandle);
-    if( !dirEnt)
-    {
-	return false;
+    dirEntry.name = _dirEntry.cFileName;
+    if (_dirEntry.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+        dirEntry.type = DirEntry::eDirectory;
+    } else if (_dirEntry.dwFileAttributes & (FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_ARCHIVE)) {
+        dirEntry.type = DirEntry::eFile;
+    } else {
+        dirEntry.type = DirEntry::eOther;
+    }
+
+    dirEntry.size = _dirEntry.nFileSizeLow;
+
+    _nextAvail = FindNextFileA(_dirHandle, &_dirEntry);
+#else
+    if (!_dirHandle) {
+        return false;
+    }
+
+    struct dirent* dirEnt = readdir(_dirHandle);
+    if (!dirEnt) {
+        return false;
     }
 
     dirEntry.name = dirEnt->d_name;
     std::string fullPath = _directory + "/" + dirEntry.name;
     struct stat statInfo;
-    if( stat( fullPath.c_str(), &statInfo) == -1)
-    {
-	LOG_ERROR << "Failed stat on " << fullPath << "\n";
-	return true;
+    if (stat(fullPath.c_str(), &statInfo) == -1) {
+        LOG_ERROR << "Failed stat on " << fullPath << "\n";
+        return true;
     }
 
-    if( S_ISDIR( statInfo.st_mode))
-	dirEntry.type = DirEntry::eDirectory;
-    else if( S_ISREG( statInfo.st_mode))
-	dirEntry.type = DirEntry::eFile;
-    else
-	dirEntry.type = DirEntry::eOther;
+    if (S_ISDIR(statInfo.st_mode)) {
+        dirEntry.type = DirEntry::eDirectory;
+    } else if (S_ISREG(statInfo.st_mode)) {
+        dirEntry.type = DirEntry::eFile;
+    } else {
+        dirEntry.type = DirEntry::eOther;
+    }
 
     dirEntry.size = statInfo.st_size;
 #endif

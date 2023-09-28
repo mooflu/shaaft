@@ -33,25 +33,26 @@
 #define GL_MAX_CUBE_MAP_TEXTURE_SIZE_ARB   0x851C
 #endif
 
-class GLTextureCubeMap : public GLTextureI
-{
+class GLTextureCubeMap : public GLTextureI {
 public:
-    GLTextureCubeMap( SDL_Surface *image[6], bool mipmap = false);
+    GLTextureCubeMap(SDL_Surface* image[6], bool mipmap = false);
 
     ~GLTextureCubeMap();
 
-    void bind( void){ glBindTexture( GL_TEXTURE_CUBE_MAP_ARB, _textureID);}
-    void unbind( void){ glBindTexture( GL_TEXTURE_CUBE_MAP_ARB, 0);}
-    void reload( void);
+    void bind(void) { glBindTexture(GL_TEXTURE_CUBE_MAP_ARB, _textureID); }
 
-    void enable( void);
-    void disable( void);
+    void unbind(void) { glBindTexture(GL_TEXTURE_CUBE_MAP_ARB, 0); }
+
+    void reload(void);
+
+    void enable(void);
+    void disable(void);
 
 private:
     GLuint _textureID;
-    SDL_Surface *_image[6];
+    SDL_Surface* _image[6];
     bool _mipmap;
 
-    void init( void);
-    GLenum getGLTextureFormat( SDL_Surface *image);
+    void init(void);
+    GLenum getGLTextureFormat(SDL_Surface* image);
 };

@@ -15,40 +15,49 @@
 //
 
 #ifdef WIN32
-#define _USE_MATH_DEFINES //needed to get M_PI
+#define _USE_MATH_DEFINES  //needed to get M_PI
 #endif
 #include <math.h>
 
 #include "Point.hpp"
 
 const double EPSILON = 0.0001;
-const double TO_RADIANS = M_PI/180.0;
-const double TO_DEGREES = 180.0/M_PI;
+const double TO_RADIANS = M_PI / 180.0;
+const double TO_DEGREES = 180.0 / M_PI;
 
-struct Quaternion
-{
+struct Quaternion {
     double w;
     double x;
     double y;
     double z;
 
-    Quaternion():
-        w(1.0), x(0.0), y(0.0), z(0.0){}
+    Quaternion() :
+        w(1.0),
+        x(0.0),
+        y(0.0),
+        z(0.0) {}
 
-    Quaternion( double W, double X, double Y, double Z):
-            w(W), x(X), y(Y), z(Z){}
+    Quaternion(double W, double X, double Y, double Z) :
+        w(W),
+        x(X),
+        y(Y),
+        z(Z) {}
 
-    Quaternion( double angle, const Point3D &axis):
-        w(1.0), x(0.0), y(0.0), z(0.0)
-    {
-        set( angle, axis);
+    Quaternion(double angle, const Point3D& axis) :
+        w(1.0),
+        x(0.0),
+        y(0.0),
+        z(0.0) {
+        set(angle, axis);
     }
 
-    Quaternion( const Quaternion &q):
-        w(q.w), x(q.x), y(q.y), z(q.z){}
+    Quaternion(const Quaternion& q) :
+        w(q.w),
+        x(q.x),
+        y(q.y),
+        z(q.z) {}
 
-    Quaternion &operator=( const Quaternion &q)
-    {
+    Quaternion& operator=(const Quaternion& q) {
         w = q.w;
         x = q.x;
         y = q.y;
@@ -56,49 +65,43 @@ struct Quaternion
         return *this;
     }
 
-    void identity( void)
-    {
+    void identity(void) {
         w = 1.0;
         x = 0.0;
         y = 0.0;
         z = 0.0;
     }
 
-    void norm()
-    {
-        double lensqr = w*w + x*x + y*y + z*z;
-        if( fabs(lensqr-1.0) > EPSILON)
-        {
-            if( lensqr < (EPSILON*EPSILON))
-            {
+    void norm() {
+        double lensqr = w * w + x * x + y * y + z * z;
+        if (fabs(lensqr - 1.0) > EPSILON) {
+            if (lensqr < (EPSILON * EPSILON)) {
                 identity();
                 return;
             }
 
             double len = sqrt(lensqr);
-            w = w/len;
-            x = x/len;
-            y = y/len;
-            z = z/len;
+            w = w / len;
+            x = x / len;
+            y = y / len;
+            z = z / len;
         }
     }
 
     //angle in degrees, axis must be normalized
-    void set( double angle, const Point3D &axis)
-    {
+    void set(double angle, const Point3D& axis) {
         double halfAngle = angle * 0.5 * TO_RADIANS;
-        double sina = sin( halfAngle);
-        double cosa = cos( halfAngle);
+        double sina = sin(halfAngle);
+        double cosa = cos(halfAngle);
 
-        x    = axis.x * sina;
-        y    = axis.y * sina;
-        z    = axis.z * sina;
-        w    = cosa;
+        x = axis.x * sina;
+        y = axis.y * sina;
+        z = axis.z * sina;
+        w = cosa;
     }
 
     //angle in degrees
-    void get( float &angle, Point3D &axis)
-    {
+    void get(float& angle, Point3D& axis) {
         double cosa = w;
         //cos^2 + sin^2 = 1 -> sin = sqrt(1 - cos^2)
         //The sqrt(1.0-cos^2) can get nasty if cos^2 is a bit bigger then 1!
@@ -106,27 +109,23 @@ struct Quaternion
 
         //This is another way of calculating the sina. We know this one will
         //be positive so it's safer than the above.
-        double sina  = sqrt( x*x + y*y + z*z);
+        double sina = sqrt(x * x + y * y + z * z);
 
-        if ( fabs( sina) < EPSILON)
-        {
+        if (fabs(sina) < EPSILON) {
             axis.x = 1.0;
             axis.y = 0.0;
             axis.z = 0.0;
-            angle  = 0.0;
-        }
-        else
-        {
+            angle = 0.0;
+        } else {
             axis.x = (float)(x / sina);
             axis.y = (float)(y / sina);
             axis.z = (float)(z / sina);
-            angle  = (float)(acos( cosa) * 2.0 * TO_DEGREES);
+            angle = (float)(acos(cosa) * 2.0 * TO_DEGREES);
         }
     }
 };
 
-inline Quaternion operator*( const Quaternion &q1, const Quaternion &q2)
-{
+inline Quaternion operator*(const Quaternion& q1, const Quaternion& q2) {
     // * is multiply, . is dot product, x is cross product, +/- take a guess
     //
     // q1 * q2 =( w1*w2 - v1.v2 , w1.v2 + w2.v1 + v1 x v2)

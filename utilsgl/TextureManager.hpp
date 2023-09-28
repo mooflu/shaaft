@@ -18,20 +18,22 @@
 #include "Singleton.hpp"
 
 #define MAX_TEXTURES 1024
-class TextureManager
-{
-friend class Singleton<TextureManager>;
+
+class TextureManager {
+    friend class Singleton<TextureManager>;
+
 public:
-    int addTexture( GLTextureI *tex);
-    void removeTexture( GLTextureI *tex);
+    int addTexture(GLTextureI* tex);
+    void removeTexture(GLTextureI* tex);
 
 protected:
-    TextureManager( void);
+    TextureManager(void);
     ~TextureManager();
 
-    int findTexture( GLTextureI *tex);
-    GLTextureI *texArray[ MAX_TEXTURES];
-    GLuint     texIDs[ MAX_TEXTURES];
+    int findTexture(GLTextureI* tex);
+    GLTextureI* texArray[MAX_TEXTURES];
+    GLuint texIDs[MAX_TEXTURES];
+
 private:
     int _textureCount;
 };

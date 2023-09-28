@@ -1,5 +1,3 @@
 #include <PostLaunch.hpp>
 
-void postLaunch( void)
-{
-}
+void postLaunch(void) {}

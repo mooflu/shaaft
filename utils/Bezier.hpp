@@ -19,28 +19,27 @@
 const int MAX_DIMENSION = 4;
 
 template <class POINT>
-class Bezier
-{
+class Bezier {
 public:
     //Construct a Bezier segment given 4 points
-    Bezier( const POINT p[4]);
+    Bezier(const POINT p[4]);
 
     //Calculate point on the Bezier segment at time 0<=t<=1
-    void Pos( const float t, POINT &p) const;
+    void Pos(const float t, POINT& p) const;
     //Calculate perpendicular vector at time 0<=t<=1
-    void PVec( const float t, POINT &p) const;
+    void PVec(const float t, POINT& p) const;
     //Calculate tangent vector at time 0<=t<=1
-    void TVec( const float t, POINT &p) const;
+    void TVec(const float t, POINT& p) const;
 
 private:
-    Bezier( void);
-    Bezier( const Bezier&);
-    Bezier &operator=(const Bezier&);
+    Bezier(void);
+    Bezier(const Bezier&);
+    Bezier& operator=(const Bezier&);
 
-    void calcCoeff( const float in[ 4], float out[ 4]);
+    void calcCoeff(const float in[4], float out[4]);
 
     POINT _controlPoints[4];
-    float pd[MAX_DIMENSION][ 4];
+    float pd[MAX_DIMENSION][4];
 };
 
 #include "Bezier.cpp"

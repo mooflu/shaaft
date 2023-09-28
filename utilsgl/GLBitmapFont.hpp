@@ -16,38 +16,33 @@
 
 #include "GLBitmapCollection.hpp"
 
-class GLBitmapFont: public GLBitmapCollection
-{
+class GLBitmapFont : public GLBitmapCollection {
 public:
-    GLBitmapFont( void):
+    GLBitmapFont(void) :
         GLBitmapCollection(),
-        _totalHeight(0)
-    {
-	for( int i=0; i<256; i++)
-	{
-	    _charInfo[ i] = ~0;
-	}
-    } 
-    virtual ~GLBitmapFont()
-    {
+        _totalHeight(0) {
+        for (int i = 0; i < 256; i++) {
+            _charInfo[i] = ~0;
+        }
     }
 
+    virtual ~GLBitmapFont() {}
+
     //Draw a string at (x,y) scaled by [scalex,scaley]
-    void DrawString( 
-        const char *s, float x, float y, float scalex, float scaley);
+    void DrawString(const char* s, float x, float y, float scalex, float scaley);
 
     //Determine width of string (doesn't take TABs into account, yet!)
-    float GetWidth( const char *s, float scalex);
+    float GetWidth(const char* s, float scalex);
 
-    float GetHeight( float scaley);
+    float GetHeight(float scaley);
 
     //Load bitmap and data files for font
-    virtual bool Load( const char *bitmapFile, const char *dataFile);
+    virtual bool Load(const char* bitmapFile, const char* dataFile);
 
 private:
-    GLBitmapFont( const GLBitmapFont&);
-    GLBitmapFont &operator=(const GLBitmapFont&);
+    GLBitmapFont(const GLBitmapFont&);
+    GLBitmapFont& operator=(const GLBitmapFont&);
 
     int _totalHeight;
-    unsigned int _charInfo[ 256];
+    unsigned int _charInfo[256];
 };

@@ -7,23 +7,23 @@
 
 class Program;
 
-class ProgramManager
-{
-friend class Singleton<ProgramManager>;
+class ProgramManager {
+    friend class Singleton<ProgramManager>;
+
 public:
-    Program *createProgram( const std::string &name);
-    Program *getProgram( const std::string &name);
+    Program* createProgram(const std::string& name);
+    Program* getProgram(const std::string& name);
 
     void reset();
 
 protected:
-    static std::string loadShaderSource(const std::string &shaderSrcFile);
+    static std::string loadShaderSource(const std::string& shaderSrcFile);
 
 private:
     virtual ~ProgramManager();
-    ProgramManager( void);
-    ProgramManager( const ProgramManager&);
-    ProgramManager &operator=(const ProgramManager&);
+    ProgramManager(void);
+    ProgramManager(const ProgramManager&);
+    ProgramManager& operator=(const ProgramManager&);
 
     std::unordered_map<std::string, Program*> _programs;
 };

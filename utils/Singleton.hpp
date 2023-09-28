@@ -1,4 +1,5 @@
 #pragma once
+
 // Description:
 //   Template for singleton pattern.
 //
@@ -15,28 +16,24 @@
 //
 
 template <class TYPE>
-class Singleton
-{
+class Singleton {
 public:
-    static TYPE *instance (void)
-    {
-        if( !_instance)
-        {
+    static TYPE* instance(void) {
+        if (!_instance) {
             _instance = new TYPE();
         }
         return _instance;
     }
 
-    static void cleanup( void)
-    {
+    static void cleanup(void) {
         delete _instance;
         _instance = 0;
     }
 
 private:
-    Singleton (void);
-    static TYPE *_instance;
+    Singleton(void);
+    static TYPE* _instance;
 };
 
 template <class TYPE>
-TYPE * Singleton<TYPE>::_instance = 0;
+TYPE* Singleton<TYPE>::_instance = 0;

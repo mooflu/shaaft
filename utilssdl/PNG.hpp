@@ -17,31 +17,27 @@
 #include <png.h>
 #include "SDL.h"
 
-class PNG
-{
+class PNG {
 public:
     //Contruct with or without alpha
-    PNG( bool alpha=true):
-        _alpha( alpha)
-    {
-    }
+    PNG(bool alpha = true) :
+        _alpha(alpha) {}
 
     //Quick way to save snapshot (no alpha)
-    static bool Snapshot( SDL_Surface *img, const std::string &filename)
-    {
+    static bool Snapshot(SDL_Surface* img, const std::string& filename) {
         PNG png(false);
-        return png.Save( img, filename);
+        return png.Save(img, filename);
     }
 
     //Save SDL surface as png
-    bool Save( SDL_Surface *img, const std::string &filename, bool flip=false);
+    bool Save(SDL_Surface* img, const std::string& filename, bool flip = false);
 
 private:
     bool _alpha;
     png_structp _png;
     png_infop _info;
 
-    bool init( FILE *fp, int width, int height);
-    void close( FILE *fp);
-    static void writeData( png_structp png, png_bytep data, png_size_t length);
+    bool init(FILE* fp, int width, int height);
+    void close(FILE* fp);
+    static void writeData(png_structp png, png_bytep data, png_size_t length);
 };

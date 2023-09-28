@@ -15,55 +15,44 @@
 //
 #include "Timer.hpp"
 
-class PausableTimer
-{
+class PausableTimer {
 public:
-    PausableTimer( void):
-        _isPaused( false),
+    PausableTimer(void) :
+        _isPaused(false),
         _adjust(0.0),
-        _pausedAt(0.0)
-    {
+        _pausedAt(0.0) {
         reset();
     }
 
-    void reset( void)
-    {
-	_isPaused = false;
+    void reset(void) {
+        _isPaused = false;
         _adjust = Timer::getTime();
-    } 
+    }
 
-    void pause( void)
-    {
-        if( ! _isPaused)
-        {
+    void pause(void) {
+        if (!_isPaused) {
             _isPaused = true;
-	    _pausedAt = Timer::getTime() - _adjust;
+            _pausedAt = Timer::getTime() - _adjust;
         }
     }
 
-    void start( void)
-    {
-        if( _isPaused)
-        {
-	    _isPaused = false;
-	    _adjust = Timer::getTime() - _pausedAt;
+    void start(void) {
+        if (_isPaused) {
+            _isPaused = false;
+            _adjust = Timer::getTime() - _pausedAt;
         }
     }
 
-    double getTime( void)
-    {
-        if( _isPaused)
-	{ 
-	    return( _pausedAt);
-	}
-        else
-	{ 
-	    return( Timer::getTime() - _adjust) ;
-	}
+    double getTime(void) {
+        if (_isPaused) {
+            return (_pausedAt);
+        } else {
+            return (Timer::getTime() - _adjust);
+        }
     }
 
 private:
-    bool  _isPaused;
+    bool _isPaused;
     double _adjust;
     double _pausedAt;
 };

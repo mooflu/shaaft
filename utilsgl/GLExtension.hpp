@@ -25,66 +25,54 @@ extern "C" { typedef void (*__GL_EXT_FuncPtr)(); }
 #include <GL/glew.h>
 #include "Trace.hpp"
 
-class GLExtension
-{
+class GLExtension {
 public:
-    GLExtension( const char *extensionName)
-    {
-	//get all extensions, pad with space
-	if( !_paddedExtensions)
-	{
-	    const char *extensions = (const char *)glGetString(GL_EXTENSIONS);
-	    _paddedExtensions = new char[ strlen(extensions) +2];
-	    strcat( strcpy( _paddedExtensions, extensions), " ");
-//	    LOG_INFO << "[" << _paddedExtensions << "]\n";
-	}
+    GLExtension(const char* extensionName) {
+        //get all extensions, pad with space
+        if (!_paddedExtensions) {
+            const char* extensions = (const char*)glGetString(GL_EXTENSIONS);
+            _paddedExtensions = new char[strlen(extensions) + 2];
+            strcat(strcpy(_paddedExtensions, extensions), " ");
+            //	    LOG_INFO << "[" << _paddedExtensions << "]\n";
+        }
 
-	_extensionName = new char[ strlen(extensionName)+1];
-	strcpy(_extensionName, extensionName);
+        _extensionName = new char[strlen(extensionName) + 1];
+        strcpy(_extensionName, extensionName);
 
         //check if extension is supported
-	_isSupported = false;
-	if( strstr( _paddedExtensions, _extensionName))
-	{
-	    LOG_INFO << "Supported: [" << _extensionName << "]\n";
-	    _isSupported =true;
-	}
-    }
-    virtual ~GLExtension()
-    {
-	delete[] _extensionName;
-    }
-    virtual const char *getName( void) = 0;
-
-    static void close( void)
-    {
-	delete[] _paddedExtensions;
-	_paddedExtensions=0;
+        _isSupported = false;
+        if (strstr(_paddedExtensions, _extensionName)) {
+            LOG_INFO << "Supported: [" << _extensionName << "]\n";
+            _isSupported = true;
+        }
     }
 
-    bool isSupported( void)
-    {
-	return _isSupported;
+    virtual ~GLExtension() { delete[] _extensionName; }
+
+    virtual const char* getName(void) = 0;
+
+    static void close(void) {
+        delete[] _paddedExtensions;
+        _paddedExtensions = 0;
     }
+
+    bool isSupported(void) { return _isSupported; }
 
 protected:
-    __GL_EXT_FuncPtr GetExtensionProc( const char *fName)
-    {
-	__GL_EXT_FuncPtr fn = (__GL_EXT_FuncPtr) SDL_GL_GetProcAddress(fName);
-	if(!fn)
-	{
-	    LOG_ERROR << getName() << ": Unable to get function pointer for "
-	              << fName << "\n";
-	}
-	return fn;
+    __GL_EXT_FuncPtr GetExtensionProc(const char* fName) {
+        __GL_EXT_FuncPtr fn = (__GL_EXT_FuncPtr)SDL_GL_GetProcAddress(fName);
+        if (!fn) {
+            LOG_ERROR << getName() << ": Unable to get function pointer for " << fName << "\n";
+        }
+        return fn;
     }
 
 private:
-    GLExtension( void);
-    GLExtension( const GLExtension&);
-    GLExtension &operator=(const GLExtension&);
+    GLExtension(void);
+    GLExtension(const GLExtension&);
+    GLExtension& operator=(const GLExtension&);
 
     bool _isSupported;
-    char *_extensionName;
-    static char *_paddedExtensions;
+    char* _extensionName;
+    static char* _paddedExtensions;
 };

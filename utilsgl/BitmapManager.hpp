@@ -19,30 +19,29 @@
 #include "Singleton.hpp"
 #include "GLBitmapCollection.hpp"
 
-class BitmapManager: public ResourceCache<GLBitmapCollection>
-{
-friend class Singleton<BitmapManager>;
+class BitmapManager : public ResourceCache<GLBitmapCollection> {
+    friend class Singleton<BitmapManager>;
+
 public:
-    GLBitmapCollection *getBitmap( const std::string &bitmapName)
-    {
+    GLBitmapCollection* getBitmap(const std::string& bitmapName) {
 #ifdef IPHONE
-	return getResource( std::string("bitmaps/atlas"));
+        return getResource(std::string("bitmaps/atlas"));
 #else
-	return getResource( bitmapName);
+        return getResource(bitmapName);
 #endif
     }
 
-    virtual void reload( void);
-    virtual void reset( void);
+    virtual void reload(void);
+    virtual void reset(void);
 
 protected:
-    virtual GLBitmapCollection *load( const std::string &bitmap);
+    virtual GLBitmapCollection* load(const std::string& bitmap);
 
 private:
-    BitmapManager( void);
+    BitmapManager(void);
     virtual ~BitmapManager();
-    BitmapManager( const BitmapManager&);
-    BitmapManager &operator=(const BitmapManager&);
+    BitmapManager(const BitmapManager&);
+    BitmapManager& operator=(const BitmapManager&);
 };
 
 typedef Singleton<BitmapManager> BitmapManagerS;

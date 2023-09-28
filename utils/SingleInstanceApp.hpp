@@ -23,81 +23,68 @@
 
 #include "Trace.hpp"
 
-class SingleInstanceApp
-{
+class SingleInstanceApp {
 public:
-    SingleInstanceApp( string socketName):
-        _socketName(socketName)
-    {
-	_socket = socket(AF_UNIX, SOCK_DGRAM, 0);
+    SingleInstanceApp(string socketName) :
+        _socketName(socketName) {
+        _socket = socket(AF_UNIX, SOCK_DGRAM, 0);
     }
 
-    ~SingleInstanceApp()
-    {
-	unlink( _socketName.c_str());
+    ~SingleInstanceApp() {
+        unlink(_socketName.c_str());
 
-	if( _socket != -1)
-	{
-	    close(_socket);
-	}
+        if (_socket != -1) {
+            close(_socket);
+        }
     }
 
-    bool isRunning( void)
-    {
-	return sendMessage( "Hello?");
+    bool isRunning(void) { return sendMessage("Hello?"); }
+
+    bool bind(void) {
+        struct sockaddr_un addr;
+        addr.sun_family = AF_UNIX;
+        strcpy(addr.sun_path, _socketName.c_str());
+
+        unlink(addr.sun_path);
+        int result = ::bind(_socket, (struct sockaddr*)&addr, strlen(addr.sun_path) + sizeof(addr.sun_family));
+
+        if (result == -1) {
+            LOG_ERROR << "Failed to bind to " << _socketName << "\n";
+            perror("Bind ");
+            return false;
+        }
+
+        return true;
     }
 
-    bool bind( void)
-    {
-	struct sockaddr_un addr;
-	addr.sun_family = AF_UNIX;
-	strcpy(addr.sun_path, _socketName.c_str());
+    int getSocket(void) { return _socket; }
 
-	unlink( addr.sun_path);
-	int result = ::bind(_socket, (struct sockaddr *) &addr, strlen(addr.sun_path) + sizeof (addr.sun_family));
+    void receiveMessage(string& msg) {
+        struct sockaddr_un addr;
+        addr.sun_family = AF_UNIX;
+        strcpy(addr.sun_path, _socketName.c_str());
 
-	if( result == -1)
-	{
-	    LOG_ERROR << "Failed to bind to " << _socketName << "\n";
-	    perror( "Bind ");
-	    return false;
-	}
+        char buf[128];
+        socklen_t len = strlen(addr.sun_path) + sizeof(addr.sun_family);
+        recvfrom(_socket, buf, 128, 0, (struct sockaddr*)&addr, &len);
 
-	return true;
+        msg = buf;
     }
 
-    int getSocket( void)
-    {
-	return _socket;
-    }
+    bool sendMessage(const string& msg) {
+        struct sockaddr_un addr;
+        addr.sun_family = AF_UNIX;
+        strcpy(addr.sun_path, _socketName.c_str());
 
-    void receiveMessage( string &msg)
-    {
-	struct sockaddr_un addr;
-	addr.sun_family = AF_UNIX;
-	strcpy(addr.sun_path, _socketName.c_str());
+        socklen_t len = strlen(addr.sun_path) + sizeof(addr.sun_family);
 
-	char buf[128];
-	socklen_t len = strlen(addr.sun_path) + sizeof (addr.sun_family);
-	recvfrom( _socket, buf, 128, 0, (struct sockaddr *) &addr, &len);
+        ssize_t count = sendto(_socket, msg.c_str(), strlen(msg.c_str()) + 1, 0, (struct sockaddr*)&addr, len);
 
-	msg = buf;
-    }
-
-    bool sendMessage( const string &msg)
-    {
-	struct sockaddr_un addr;
-	addr.sun_family = AF_UNIX;
-	strcpy(addr.sun_path, _socketName.c_str());
-
-	socklen_t len = strlen(addr.sun_path) + sizeof (addr.sun_family);
-
-	ssize_t count = sendto( _socket, msg.c_str(), strlen(msg.c_str())+1, 0, (struct sockaddr *) &addr, len);
-
-	if( count == -1)
-	    return false;
-	else
-	    return true;
+        if (count == -1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 private:

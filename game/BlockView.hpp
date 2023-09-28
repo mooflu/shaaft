@@ -16,57 +16,58 @@
 class Buffer;
 class VertexArray;
 
-class BlockView: public ResolutionChangeObserverI
-{
+class BlockView : public ResolutionChangeObserverI {
 public:
-    BlockView( BlockModel &model);
+    BlockView(BlockModel& model);
     virtual ~BlockView();
 
-    bool init( void);
-    void draw( void);
+    bool init(void);
+    void draw(void);
 
-    virtual void resolutionChanged( int w, int h);
+    virtual void resolutionChanged(int w, int h);
 
     // game step update
-    void update( void);
-    void updateSettings( void);
+    void update(void);
+    void updateSettings(void);
 
     //The model will call these when a new block or a new
     //rotation was applied.
-    void notifyNewBlock( void);
-    void notifyNewRotation( const Quaternion &);
+    void notifyNewBlock(void);
+    void notifyNewRotation(const Quaternion&);
 
     //Get interpolated values based on the current game state frameFraction
-    Point3D &getInterpolatedOffset( void);
-    float getInterpolatedAngle( void);
+    Point3D& getInterpolatedOffset(void);
+    float getInterpolatedAngle(void);
 
-    Point3D &getCurrentAxis( void) { return _currentAxis; }
-    float getPrevAngle( void) { return _prevAngle; }
-    Point3D &getPrevAxis( void) { return _prevAxis; }
+    Point3D& getCurrentAxis(void) { return _currentAxis; }
+
+    float getPrevAngle(void) { return _prevAngle; }
+
+    Point3D& getPrevAxis(void) { return _prevAxis; }
 
 private:
-    BlockView( const BlockView&);
-    BlockView &operator=(const BlockView&);
+    BlockView(const BlockView&);
+    BlockView& operator=(const BlockView&);
 
     void initGL3Test();
 
-    enum BlockType
-    {
+    enum BlockType {
         Normal,
         Locked,
         Hint,
         Lookahead,
     };
-    void drawElement( Point3Di *p, BlockType blockType);
-    void drawLockedElements( void);
 
-    void drawShaft( bool drawLines);
-    void drawIndicator( void);
-    void drawNextBlock( void);
+    void drawElement(Point3Di* p, BlockType blockType);
+    void drawLockedElements(void);
 
-    vec4f getColor( int p);
+    void drawShaft(bool drawLines);
+    void drawIndicator(void);
+    void drawNextBlock(void);
 
-    BlockModel &_model;
+    vec4f getColor(int p);
+
+    BlockModel& _model;
 
     float _squaresize;
     float _bottom;
@@ -76,11 +77,11 @@ private:
 
     float _blockAngle;
 
-    GLBitmapFont *_font;
-    GLBitmapFont *_fineFont;
-    GLTexture *_blockFace;
+    GLBitmapFont* _font;
+    GLBitmapFont* _fineFont;
+    GLTexture* _blockFace;
 
-    void resetRotations( void);
+    void resetRotations(void);
 
     float _rotationSpeed;
     int _moveSteps;
@@ -105,8 +106,8 @@ private:
 
     TextInput _textInput;
 
-    Model *_cube;
-    Model *_indicator;
+    Model* _cube;
+    Model* _indicator;
     int _blackBox;
     int _pausedBox;
     int _scoreBoard;
@@ -114,9 +115,9 @@ private:
     int _mooChoo;
     int _target;
 
-    Buffer *_shaftVerts;
-    Buffer *_shaftNormals;
-    Buffer *_shaftVindices;
+    Buffer* _shaftVerts;
+    Buffer* _shaftNormals;
+    Buffer* _shaftVindices;
 
-    VertexArray *_shaftVao;
+    VertexArray* _shaftVao;
 };

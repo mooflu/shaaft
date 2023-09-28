@@ -7,13 +7,12 @@
 
 class Program;
 
-class Shader
-{
+class Shader {
     friend class Program;
 
 public:
     Shader(const GLenum type);
-    Shader(const GLenum type, const std::string &source);
+    Shader(const GLenum type, const std::string& source);
     virtual ~Shader();
 
     GLuint id() const;
@@ -21,7 +20,7 @@ public:
 
     GLint get(GLenum pname) const;
 
-    void setSource(const std::string &source);
+    void setSource(const std::string& source);
 
     bool compile() const;
     bool isCompiled() const;
@@ -34,7 +33,7 @@ protected:
     GLuint _id;
     GLenum _type;
     std::string _source;
-    std::set<Program *> _programs;
+    std::set<Program*> _programs;
 
     mutable bool _compiled;
     mutable bool _compilationFailed;

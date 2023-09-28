@@ -16,9 +16,10 @@
 
 #include "GLExtension.hpp"
 
-class GLExtensionTextureCubeMap: public GLExtension
-{
+class GLExtensionTextureCubeMap : public GLExtension {
 public:
-    GLExtensionTextureCubeMap( void):GLExtension( getName()){}
-    virtual const char *getName( void){ return "GL_ARB_texture_cube_map";}
+    GLExtensionTextureCubeMap(void) :
+        GLExtension(getName()) {}
+
+    virtual const char* getName(void) { return "GL_ARB_texture_cube_map"; }
 };

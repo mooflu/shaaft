@@ -10,14 +10,13 @@
 class ziStreamBuffer;
 class zoStreamBuffer;
 
-class ziStream : public std::istream
-{
+class ziStream : public std::istream {
 public:
-    ziStream( const std::string &fileName);
+    ziStream(const std::string& fileName);
     ~ziStream();
 
-    bool isOK( void);
-    int fileSize( void);
+    bool isOK(void);
+    int fileSize(void);
 
     std::string readAll() {
         std::string s;
@@ -27,25 +26,24 @@ public:
     }
 
 private:
-    ziStream( void);
-    ziStream( const ziStream&);
-    ziStream &operator=(const ziStream&);
+    ziStream(void);
+    ziStream(const ziStream&);
+    ziStream& operator=(const ziStream&);
 
-    ziStreamBuffer *_streambuf;
+    ziStreamBuffer* _streambuf;
 };
 
-class zoStream : public std::ostream
-{
+class zoStream : public std::ostream {
 public:
-    zoStream( const std::string &fileName);
+    zoStream(const std::string& fileName);
     ~zoStream();
 
-    bool isOK( void);
+    bool isOK(void);
 
 private:
-    zoStream( void);
-    zoStream( const zoStream&);
-    zoStream &operator=(const zoStream&);
+    zoStream(void);
+    zoStream(const zoStream&);
+    zoStream& operator=(const zoStream&);
 
-    zoStreamBuffer *_streambuf;
+    zoStreamBuffer* _streambuf;
 };

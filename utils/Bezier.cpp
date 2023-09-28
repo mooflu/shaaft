@@ -16,34 +16,29 @@
 #include "Point.hpp"
 
 //Construct a Bezier segment given 4 points
-template<class POINT>
-Bezier<POINT>::Bezier( const POINT point[4])
-{
+template <class POINT>
+Bezier<POINT>::Bezier(const POINT point[4]) {
     XTRACE();
     int dim = point[0].dimension();
-    
-    for( int c=0; c<4; c++)
-    {
+
+    for (int c = 0; c < 4; c++) {
         _controlPoints[c] = point[c];
     }
 
-    for( int d=0; d<dim; d++)
-    {
+    for (int d = 0; d < dim; d++) {
         float val[4];
 
-	for( int i=0; i<4; i++)
-	{
-            POINT pt = point[ i];
-	    val[ i] = pt[d];
-	}
-	calcCoeff( val, pd[d]);
+        for (int i = 0; i < 4; i++) {
+            POINT pt = point[i];
+            val[i] = pt[d];
+        }
+        calcCoeff(val, pd[d]);
     }
 }
 
 //Calculate Bezier segment coefficients
-template<class POINT>
-void Bezier<POINT>::calcCoeff( const float in[ 4], float out[ 4])
-{
+template <class POINT>
+void Bezier<POINT>::calcCoeff(const float in[4], float out[4]) {
     XTRACE();
     out[ 0] =  1*in[0];
     out[ 1] = -3*in[0] +3*in[1];
@@ -52,29 +47,28 @@ void Bezier<POINT>::calcCoeff( const float in[ 4], float out[ 4])
 }
 
 //Calculate point on the Bezier segment at time 0<=t<=1
-template<class POINT>
-void Bezier<POINT>::Pos( const float t, POINT &point) const
-{
+template <class POINT>
+void Bezier<POINT>::Pos(const float t, POINT& point) const {
     XTRACE();
-    float tt = t*t;
-    float ttt = t*tt;
+    float tt = t * t;
+    float ttt = t * tt;
 
-    for( int d=0; d<point.dimension(); d++)
-    {
-	point.set(d, pd[d][0] + t*pd[d][1] + tt*pd[d][2] + ttt*pd[d][3]);
+    for (int d = 0; d < point.dimension(); d++) {
+        point.set(d, pd[d][0] + t * pd[d][1] + tt * pd[d][2] + ttt * pd[d][3]);
     }
 }
 
 //Calculate perpendicular vector at time 0<=t<=1
 //Really only makes sense in 2D
-template<class POINT>
-void Bezier<POINT>::PVec( const float t, POINT &point) const
-{
+template <class POINT>
+void Bezier<POINT>::PVec(const float t, POINT& point) const {
     XTRACE();
-    float t2 = 2*t;
-    float tt3 = 3*t*t;
+    float t2 = 2 * t;
+    float tt3 = 3 * t * t;
 
-    if( point.dimension() != 2) return;
+    if (point.dimension() != 2) {
+        return;
+    }
 
     //vector perpendicular to tangent at t
     // x/y -> -(y/x)
@@ -83,15 +77,13 @@ void Bezier<POINT>::PVec( const float t, POINT &point) const
 }
 
 //Calculate tangent vector at time 0<=t<=1
-template<class POINT>
-void Bezier<POINT>::TVec( const float t, POINT &point) const
-{
+template <class POINT>
+void Bezier<POINT>::TVec(const float t, POINT& point) const {
     XTRACE();
-    float t2 = 2*t;
-    float tt3 = 3*t*t;
+    float t2 = 2 * t;
+    float tt3 = 3 * t * t;
 
-    for( int d=0; d<point.dimension(); d++)
-    {
-	point.set(d, pd[d][1] + t2*pd[d][2] + tt3*pd[d][3]);
+    for (int d = 0; d < point.dimension(); d++) {
+        point.set(d, pd[d][1] + t2 * pd[d][2] + tt3 * pd[d][3]);
     }
 }

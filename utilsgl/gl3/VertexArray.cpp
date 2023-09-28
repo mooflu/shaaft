@@ -2,58 +2,47 @@
 
 #include "Buffer.hpp"
 
-VertexArray::VertexArray():
-    _id(0)
-{
-    glGenVertexArrays( 1, &_id );
+VertexArray::VertexArray() :
+    _id(0) {
+    glGenVertexArrays(1, &_id);
 }
 
-VertexArray::~VertexArray()
-{
+VertexArray::~VertexArray() {
     unbind();
     glDeleteVertexArrays(1, &_id);
 }
 
-GLuint VertexArray::id() const
-{
+GLuint VertexArray::id() const {
     return _id;
 }
 
-void VertexArray::bind() const
-{
+void VertexArray::bind() const {
     glBindVertexArray(id());
 }
 
-void VertexArray::unbind()
-{
+void VertexArray::unbind() {
     glBindVertexArray(0);
 }
 
-
-void VertexArray::bindElementBuffer(const Buffer *buffer)
-{
+void VertexArray::bindElementBuffer(const Buffer* buffer) {
     bind();
-    if(buffer)
-    {
+    if (buffer) {
         buffer->bind(GL_ELEMENT_ARRAY_BUFFER);
-    }
-    else
-    {
+    } else {
         Buffer::unbind(GL_ELEMENT_ARRAY_BUFFER);
     }
 }
 
-void VertexArray::enable(GLint attributeIndex)
-{
+void VertexArray::enable(GLint attributeIndex) {
     bind();
     glEnableVertexAttribArray(attributeIndex);
 }
 
-void VertexArray::disable(GLint attributeIndex)
-{
+void VertexArray::disable(GLint attributeIndex) {
     bind();
     glDisableVertexAttribArray(attributeIndex);
 }
+
 /*
 Create VBOs/IBO
     glGenBuffers( 1, &vertexVBO );

@@ -21,60 +21,44 @@
 #include <algorithm>
 #include <iterator>
 
-class Tokenizer
-{
+class Tokenizer {
 public:
-    Tokenizer( std::string line, const char *whitespace = " \t\n\r"):
+    Tokenizer(std::string line, const char* whitespace = " \t\n\r") :
         _line(line),
         _whitespace(whitespace),
         _pos(0),
         _tokenCount(0),
-	_withQuotes(true)
-    {
-    }
+        _withQuotes(true) {}
 
-    Tokenizer( std::string line, bool withQuotes, const char *whitespace = " \t\n\r"):
+    Tokenizer(std::string line, bool withQuotes, const char* whitespace = " \t\n\r") :
         _line(line),
         _whitespace(whitespace),
         _pos(0),
         _tokenCount(0),
-	_withQuotes(withQuotes)
-    {
-    }
+        _withQuotes(withQuotes) {}
 
-    std::string operator()( void){ return next();}
+    std::string operator()(void) { return next(); }
 
-    void setWhitespace( const std::string &whitespace)
-    {
-        _whitespace = whitespace;
-    }
+    void setWhitespace(const std::string& whitespace) { _whitespace = whitespace; }
 
-    std::string next( void)
-    {
+    std::string next(void) {
         std::string retVal = "";
-	std::string::size_type start = _line.find_first_not_of( _whitespace, _pos);
-	std::string::size_type adj = 0;
-        if( start != std::string::npos)
-        {
-	    if( _withQuotes && (_line[ start] == '"'))
-	    {
-		start++;
-		_pos = _line.find_first_of( "\"", start);
-		_pos++;
-		adj = 1;
-	    }
-	    else
-	    {
-		_pos = _line.find_first_of( _whitespace, start);
-	    }
-
-            if( _pos == std::string::npos)
-            {
-                retVal = _line.substr( start);
+        std::string::size_type start = _line.find_first_not_of(_whitespace, _pos);
+        std::string::size_type adj = 0;
+        if (start != std::string::npos) {
+            if (_withQuotes && (_line[start] == '"')) {
+                start++;
+                _pos = _line.find_first_of("\"", start);
+                _pos++;
+                adj = 1;
+            } else {
+                _pos = _line.find_first_of(_whitespace, start);
             }
-            else
-            {
-                retVal = _line.substr( start, _pos-start-adj);
+
+            if (_pos == std::string::npos) {
+                retVal = _line.substr(start);
+            } else {
+                retVal = _line.substr(start, _pos - start - adj);
             }
             _tokenCount++;
         }
@@ -82,10 +66,11 @@ public:
         return retVal;
     }
 
-    int tokensReturned( void){ return _tokenCount;}
+    int tokensReturned(void) { return _tokenCount; }
 
-    std::string::size_type getPos( void){ return _pos;}
-    void setPos( std::string::size_type pos){ _pos = pos;}
+    std::string::size_type getPos(void) { return _pos; }
+
+    void setPos(std::string::size_type pos) { _pos = pos; }
 
 private:
     std::string _line;

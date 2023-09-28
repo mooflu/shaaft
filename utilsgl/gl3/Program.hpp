@@ -7,8 +7,7 @@
 
 class Shader;
 
-class Program
-{
+class Program {
 public:
     Program();
     virtual ~Program();
@@ -20,8 +19,8 @@ public:
 
     bool isUsed() const;
 
-    void attach(Shader * shader);
-    void detach(Shader * shader);
+    void attach(Shader* shader);
+    void detach(Shader* shader);
 
     void link() const;
     bool isLinked() const;
@@ -36,11 +35,11 @@ public:
     void setParameter(GLenum pname, GLint value) const;
     void setParameter(GLenum pname, GLboolean value) const;
 
-    GLint getAttributeLocation(const std::string & name) const;
-    GLint getUniformLocation(const std::string & name) const;
+    GLint getAttributeLocation(const std::string& name) const;
+    GLint getUniformLocation(const std::string& name) const;
 
-    void bindAttributeLocation(GLuint index, const std::string & name) const;
-    void bindFragDataLocation(GLuint index, const std::string & name) const;
+    void bindAttributeLocation(GLuint index, const std::string& name) const;
+    void bindFragDataLocation(GLuint index, const std::string& name) const;
 #if 0
     GLint getFragDataLocation(const std::string & name) const;
     GLint getFragDataIndex(const std::string & name) const;
@@ -68,7 +67,7 @@ protected:
     void checkDirty() const;
 
     GLuint _id;
-    std::set<Shader *> _shaders;
+    std::set<Shader*> _shaders;
 
     mutable bool _linked;
     mutable bool _dirty;

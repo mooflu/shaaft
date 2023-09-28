@@ -17,44 +17,44 @@
 struct Trigger;
 class Selectable;
 
-class MenuManager: public InterceptorI
-{
-friend class Singleton<MenuManager>;
-public:
-    bool init( void);
-    bool update( void);
-    bool draw( void);
+class MenuManager : public InterceptorI {
+    friend class Singleton<MenuManager>;
 
-    virtual void input( const Trigger &trigger, const bool &isDown);
-    void turnMenuOn( void);
-    void turnMenuOff( void);
-    bool canReturnToGame( void);
-    void makeMenu( TiXmlNode *_node);
+public:
+    bool init(void);
+    bool update(void);
+    bool draw(void);
+
+    virtual void input(const Trigger& trigger, const bool& isDown);
+    void turnMenuOn(void);
+    void turnMenuOff(void);
+    bool canReturnToGame(void);
+    void makeMenu(TiXmlNode* _node);
 
     //Menu navigation
-    void Down( void);
-    void Up( void);
-    void Enter( void);
-    bool Exit( bool delayed=false);
-    void Goto( Selectable *s);
+    void Down(void);
+    void Up(void);
+    void Enter(void);
+    bool Exit(bool delayed = false);
+    void Goto(Selectable* s);
 
-    void reload( void);
+    void reload(void);
 
 private:
     virtual ~MenuManager();
-    MenuManager( void);
-    MenuManager( const MenuManager&);
-    MenuManager &operator=(const MenuManager&);
+    MenuManager(void);
+    MenuManager(const MenuManager&);
+    MenuManager& operator=(const MenuManager&);
 
-    void loadMenuLevel( void);
-    void clearActiveSelectables( void);
-    void updateSettings( void);
-    void activateSelectableUnderMouse(const bool& useFallback=false);
-    
-    TiXmlDocument *_menu;
+    void loadMenuLevel(void);
+    void clearActiveSelectables(void);
+    void updateSettings(void);
+    void activateSelectableUnderMouse(const bool& useFallback = false);
 
-    TiXmlNode *_topMenu;
-    TiXmlNode *_currentMenu;
+    TiXmlDocument* _menu;
+
+    TiXmlNode* _topMenu;
+    TiXmlNode* _currentMenu;
 
     std::list<Selectable*> _activeSelectables;
     std::list<Selectable*>::iterator _currentSelectable;
@@ -75,9 +75,9 @@ private:
 
     float _angle;
     float _prevAngle;
-    
+
     bool _showCursorAnim;
-    ParticleGroup _cursorAnim;    
+    ParticleGroup _cursorAnim;
 };
 
 typedef Singleton<MenuManager> MenuManagerS;

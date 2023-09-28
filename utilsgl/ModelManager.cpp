@@ -19,56 +19,47 @@
 
 using namespace std;
 
-ModelManager::ModelManager( void)
-{
+ModelManager::ModelManager(void) {
     XTRACE();
 }
 
-ModelManager::~ModelManager()
-{
+ModelManager::~ModelManager() {
     XTRACE();
 
-    hash_map< string, Model*, hash<string> >::const_iterator ci;
-    for( ci=_modelMap.begin(); ci!=_modelMap.end(); ci++)
-    {
+    hash_map<string, Model*, hash<string>>::const_iterator ci;
+    for (ci = _modelMap.begin(); ci != _modelMap.end(); ci++) {
         delete ci->second;
     }
 
     _modelMap.clear();
 }
 
-void ModelManager::reset( void)
-{
+void ModelManager::reset(void) {
     XTRACE();
 
-    hash_map< string, Model*, hash<string> >::const_iterator ci;
-    for( ci=_modelMap.begin(); ci!=_modelMap.end(); ci++)
-    {
+    hash_map<string, Model*, hash<string>>::const_iterator ci;
+    for (ci = _modelMap.begin(); ci != _modelMap.end(); ci++) {
         ci->second->reset();
     }
 }
 
-void ModelManager::reload( void)
-{
+void ModelManager::reload(void) {
     XTRACE();
 
-    hash_map< string, Model*, hash<string> >::const_iterator ci;
-    for( ci=_modelMap.begin(); ci!=_modelMap.end(); ci++)
-    {
+    hash_map<string, Model*, hash<string>>::const_iterator ci;
+    for (ci = _modelMap.begin(); ci != _modelMap.end(); ci++) {
         ci->second->reload();
     }
 }
 
-Model *ModelManager::load( const string &modelName)
-{
+Model* ModelManager::load(const string& modelName) {
     XTRACE();
-    Model *model = new Model;
+    Model* model = new Model;
 
-    string modelFile = modelName+".model";
+    string modelFile = modelName + ".model";
 
-    if( ! model->load( modelFile.c_str()))
-    {
-	LOG_ERROR << "Unable to load: " << modelFile << endl;
+    if (!model->load(modelFile.c_str())) {
+        LOG_ERROR << "Unable to load: " << modelFile << endl;
     }
 
     return model;

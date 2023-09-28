@@ -14,4 +14,4 @@
 //
 #include "GLExtension.hpp"
 
-char *GLExtension::_paddedExtensions = 0;
+char* GLExtension::_paddedExtensions = 0;

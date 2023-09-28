@@ -13,7 +13,7 @@
 #include <sstream>
 using namespace std;
 
-#if 0 //def __APPLE__
+#if 0  //def __APPLE__
 #import <Foundation/Foundation.h>
 
 @interface OnlineScoreTransfer : NSObject
@@ -149,80 +149,69 @@ void GetScores( const std::string &url, const std::string &boardName )
 #include <curl/curl.h>
 #endif
 
-SDL_mutex *sdlLock = 0;
+SDL_mutex* sdlLock = 0;
 
-struct ScoreRequest
-{
-    ScoreRequest( const string &u, const string &b ):
-	url(u),
-	boardName(b)
-    {
-    }
+struct ScoreRequest {
+    ScoreRequest(const string& u, const string& b) :
+        url(u),
+        boardName(b) {}
 
     string url;
     string boardName;
     string result;
 };
+
 static list<ScoreRequest> scoreRequests;
 
-void GetLock()
-{
-    if( !sdlLock)
-    {
-	sdlLock = SDL_CreateMutex();
+void GetLock() {
+    if (!sdlLock) {
+        sdlLock = SDL_CreateMutex();
     }
     SDL_LockMutex(sdlLock);
 }
 
-void ReleaseLock()
-{
-    if( sdlLock)
-    {
+void ReleaseLock() {
+    if (sdlLock) {
         SDL_UnlockMutex(sdlLock);
     }
 }
 
-int ScoreRequestThread(void *data);
+int ScoreRequestThread(void* data);
 
-void SendScore( const string &url )
-{
+void SendScore(const string& url) {
     GetLock();
     ScoreRequest scoreRequest(url, "");
-    scoreRequests.push_back( scoreRequest );
+    scoreRequests.push_back(scoreRequest);
     ReleaseLock();
 
-    SDL_Thread *thread = SDL_CreateThread(ScoreRequestThread, "send-score", 0);
+    SDL_Thread* thread = SDL_CreateThread(ScoreRequestThread, "send-score", 0);
 }
 
-void GetScores( const string &url, const string &boardName )
-{
+void GetScores(const string& url, const string& boardName) {
     GetLock();
     ScoreRequest scoreRequest(url, boardName);
-    scoreRequests.push_back( scoreRequest );
+    scoreRequests.push_back(scoreRequest);
     ReleaseLock();
 
-    SDL_Thread *thread = SDL_CreateThread(ScoreRequestThread, "get-scores", 0);
+    SDL_Thread* thread = SDL_CreateThread(ScoreRequestThread, "get-scores", 0);
 }
 
-size_t receiveData(void *buffer, size_t size, size_t nmemb, void *data)
-{
-    char *tmpBuf = new char[size * nmemb +1];
-    memcpy( tmpBuf, buffer, size * nmemb);
+size_t receiveData(void* buffer, size_t size, size_t nmemb, void* data) {
+    char* tmpBuf = new char[size * nmemb + 1];
+    memcpy(tmpBuf, buffer, size * nmemb);
     tmpBuf[size * nmemb] = '\0';
 
-    ScoreRequest *scoreRequest = (ScoreRequest*)data;
+    ScoreRequest* scoreRequest = (ScoreRequest*)data;
     scoreRequest->result += tmpBuf;
-//    LOG_INFO << tmpBuf << endl;
+    //    LOG_INFO << tmpBuf << endl;
 
-    delete [] tmpBuf;
+    delete[] tmpBuf;
 
-    return size*nmemb;
+    return size * nmemb;
 }
 
-
 // #include "OSName.hpp"
-int ScoreRequestThread(void *data)
-{
+int ScoreRequestThread(void* data) {
     GetLock();
     ScoreRequest scoreRequest = scoreRequests.front();
     scoreRequests.pop_front();
@@ -276,18 +265,17 @@ int ScoreRequestThread(void *data)
 
 #endif
 
-static hash_map< const std::string, std::string, hash<const std::string>, equal_to<const std::string> > pendindScoreBoardData;
+static hash_map<const std::string, std::string, hash<const std::string>, equal_to<const std::string>>
+    pendindScoreBoardData;
 
-bool OnlineScore::GetNextScoreBoardData( std::string &boardName, std::string &scoreData)
-{
+bool OnlineScore::GetNextScoreBoardData(std::string& boardName, std::string& scoreData) {
     bool hasNext = false;
     GetLock();
-    if( pendindScoreBoardData.begin() != pendindScoreBoardData.end())
-    {
+    if (pendindScoreBoardData.begin() != pendindScoreBoardData.end()) {
         boardName = pendindScoreBoardData.begin()->first;
         scoreData = pendindScoreBoardData.begin()->second;
 
-        pendindScoreBoardData.erase( pendindScoreBoardData.begin());
+        pendindScoreBoardData.erase(pendindScoreBoardData.begin());
 
         hasNext = true;
     }
@@ -295,20 +283,16 @@ bool OnlineScore::GetNextScoreBoardData( std::string &boardName, std::string &sc
     return hasNext;
 }
 
-void OnlineScore::AddScoreBoardData( const std::string &boardName, const std::string &data)
-{
+void OnlineScore::AddScoreBoardData(const std::string& boardName, const std::string& data) {
     GetLock();
     pendindScoreBoardData[boardName] = data;
     ReleaseLock();
 }
 
-static inline
-std::string stringToHex( const std::string &data)
-{
+static inline std::string stringToHex(const std::string& data) {
     std::stringstream ss;
 
-    for( size_t i=0; i<data.length(); i++)
-    {
+    for (size_t i = 0; i < data.length(); i++) {
         unsigned char val = (unsigned char)data[i];
         ss << std::setw(2) << std::setfill('0') << hex;
         ss << (unsigned int)val;
@@ -316,14 +300,11 @@ std::string stringToHex( const std::string &data)
     return ss.str();
 }
 
-static inline
-std::string hexToString( const std::string &strRep)
-{
+static inline std::string hexToString(const std::string& strRep) {
     std::stringstream ss;
     std::string result;
 
-    for( size_t i=0; i<strRep.length(); i+=2)
-    {
+    for (size_t i = 0; i < strRep.length(); i += 2) {
         ss.clear();
         ss << hex << strRep.substr(i, 2);
         unsigned int c;
@@ -340,46 +321,38 @@ const string onlineScoreURL = "";
 const string onlineScoreURL = "";
 #endif
 
-void OnlineScore::SendScore( int score, const std::string &scoreMsg )
-{
+void OnlineScore::SendScore(int score, const std::string& scoreMsg) {
     string message = scoreMsg;
     int pad = message.size() % 4;
-    if( pad != 0)
-    {
-        message += string( 4-pad, ' ');
+    if (pad != 0) {
+        message += string(4 - pad, ' ');
     }
 
-    string cipher = Tea::encode( message);
+    string cipher = Tea::encode(message);
 
     string hash = stringToHex(cipher);
     stringstream url;
 
-    url << onlineScoreURL
-        << "?Score=" << score
-        << "&Hash=" << hash;
+    url << onlineScoreURL << "?Score=" << score << "&Hash=" << hash;
 
-    ::SendScore( url.str() );
+    ::SendScore(url.str());
 }
 
-void OnlineScore::RequestTopScores( const std::string &boardName, const std::string &scoreMsg)
-{
+void OnlineScore::RequestTopScores(const std::string& boardName, const std::string& scoreMsg) {
     string message = scoreMsg;
     int pad = message.size() % 4;
-    if( pad != 0)
-    {
-        message += string( 4-pad, ' ');
+    if (pad != 0) {
+        message += string(4 - pad, ' ');
     }
 
-    string cipher = Tea::encode( message);
+    string cipher = Tea::encode(message);
 
     string hash = stringToHex(cipher);
     stringstream url;
 
-    url << onlineScoreURL
-        << "?Board=" << boardName
-        << "&Hash=" << hash;
+    url << onlineScoreURL << "?Board=" << boardName << "&Hash=" << hash;
 
     LOG_INFO << url.str() << "\n";
 
-    ::GetScores( url.str(), boardName );
+    ::GetScores(url.str(), boardName);
 }

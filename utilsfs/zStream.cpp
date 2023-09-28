@@ -8,41 +8,34 @@
 
 #include <string>
 
-ziStream::ziStream(const std::string &fileName):
-     std::istream( 0 ),
-    _streambuf( new ziStreamBuffer( fileName ))
-{
-    rdbuf( _streambuf );
+ziStream::ziStream(const std::string& fileName) :
+    std::istream(0),
+    _streambuf(new ziStreamBuffer(fileName)) {
+    rdbuf(_streambuf);
 }
 
-ziStream::~ziStream()
-{
+ziStream::~ziStream() {
     delete _streambuf;
 }
 
-bool ziStream::isOK( void)
-{
+bool ziStream::isOK(void) {
     return _streambuf->isOK();
 }
 
-int ziStream::fileSize( void)
-{
+int ziStream::fileSize(void) {
     return _streambuf->fileSize();
 }
 
-zoStream::zoStream(const std::string &fileName):
-    std::ostream( 0 ),
-    _streambuf( new zoStreamBuffer( fileName ))
-{
-    rdbuf( _streambuf );
+zoStream::zoStream(const std::string& fileName) :
+    std::ostream(0),
+    _streambuf(new zoStreamBuffer(fileName)) {
+    rdbuf(_streambuf);
 }
 
-zoStream::~zoStream()
-{
+zoStream::~zoStream() {
     delete _streambuf;
 }
 
-bool zoStream::isOK( void)
-{
+bool zoStream::isOK(void) {
     return _streambuf->isOK();
 }

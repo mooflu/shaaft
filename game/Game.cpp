@@ -28,27 +28,25 @@
 #include "zStream.hpp"
 #include "ResourceManager.hpp"
 
-#if defined (EMSCRIPTEN)
+#if defined(EMSCRIPTEN)
 #include <emscripten.h>
 #include <emscripten/html5.h>
 #endif
 
 using namespace std;
 
-Game::Game( void):
+Game::Game(void) :
     _model(0),
     _controller(0),
     _view(0),
     _zo(0),
     _oStream(0),
     _zi(0),
-    _iStream(0)
-{
+    _iStream(0) {
     XTRACE();
 }
 
-Game::~Game()
-{
+Game::~Game() {
     XTRACE();
 
     LOG_INFO << "Shutting down..." << endl;
@@ -65,7 +63,7 @@ Game::~Game()
     ParticleGroupManagerS::cleanup();
 
     AudioS::cleanup();
-    delete _view; //calls SDL_Quit
+    delete _view;  //calls SDL_Quit
 
     // save config stuff
     LOG_INFO << "Config cleanup..." << endl;
@@ -81,15 +79,16 @@ Game::~Game()
     ResourceManagerS::cleanup();
 }
 
-bool Game::init( void)
-{
+bool Game::init(void) {
     XTRACE();
     bool result = true;
 
     ScoreKeeperS::instance()->load();
 
     AudioS::instance()->setDefaultSoundtrack("music/shaaft.ogg");
-    if( ! AudioS::instance()->init()) return false;
+    if (!AudioS::instance()->init()) {
+        return false;
+    }
 #if 0
     EventInjector *ei = 0;
     string play;
@@ -145,35 +144,42 @@ bool Game::init( void)
     GameState::r250.reset(tv.tv_sec);
 #endif
 
-    setupModel( ModelCreate);
+    setupModel(ModelCreate);
 
-    if( ! _model->init())
-    {
+    if (!_model->init()) {
         return false;
     }
 
-    _view = new BlockView( *_model);
-    _model->registerView( _view);
-    if( ! _view->init()) return false;
+    _view = new BlockView(*_model);
+    _model->registerView(_view);
+    if (!_view->init()) {
+        return false;
+    }
 
     // input init also initializes Keys which requires that SDL video has ben initialized
-    if( ! InputS::instance()->init()) return false;
+    if (!InputS::instance()->init()) {
+        return false;
+    }
 
-    _controller = new BlockController( *_model);
+    _controller = new BlockController(*_model);
 #if 0
     if( ew) _controller->setEventWatcher( ew);
     if( ei) _controller->setEventInjector( ei);
 #endif
 
-    if( ! MenuManagerS::instance()->init()) return false;
+    if (!MenuManagerS::instance()->init()) {
+        return false;
+    }
 
-    ParticleGroupManager *pgm = ParticleGroupManagerS::instance();
-    if( ! pgm->init()) return false;
+    ParticleGroupManager* pgm = ParticleGroupManagerS::instance();
+    if (!pgm->init()) {
+        return false;
+    }
     //there are 3 effect groups to give very simple control over the order
     //of drawing which is important for alpha blending.
-    pgm->addGroup( EFFECTS_GROUP1, 1000);
-    pgm->addGroup( EFFECTS_GROUP2, 1000);
-    pgm->addGroup( EFFECTS_GROUP3, 1000);
+    pgm->addGroup(EFFECTS_GROUP1, 1000);
+    pgm->addGroup(EFFECTS_GROUP2, 1000);
+    pgm->addGroup(EFFECTS_GROUP3, 1000);
 
     //reset our stopwatch
     GameState::stopwatch.reset();
@@ -191,8 +197,7 @@ bool Game::init( void)
     return result;
 }
 
-void Game::reset( void)
-{
+void Game::reset(void) {
     ScoreKeeperS::instance()->updateScoreBoardWithLeaderBoard();
 
     ParticleGroupManagerS::instance()->reset();
@@ -204,34 +209,30 @@ void Game::reset( void)
     GameState::isAlive = true;
     GameState::secondsPlayed = 0.0;
 
-    setupModel( ModelReset);
+    setupModel(ModelReset);
 }
 
-void Game::setupModel( SetupModelEnum setupType)
-{
+void Game::setupModel(SetupModelEnum setupType) {
     int dimx = 5;
     int dimy = 5;
     int dimz = 12;
     int startLevel = 1;
     string blockset = "Shaaft";
-    ConfigS::instance()->getInteger( "shaftWidth", dimx);
-    ConfigS::instance()->getInteger( "shaftHeight", dimy);
-    ConfigS::instance()->getInteger( "shaftDepth", dimz);
-    ConfigS::instance()->getInteger( "startLevel", startLevel);
-    ConfigS::instance()->getString(  "blockset", blockset);
+    ConfigS::instance()->getInteger("shaftWidth", dimx);
+    ConfigS::instance()->getInteger("shaftHeight", dimy);
+    ConfigS::instance()->getInteger("shaftDepth", dimz);
+    ConfigS::instance()->getInteger("startLevel", startLevel);
+    ConfigS::instance()->getString("blockset", blockset);
 
-    if( setupType == ModelCreate)
-    {
-        _model = new BlockModel( dimx, dimy, dimz, startLevel, blockset, GameState::r250);
-    }
-    else
-    {
-        _model->reset( dimx, dimy, dimz, startLevel, blockset);
+    if (setupType == ModelCreate) {
+        _model = new BlockModel(dimx, dimy, dimz, startLevel, blockset, GameState::r250);
+    } else {
+        _model->reset(dimx, dimy, dimz, startLevel, blockset);
     }
 
     bool practiceMode = false;
-    ConfigS::instance()->getBoolean( "practiceMode", practiceMode);
-    _model->setPracticeMode( practiceMode);
+    ConfigS::instance()->getBoolean("practiceMode", practiceMode);
+    _model->setPracticeMode(practiceMode);
 
     ostringstream ostr;
     ostr << dimx << "x" << dimy << "x" << dimz << ":" << blockset;
@@ -239,25 +240,21 @@ void Game::setupModel( SetupModelEnum setupType)
     LOG_INFO << "Setting active score board to [" << ostr.str() << "]" << endl;
     ScoreKeeperS::instance()->setLeaderBoard(ostr.str());
     ScoreKeeperS::instance()->resetCurrentScore();
-    ScoreKeeperS::instance()->setPracticeMode( practiceMode);
+    ScoreKeeperS::instance()->setPracticeMode(practiceMode);
 }
 
-void Game::startNewGame( void)
-{
+void Game::startNewGame(void) {
     GameS::instance()->reset();
     GameState::context = Context::eInGame;
     InputS::instance()->disableInterceptor();
     GameState::stopwatch.start();
 }
 
-void Game::updateOtherLogic( void)
-{
+void Game::updateOtherLogic(void) {
     int stepCount = 0;
     float currentTime = GameState::mainTimer.getTime();
-    while( (currentTime - GameState::startOfStep) > GAME_STEP_SIZE)
-    {
-        if( GameState::context == Context::eMenu)
-        {
+    while ((currentTime - GameState::startOfStep) > GAME_STEP_SIZE) {
+        if (GameState::context == Context::eMenu) {
             MenuManagerS::instance()->update();
         }
 
@@ -266,25 +263,23 @@ void Game::updateOtherLogic( void)
         currentTime = GameState::mainTimer.getTime();
 
         stepCount++;
-        if( stepCount > MAX_GAME_STEPS) break;
+        if (stepCount > MAX_GAME_STEPS) {
+            break;
+        }
     }
 
-    if (GameState::context == Context::eMenu || GameState::context == Context::ePaused)
-    {
+    if (GameState::context == Context::eMenu || GameState::context == Context::ePaused) {
         // When in menu or paused, process input on every frame.
         // Especially in menu the mouse cursor needs to update every frame.
         InputS::instance()->update();
     }
 
-    GameState::frameFractionOther =
-        (currentTime - GameState::startOfStep) / GAME_STEP_SIZE;
+    GameState::frameFractionOther = (currentTime - GameState::startOfStep) / GAME_STEP_SIZE;
 
-    if( stepCount > 1)
-    {
+    if (stepCount > 1) {
         //LOG_WARNING << "Skipped " << stepCount << " frames." << endl;
 
-        if( GameState::frameFractionOther > 1.0)
-        {
+        if (GameState::frameFractionOther > 1.0) {
             //Our logic is still way behind where it should be at this
             //point in time. If we get here we already ran through
             //MAX_GAME_STEPS logic runs trying to catch up.
@@ -297,23 +292,19 @@ void Game::updateOtherLogic( void)
     }
 }
 
-void Game::updateInGameLogic( void)
-{
+void Game::updateInGameLogic(void) {
     int stepCount = 0;
     float currentGameTime = GameState::stopwatch.getTime();
-    while( (currentGameTime - GameState::startOfGameStep) > GAME_STEP_SIZE)
-    {
+    while ((currentGameTime - GameState::startOfGameStep) > GAME_STEP_SIZE) {
         GameState::prevShaftPitch = GameState::shaftPitch;
         GameState::prevShaftYaw = GameState::shaftYaw;
 
         ParticleGroupManagerS::instance()->update();
         InputS::instance()->update();
 
-        if( GameState::isAlive)
-        {
+        if (GameState::isAlive) {
             GameState::secondsPlayed = GameState::stopwatch.getTime();
-            if( ! _model->update())
-            {
+            if (!_model->update()) {
                 GameState::isAlive = false;
             }
         }
@@ -325,16 +316,15 @@ void Game::updateInGameLogic( void)
         currentGameTime = GameState::stopwatch.getTime();
 
         stepCount++;
-        if( stepCount > MAX_GAME_STEPS) break;
+        if (stepCount > MAX_GAME_STEPS) {
+            break;
+        }
     }
 
-    GameState::frameFraction =
-        (currentGameTime - GameState::startOfGameStep) / GAME_STEP_SIZE;
+    GameState::frameFraction = (currentGameTime - GameState::startOfGameStep) / GAME_STEP_SIZE;
 
-    if( stepCount > 1)
-    {
-        if( GameState::frameFraction > 1.0)
-        {
+    if (stepCount > 1) {
+        if (GameState::frameFraction > 1.0) {
             //Our logic is still way behind where it should be at this
             //point in time. If we get here we already ran through
             //MAX_GAME_STEPS logic runs trying to catch up.
@@ -347,13 +337,11 @@ void Game::updateInGameLogic( void)
     }
 }
 
-void Game::gameLoop()
-{
-    Game &game = *GameS::instance();
-    Audio &audio = *AudioS::instance();
+void Game::gameLoop() {
+    Game& game = *GameS::instance();
+    Audio& audio = *AudioS::instance();
 
-    switch( GameState::context)
-    {
+    switch (GameState::context) {
         case Context::eInGame:
             //stuff that only needs updating when game is actually running
             game.updateInGameLogic();
@@ -375,24 +363,22 @@ void Game::gameLoop()
     VideoBaseS::instance()->swap();
 
     GLenum err;
-    while((err = glGetError()) != GL_NO_ERROR)
-    {
+    while ((err = glGetError()) != GL_NO_ERROR) {
         LOG_ERROR << "GL ERROR: " << std::hex << err << "\n";
     }
 
-#if defined (EMSCRIPTEN)
+#if defined(EMSCRIPTEN)
     if (GameState::requestExit) {
         GameS::cleanup();
         ConfigS::cleanup();
 
-        EM_ASM(
-            console.log('FS.syncfs...');
-            FS.syncfs(function (err) {
-                if (err) {console.log('FS.syncfs error: ' + err)}
-                console.log('syncfs done');
-                Module.gamePostRun();
-            });
-        );
+        EM_ASM(console.log('FS.syncfs...'); FS.syncfs(function(err) {
+            if (err) {
+                console.log('FS.syncfs error: ' + err)
+            }
+            console.log('syncfs done');
+            Module.gamePostRun();
+        }););
 
         emscripten_exit_pointerlock();
         emscripten_cancel_main_loop();
@@ -401,8 +387,7 @@ void Game::gameLoop()
 #endif
 }
 
-void Game::run( void)
-{
+void Game::run(void) {
     XTRACE();
 
     // Here it is: the main loop.
@@ -410,8 +395,7 @@ void Game::run( void)
 #if defined(IPHONE)
     Game::gameLoop();
 #else
-    while( ! GameState::requestExit)
-    {
+    while (!GameState::requestExit) {
         Game::gameLoop();
     }
 #endif

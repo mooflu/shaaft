@@ -10,26 +10,26 @@
 #include "Singleton.hpp"
 #include "zStream.hpp"
 
-class ResourceManager
-{
-friend class Singleton<ResourceManager>;
+class ResourceManager {
+    friend class Singleton<ResourceManager>;
+
 public:
-    bool addResourceBundle( const std::string &bundle, const std::string &mountPoint);
-    void setWriteDirectory( const std::string &writeDir);
+    bool addResourceBundle(const std::string& bundle, const std::string& mountPoint);
+    void setWriteDirectory(const std::string& writeDir);
 
-    bool hasResource( const std::string &name);
-    int getResourceSize( const std::string &name);
-    ziStream *getInputStream( const std::string &name);
+    bool hasResource(const std::string& name);
+    int getResourceSize(const std::string& name);
+    ziStream* getInputStream(const std::string& name);
 
-    void getFiles( const std::string &dirName, std::list<std::string> &results );
+    void getFiles(const std::string& dirName, std::list<std::string>& results);
 
     void dump(void);
 
 private:
-    ResourceManager( const ResourceManager&);
-    ResourceManager &operator=(const ResourceManager&);
+    ResourceManager(const ResourceManager&);
+    ResourceManager& operator=(const ResourceManager&);
 
-    ResourceManager( void);
+    ResourceManager(void);
     ~ResourceManager();
 };
 

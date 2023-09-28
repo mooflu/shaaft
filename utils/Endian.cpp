@@ -17,8 +17,7 @@
 #include <stdlib.h>
 #include "Trace.hpp"
 
-enum EndianEnum
-{
+enum EndianEnum {
     eNeedInit = 0,
     eLittleEndian = 0x34333231,
     eBigEndian = 0x31323334,
@@ -26,18 +25,15 @@ enum EndianEnum
     eLAST
 };
 
-static EndianEnum  _endianess = eNeedInit;
+static EndianEnum _endianess = eNeedInit;
 
-bool isLittleEndian( void)
-{
+bool isLittleEndian(void) {
     XTRACE();
-    switch( _endianess) 
-    {
-        case eNeedInit:
-            {
-		char c[4] = {'1','2','3','4'};
-		_endianess = (EndianEnum) *((int*)c);
-            }
+    switch (_endianess) {
+        case eNeedInit: {
+            char c[4] = {'1', '2', '3', '4'};
+            _endianess = (EndianEnum) * ((int*)c);
+        }
             return _endianess == eLittleEndian;
             break;
         case eLittleEndian:
@@ -45,8 +41,8 @@ bool isLittleEndian( void)
         case eBigEndian:
             return false;
         default:
-	    LOG_ERROR << "Unsupported endianess (PDP?). You are weird!" << std::endl;
-	    exit(-1);
+            LOG_ERROR << "Unsupported endianess (PDP?). You are weird!" << std::endl;
+            exit(-1);
     }
 
     //shouldn't get here

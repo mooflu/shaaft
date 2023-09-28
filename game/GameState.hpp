@@ -11,11 +11,10 @@
 
 #include <string>
 
-struct GameState
-{
-    static char *licData;
-    static int  licLength;
-    
+struct GameState {
+    static char* licData;
+    static int licLength;
+
     static bool isDeveloper;
     static bool isAlive;
     static bool requestExit;
@@ -33,7 +32,7 @@ struct GameState
     static R250 r250;
     static Context::ContextEnum context;
     static float secondsPlayed;
-    
+
     static float prevShaftPitch;
     static float prevShaftYaw;
     static float shaftPitch;

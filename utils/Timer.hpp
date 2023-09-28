@@ -16,25 +16,22 @@
 
 #include "gettimeofday.hpp"
 
-class Timer
-{
+class Timer {
 public:
-    static double getTime( void)
-    {
+    static double getTime(void) {
         struct timeval tv;
         static bool initialized = false;
         static long startSeconds = 0;
         static long startUSeconds = 0;
 
         gettimeofday(&tv, 0);
-        
-        if( ! initialized)
-        {
+
+        if (!initialized) {
             startSeconds = tv.tv_sec;
             startUSeconds = tv.tv_usec;
             initialized = true;
         }
-        long msecs = (tv.tv_sec-startSeconds)*1000 + (tv.tv_usec-startUSeconds)/1000;
-        return((double)msecs/1000.0);
-    } 
+        long msecs = (tv.tv_sec - startSeconds) * 1000 + (tv.tv_usec - startUSeconds) / 1000;
+        return ((double)msecs / 1000.0);
+    }
 };

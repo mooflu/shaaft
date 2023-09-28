@@ -14,25 +14,25 @@
 //
 #include "GLVertexArrayEXT.hpp"
 
-PFNGLARRAYELEMENTEXTPROC    GLVertexArrayEXT::_glArrayElementEXT = 0;
-PFNGLCOLORPOINTEREXTPROC    GLVertexArrayEXT::_glColorPointerEXT = 0;
-PFNGLDRAWARRAYSEXTPROC      GLVertexArrayEXT::_glDrawArraysEXT = 0;
+PFNGLARRAYELEMENTEXTPROC GLVertexArrayEXT::_glArrayElementEXT = 0;
+PFNGLCOLORPOINTEREXTPROC GLVertexArrayEXT::_glColorPointerEXT = 0;
+PFNGLDRAWARRAYSEXTPROC GLVertexArrayEXT::_glDrawArraysEXT = 0;
 PFNGLEDGEFLAGPOINTEREXTPROC GLVertexArrayEXT::_glEdgeFlagPointerEXT = 0;
 //PFNGLGETPOINTERVEXTPROC     GLVertexArrayEXT::_glGetPointervEXT = 0;
-PFNGLINDEXPOINTEREXTPROC    GLVertexArrayEXT::_glIndexPointerEXT = 0;
-PFNGLNORMALPOINTEREXTPROC   GLVertexArrayEXT::_glNormalPointerEXT = 0;
+PFNGLINDEXPOINTEREXTPROC GLVertexArrayEXT::_glIndexPointerEXT = 0;
+PFNGLNORMALPOINTEREXTPROC GLVertexArrayEXT::_glNormalPointerEXT = 0;
 PFNGLTEXCOORDPOINTEREXTPROC GLVertexArrayEXT::_glTexCoordPointerEXT = 0;
-PFNGLVERTEXPOINTEREXTPROC   GLVertexArrayEXT::_glVertexPointerEXT = 0;
+PFNGLVERTEXPOINTEREXTPROC GLVertexArrayEXT::_glVertexPointerEXT = 0;
 
-GLVertexArrayEXT::GLVertexArrayEXT( void):GLExtension( getName())
-{
-    _glArrayElementEXT    = (PFNGLARRAYELEMENTEXTPROC)GetExtensionProc("glArrayElementEXT");
-    _glColorPointerEXT    = (PFNGLCOLORPOINTEREXTPROC)GetExtensionProc("glColorPointerEXT");
-    _glDrawArraysEXT      = (PFNGLDRAWARRAYSEXTPROC)GetExtensionProc("glDrawArraysEXT");
+GLVertexArrayEXT::GLVertexArrayEXT(void) :
+    GLExtension(getName()) {
+    _glArrayElementEXT = (PFNGLARRAYELEMENTEXTPROC)GetExtensionProc("glArrayElementEXT");
+    _glColorPointerEXT = (PFNGLCOLORPOINTEREXTPROC)GetExtensionProc("glColorPointerEXT");
+    _glDrawArraysEXT = (PFNGLDRAWARRAYSEXTPROC)GetExtensionProc("glDrawArraysEXT");
     _glEdgeFlagPointerEXT = (PFNGLEDGEFLAGPOINTEREXTPROC)GetExtensionProc("glEdgeFlagPointerEXT");
     //_glGetPointervEXT     = (PFNGLGETPOINTERVEXTPROC)GetExtensionProc("glGetPointervEXT");
-    _glIndexPointerEXT    = (PFNGLINDEXPOINTEREXTPROC)GetExtensionProc("glIndexPointerEXT");
-    _glNormalPointerEXT   = (PFNGLNORMALPOINTEREXTPROC)GetExtensionProc("glNormalPointerEXT");
+    _glIndexPointerEXT = (PFNGLINDEXPOINTEREXTPROC)GetExtensionProc("glIndexPointerEXT");
+    _glNormalPointerEXT = (PFNGLNORMALPOINTEREXTPROC)GetExtensionProc("glNormalPointerEXT");
     _glTexCoordPointerEXT = (PFNGLTEXCOORDPOINTEREXTPROC)GetExtensionProc("glTexCoordPointerEXT");
-    _glVertexPointerEXT   = (PFNGLVERTEXPOINTEREXTPROC)GetExtensionProc("glVertexPointerEXT");
+    _glVertexPointerEXT = (PFNGLVERTEXPOINTEREXTPROC)GetExtensionProc("glVertexPointerEXT");
 }

@@ -17,61 +17,48 @@
 #include "stdio.h"
 #include "Trace.hpp"
 
-TextureManager::TextureManager( void):
-    _textureCount(0)
-{
+TextureManager::TextureManager(void) :
+    _textureCount(0) {
     XTRACE();
-    for( int i=1; i<MAX_TEXTURES; i++)
-    {
-        texArray[ i] = 0;
+    for (int i = 1; i < MAX_TEXTURES; i++) {
+        texArray[i] = 0;
     }
 }
 
-TextureManager::~TextureManager()
-{
+TextureManager::~TextureManager() {
     XTRACE();
     //We don't delete GLTextures here. We keep
     //track of textures, but don't own them.
 }
 
-int TextureManager::addTexture( GLTextureI *tex)
-{
-    int slot = findTexture( 0);
-    if( slot > 0)
-    {
-        texArray[ slot] = tex;
-        glGenTextures( 1, &(texIDs[ slot]));
+int TextureManager::addTexture(GLTextureI* tex) {
+    int slot = findTexture(0);
+    if (slot > 0) {
+        texArray[slot] = tex;
+        glGenTextures(1, &(texIDs[slot]));
         _textureCount++;
+    } else {
+        fprintf(stderr, "TextureManager is full!\n");
     }
-    else
-    {
-        fprintf(stderr,"TextureManager is full!\n");
-    }
-    return texIDs[ slot];
+    return texIDs[slot];
 }
 
-void TextureManager::removeTexture( GLTextureI *tex)
-{
-    int slot = findTexture( tex);
-    if( slot > 0)
-    {
-        texArray[ slot] = 0;
-        glDeleteTextures( 1, &(texIDs[ slot]));
+void TextureManager::removeTexture(GLTextureI* tex) {
+    int slot = findTexture(tex);
+    if (slot > 0) {
+        texArray[slot] = 0;
+        glDeleteTextures(1, &(texIDs[slot]));
         _textureCount--;
     }
 
-    if( _textureCount == 0)
-    {
+    if (_textureCount == 0) {
         TextureManagerS::cleanup();
     }
 }
 
-int TextureManager::findTexture( GLTextureI *tex)
-{
-    for( int i=1; i<MAX_TEXTURES; i++)
-    {
-        if( texArray[ i] == tex)
-        {
+int TextureManager::findTexture(GLTextureI* tex) {
+    for (int i = 1; i < MAX_TEXTURES; i++) {
+        if (texArray[i] == tex) {
             return i;
         }
     }

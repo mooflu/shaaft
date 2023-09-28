@@ -1,4 +1,5 @@
 #pragma once
+
 // Description:
 //   Helpers to count Frames Per Second.
 //
@@ -15,16 +16,16 @@
 //
 
 //General counter
-class WPP
-{
+class WPP {
 public:
-    WPP( float period = 1.0f);
-    void Update( void);
-    float GetCountPerPeriod( void){ return _cpp;}
+    WPP(float period = 1.0f);
+    void Update(void);
+
+    float GetCountPerPeriod(void) { return _cpp; }
 
 private:
-    WPP( const WPP&);
-    WPP &operator=(const WPP&);
+    WPP(const WPP&);
+    WPP& operator=(const WPP&);
 
     float _cpp;
     float _period;
@@ -34,18 +35,19 @@ private:
 
 //Special Frame-per-second counter
 //Note: static
-class FPS
-{
+class FPS {
 public:
-    static void Update( void){ _wpp.Update();}
-    static float GetFPS( void){ return _wpp.GetCountPerPeriod();}
-    static const char *GetFPSString( void);
+    static void Update(void) { _wpp.Update(); }
+
+    static float GetFPS(void) { return _wpp.GetCountPerPeriod(); }
+
+    static const char* GetFPSString(void);
 
 private:
     ~FPS();
-    FPS( void);
-    FPS( const FPS&);
-    FPS &operator=(const FPS&);
+    FPS(void);
+    FPS(const FPS&);
+    FPS& operator=(const FPS&);
 
     static WPP _wpp;
     static char _fpsString[10];

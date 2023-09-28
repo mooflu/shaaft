@@ -11,27 +11,22 @@
 
 #include "GameState.hpp"
 
-class EventWatcher
-{
+class EventWatcher {
 public:
-    EventWatcher( std::ostream &os):
-	_outStream(os)
-    {
-    }
+    EventWatcher(std::ostream& os) :
+        _outStream(os) {}
 
-    void notify( SDL_Event &event)
-    {
-	switch( event.type)
-	{
-	    case SDL_KEYDOWN:
-	    case SDL_KEYUP:
-		_outStream << GameState::gameTick << " ";
-		_outStream << (unsigned int)event.type << " ";
-		_outStream << (unsigned int)event.key.keysym.sym << "\n";
-		break;
-	}
+    void notify(SDL_Event& event) {
+        switch (event.type) {
+            case SDL_KEYDOWN:
+            case SDL_KEYUP:
+                _outStream << GameState::gameTick << " ";
+                _outStream << (unsigned int)event.type << " ";
+                _outStream << (unsigned int)event.key.keysym.sym << "\n";
+                break;
+        }
     }
 
 private:
-    std::ostream &_outStream;
+    std::ostream& _outStream;
 };

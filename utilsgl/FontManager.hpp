@@ -18,26 +18,23 @@
 #include "Singleton.hpp"
 #include "GLBitmapFont.hpp"
 
-class FontManager: public ResourceCache<GLBitmapFont>
-{
-friend class Singleton<FontManager>;
-public:
-    GLBitmapFont *getFont( const std::string &fontName)
-    {
-        return getResource( fontName);
-    }
+class FontManager : public ResourceCache<GLBitmapFont> {
+    friend class Singleton<FontManager>;
 
-    virtual void reload( void);
-    virtual void reset( void);
+public:
+    GLBitmapFont* getFont(const std::string& fontName) { return getResource(fontName); }
+
+    virtual void reload(void);
+    virtual void reset(void);
 
 protected:
-    virtual GLBitmapFont *load( const std::string &font);
+    virtual GLBitmapFont* load(const std::string& font);
 
 private:
-    FontManager( void);
+    FontManager(void);
     virtual ~FontManager();
-    FontManager( const FontManager&);
-    FontManager &operator=(const FontManager&);
+    FontManager(const FontManager&);
+    FontManager& operator=(const FontManager&);
 };
 
 typedef Singleton<FontManager> FontManagerS;

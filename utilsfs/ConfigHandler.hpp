@@ -16,16 +16,15 @@
 #include <string>
 #include <iostream>
 
-class ConfigHandler
-{
+class ConfigHandler {
 public:
     //when reading the config file, registered ConfigHandlers
     //will be notified for each line read.
-    virtual void handleLine( const std::string line) = 0;
+    virtual void handleLine(const std::string line) = 0;
 
     //when writing the config file, registered ConfigHandlers
     //will be notified with the output stream
-    virtual void save( std::ostream &o) = 0;
+    virtual void save(std::ostream& o) = 0;
 
-	virtual ~ConfigHandler() {}
+    virtual ~ConfigHandler() {}
 };

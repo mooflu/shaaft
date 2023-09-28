@@ -9,23 +9,23 @@
 
 #include "RandomI.hpp"
 
-class RandomKnuth: public RandomI
-{
-    static const unsigned int _RAND_MAX=0x7fffffff;
+class RandomKnuth : public RandomI {
+    static const unsigned int _RAND_MAX = 0x7fffffff;
+
 public:
+    RandomKnuth(void);
+    RandomKnuth(unsigned int seed1, unsigned int seed2);
 
-    RandomKnuth( void );
-    RandomKnuth( unsigned int seed1, unsigned int seed2);
-    virtual ~RandomKnuth(){}
+    virtual ~RandomKnuth() {}
 
-    unsigned int random( void);
-    float rangef0_1( void);
-    double ranged0_1( void);
+    unsigned int random(void);
+    float rangef0_1(void);
+    double ranged0_1(void);
 
 private:
-    void reset( unsigned int seed1, unsigned int seed2);
+    void reset(unsigned int seed1, unsigned int seed2);
 
     unsigned int _seed1;
     unsigned int _seed2;
-    unsigned int _randomNumbers[ 64];
+    unsigned int _randomNumbers[64];
 };

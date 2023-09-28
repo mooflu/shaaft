@@ -27,99 +27,72 @@ class VertexArray;
 
 const unsigned int MAX_BITMAPS = 512;
 
-class GLBitmapCollection
-{
+class GLBitmapCollection {
 
 public:
-    struct BitmapInfo
-    {
-        int xoff;   // offset from left top
-        int yoff;   // offset from left top
-        int xpos;   // position within texture
-        int ypos;   // position within texture
-        int width;  // width of bitmap
-        int height; // height of bitmap
+    struct BitmapInfo {
+        int xoff;    // offset from left top
+        int yoff;    // offset from left top
+        int xpos;    // position within texture
+        int ypos;    // position within texture
+        int width;   // width of bitmap
+        int height;  // height of bitmap
         char name[32];
     };
 
-    GLBitmapCollection( void);
+    GLBitmapCollection(void);
     virtual ~GLBitmapCollection();
 
     //Load bitmap and data file
-    virtual bool Load( const char *bitmapFile, const char *dataFile);
+    virtual bool Load(const char* bitmapFile, const char* dataFile);
 
     //Load single bitmap
-    bool Load( const char *bitmapFile);
+    bool Load(const char* bitmapFile);
 
     //Get index of bitmap with the given name
-    int getIndex( const std::string & name);
+    int getIndex(const std::string& name);
+
     //Bind texture
-    void bind( void){ _bitmapCollection->bind();}
+    void bind(void) { _bitmapCollection->bind(); }
 
     //Draw using bitmap index
-    void Draw(
-        unsigned int index,
-        const vec2f &ll,
-        const vec2f &ur);
+    void Draw(unsigned int index, const vec2f& ll, const vec2f& ur);
 
     //Draw using bitmap index
-    void Draw(
-        unsigned int index,
-        const float &x,
-        const float &y,
-        const float &scalex,
-        const float &scaley,
-        const float &z = 0.0);
+    void Draw(unsigned int index, const float& x, const float& y, const float& scalex, const float& scaley,
+              const float& z = 0.0);
 
     //Draw using bitmap name
-    void Draw(
-        const std::string &name,
-        const float &x,
-        const float &y,
-        const float &scalex,
-        const float &scaley,
-        const float &z = 0.0);
+    void Draw(const std::string& name, const float& x, const float& y, const float& scalex, const float& scaley,
+              const float& z = 0.0);
 
     //Draw centred using bitmap name
-    void DrawC(
-        const std::string &name,
-        const float &x,
-        const float &y,
-        const float &scalex,
-        const float &scaley,
-        const float &z = 0.0);
+    void DrawC(const std::string& name, const float& x, const float& y, const float& scalex, const float& scaley,
+               const float& z = 0.0);
 
     //Draw centred using bitmap index
-    void DrawC(
-        unsigned int index,
-        const float &x,
-        const float &y,
-        const float &scalex,
-        const float &scaley,
-        const float &z = 0.0);
+    void DrawC(unsigned int index, const float& x, const float& y, const float& scalex, const float& scaley,
+               const float& z = 0.0);
 
-    void setColor( const vec4f &color);
-    void setColor( float r, float g, float b, float a);
+    void setColor(const vec4f& color);
+    void setColor(float r, float g, float b, float a);
 
-    int getWidth( unsigned int index)
-    {
-//        if( index >= _bitmapCount) return 0;
-        return _bitmapInfo[ index].width;
-    }
-    int getHeight( unsigned int index)
-    {
-//        if( index >= _bitmapCount) return 0;
-        return _bitmapInfo[ index].height;
+    int getWidth(unsigned int index) {
+        //        if( index >= _bitmapCount) return 0;
+        return _bitmapInfo[index].width;
     }
 
-    void reset( void)
-    {
+    int getHeight(unsigned int index) {
+        //        if( index >= _bitmapCount) return 0;
+        return _bitmapInfo[index].height;
+    }
+
+    void reset(void) {
         _bitmapCollection->reset();
         resetVAO();
     }
 
-    void reload( void)
-    {
+    void reload(void) {
         _bitmapCollection->reload();
         initVAO();
     }
@@ -128,46 +101,36 @@ public:
 protected:
 #endif
     //Draw using bitmap info
-    inline void _Draw(
-        const BitmapInfo &bmInfo,
-        const float &x,
-        const float &y,
-        const float &z,
-        const float &scalex,
-        const float &scaley);
+    inline void _Draw(const BitmapInfo& bmInfo, const float& x, const float& y, const float& z, const float& scalex,
+                      const float& scaley);
 
     //Draw centred using bitmap info
-    inline void _DrawC(
-        const BitmapInfo &bmInfo,
-        const float &x,
-        const float &y,
-        const float &z,
-        const float &scalex,
-        const float &scaley);
+    inline void _DrawC(const BitmapInfo& bmInfo, const float& x, const float& y, const float& z, const float& scalex,
+                       const float& scaley);
 
     void _Draw(GLfloat squareVertices[], GLfloat squareTexCoords[]);
 
     void initVAO();
     void resetVAO();
 
-    bool LoadBitmapFile( const char *bitmapFile);
+    bool LoadBitmapFile(const char* bitmapFile);
 
-    GLTexture *_bitmapCollection;
+    GLTexture* _bitmapCollection;
     bool _bcNeedsCleanup;
-    BitmapInfo _bitmapInfo[ MAX_BITMAPS];
+    BitmapInfo _bitmapInfo[MAX_BITMAPS];
     unsigned int _bitmapCount;
     float _textureSize;
 
-    hash_map< const std::string, BitmapInfo*, hash<const std::string>, std::equal_to<const std::string> > _bitmapInfoMap;
+    hash_map<const std::string, BitmapInfo*, hash<const std::string>, std::equal_to<const std::string>> _bitmapInfoMap;
 
     vec4f _color;
 
-    VertexArray *_vao;
-    Buffer *_vIndexBuf;
-    Buffer *_vertBuf;
-    Buffer *_texCoordBuf;
+    VertexArray* _vao;
+    Buffer* _vIndexBuf;
+    Buffer* _vertBuf;
+    Buffer* _texCoordBuf;
 
 private:
-    GLBitmapCollection( const GLBitmapCollection&);
-    GLBitmapCollection &operator=(const GLBitmapCollection&);
+    GLBitmapCollection(const GLBitmapCollection&);
+    GLBitmapCollection& operator=(const GLBitmapCollection&);
 };

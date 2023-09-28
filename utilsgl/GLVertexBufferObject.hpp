@@ -24,27 +24,24 @@ using namespace vmml;
 class Buffer;
 class VertexArray;
 
-class GLVBO
-{
+class GLVBO {
 public:
     GLVBO();
     ~GLVBO();
 
     void reset();
-    void init( std::vector<vec4f> &verts,
-               std::vector<vec2f> &texels,
-               std::vector<vec4f> &colors );
+    void init(std::vector<vec4f>& verts, std::vector<vec2f>& texels, std::vector<vec4f>& colors);
 
-    void setColor( const vec4f &color);
-    void setColor( float r, float g, float b, float a);
+    void setColor(const vec4f& color);
+    void setColor(float r, float g, float b, float a);
 
     void draw(GLenum mode);
 
-    void DrawQuad( const vec4f &p1, const vec4f &p2, const vec4f &p3, const vec4f &p4);
-    void DrawQuad( const vec4f v[4]);
-    void DrawTexQuad( const vec4f v[4], const vec2f t[4]);
+    void DrawQuad(const vec4f& p1, const vec4f& p2, const vec4f& p3, const vec4f& p4);
+    void DrawQuad(const vec4f v[4]);
+    void DrawTexQuad(const vec4f v[4], const vec2f t[4]);
 
-    void DrawPoints( GLfloat *verts, int numVerts);
+    void DrawPoints(GLfloat* verts, int numVerts);
 
 private:
     bool _hasColor;
@@ -52,11 +49,11 @@ private:
 
     int _vertexCount;
 
-    VertexArray *_vao;
-    Buffer *_vIndexBuf;
-    Buffer *_vertBuf;
-    Buffer *_texBuf;
-    Buffer *_colorBuf;
+    VertexArray* _vao;
+    Buffer* _vIndexBuf;
+    Buffer* _vertBuf;
+    Buffer* _texBuf;
+    Buffer* _colorBuf;
 
     vec4f _color;
 };

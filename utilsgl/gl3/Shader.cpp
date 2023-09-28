@@ -6,28 +6,24 @@
 
 #include <vector>
 
-Shader::Shader(const GLenum type):
+Shader::Shader(const GLenum type) :
     _type(type),
     _compiled(false),
-    _compilationFailed(false)
-{
+    _compilationFailed(false) {
     _id = glCreateShader(type);
 }
 
-Shader::Shader(const GLenum type, const std::string &source):
+Shader::Shader(const GLenum type, const std::string& source) :
     _type(type),
     _source(source),
     _compiled(false),
-    _compilationFailed(false)
-{
+    _compilationFailed(false) {
     _id = glCreateShader(type);
 }
 
-Shader::~Shader()
-{
+Shader::~Shader() {
     LOG_INFO << "Deleting shader " << _id << "\n";
-    while (!_programs.empty())
-    {
+    while (!_programs.empty()) {
         (*_programs.begin())->detach(this);
     }
 
@@ -36,28 +32,23 @@ Shader::~Shader()
     glDeleteShader(_id);
 }
 
-GLuint Shader::id() const
-{
+GLuint Shader::id() const {
     return _id;
 }
 
-GLenum Shader::type() const
-{
+GLenum Shader::type() const {
     return _type;
 }
 
-GLint Shader::get(GLenum pname) const
-{
+GLint Shader::get(GLenum pname) const {
     GLint value = 0;
     glGetShaderiv(id(), pname, &value);
 
     return value;
 }
 
-void Shader::setSource(const std::string &source)
-{
-    if (source == _source)
-    {
+void Shader::setSource(const std::string& source) {
+    if (source == _source) {
         return;
     }
 
@@ -65,10 +56,8 @@ void Shader::setSource(const std::string &source)
     invalidate();
 }
 
-bool Shader::compile() const
-{
-    if (_compilationFailed)
-    {
+bool Shader::compile() const {
+    if (_compilationFailed) {
         return false;
     }
 
@@ -83,23 +72,19 @@ bool Shader::compile() const
     return _compiled;
 }
 
-bool Shader::isCompiled() const
-{
+bool Shader::isCompiled() const {
     return _compiled;
 }
 
-void Shader::invalidate()
-{
+void Shader::invalidate() {
     _compiled = false;
     _compilationFailed = false;
 }
 
-bool Shader::checkCompileStatus() const
-{
+bool Shader::checkCompileStatus() const {
     GLboolean status = static_cast<GLboolean>(get(GL_COMPILE_STATUS));
 
-    if (status == GL_FALSE)
-    {
+    if (status == GL_FALSE) {
         logError();
         return false;
     }
@@ -107,8 +92,7 @@ bool Shader::checkCompileStatus() const
     return true;
 }
 
-void Shader::logError() const
-{
+void Shader::logError() const {
     GLsizei length = get(GL_INFO_LOG_LENGTH);
     std::vector<char> log(length);
 
@@ -116,8 +100,5 @@ void Shader::logError() const
 
     std::string shaderLog(log.data(), length);
 
-    LOG_ERROR
-        << "Compiler error:" << std::endl
-        << _source << std::endl
-        << shaderLog;
+    LOG_ERROR << "Compiler error:" << std::endl << _source << std::endl << shaderLog;
 }

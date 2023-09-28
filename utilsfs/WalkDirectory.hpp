@@ -22,13 +22,11 @@
 #include <dirent.h>
 #endif
 
-struct DirEntry
-{
-    enum EntryEnum
-    {
-	eDirectory,
-	eFile,
-	eOther
+struct DirEntry {
+    enum EntryEnum {
+        eDirectory,
+        eFile,
+        eOther
     };
 
     std::string name;
@@ -36,13 +34,12 @@ struct DirEntry
     size_t size;
 };
 
-class WalkDirectory
-{
+class WalkDirectory {
 public:
-    WalkDirectory(const std::string &dir);
+    WalkDirectory(const std::string& dir);
     ~WalkDirectory();
 
-    bool getNext( DirEntry &dirEntry);
+    bool getNext(DirEntry& dirEntry);
 
 private:
 #ifdef _MSC_VER
@@ -51,7 +48,6 @@ private:
     WIN32_FIND_DATAA _dirEntry;
 #else
     std::string _directory;
-    DIR *_dirHandle;
+    DIR* _dirHandle;
 #endif
-
 };

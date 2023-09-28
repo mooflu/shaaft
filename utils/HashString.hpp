@@ -17,30 +17,25 @@
 
 #include <string>
 
-namespace HASH_NAMESPACE
-{
-    template<>
-	struct hash<const std::string>
-    {
-	//a simple hash function for string
-	int operator()(const std::string & s) const
-	{
-	    int hashval = 13*(int)s.size() + 5*s[(int)s.size()/2];
-    //        cout << "  > Hash of " << s << " = " << hashval << "\n";
-	    return hashval;
-	}
-    };
+namespace HASH_NAMESPACE {
+template <>
+struct hash<const std::string> {
+    //a simple hash function for string
+    int operator()(const std::string& s) const {
+        int hashval = 13 * (int)s.size() + 5 * s[(int)s.size() / 2];
+        //        cout << "  > Hash of " << s << " = " << hashval << "\n";
+        return hashval;
+    }
+};
 #ifdef IM_CLUNKY
-    template<>
-	struct hash<std::string>
-    {
-	//a simple hash function for string
-	int operator()(std::string s) const
-	{
-	    int hashval = 13*(int)s.size() + 5*s[(int)s.size()/2];
-    //        cout << "  > Hash of " << s << " = " << hashval << "\n";
-	    return hashval;
-	}
-    };
+template <>
+struct hash<std::string> {
+    //a simple hash function for string
+    int operator()(std::string s) const {
+        int hashval = 13 * (int)s.size() + 5 * s[(int)s.size() / 2];
+        //        cout << "  > Hash of " << s << " = " << hashval << "\n";
+        return hashval;
+    }
+};
 #endif
-} //namespace std
+}  // namespace HASH_NAMESPACE

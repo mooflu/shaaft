@@ -16,4 +16,4 @@
 #include "zStream.hpp"
 #include "SDL_rwops.h"
 
-extern SDL_RWops *RWops_from_ziStream( ziStream &zi);
+extern SDL_RWops* RWops_from_ziStream(ziStream& zi);

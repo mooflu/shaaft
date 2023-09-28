@@ -7,11 +7,10 @@
 
 #include "RandomI.hpp"
 
-class RandomSFMT : public RandomI
-{
+class RandomSFMT : public RandomI {
 public:
-    RandomSFMT( void );
-    RandomSFMT( unsigned int seed );
+    RandomSFMT(void);
+    RandomSFMT(unsigned int seed);
     virtual ~RandomSFMT();
 
     unsigned int random(void);
@@ -20,5 +19,5 @@ public:
 private:
     void reset(unsigned int seed);
 
-    void * _private;
+    void* _private;
 };
