@@ -20,6 +20,9 @@ file(GLOB UTILSGL_SRC *.cpp gl3/*.cpp)
 file(GLOB UTILSGL_HEADERS *.hpp gl3/*.hpp)
 
 add_library(utilsgl ${UTILSGL_SRC} ${UTILSGL_HEADERS})
+if (NOT BUILD_SHARED_LIBS)
+    set_target_properties (utilsgl PROPERTIES COMPILE_DEFINITIONS "GLEW_STATIC")
+endif()
 
 install(FILES ${UTILSGL_HEADERS} DESTINATION include/utilsgl)
 install(TARGETS utilsgl ARCHIVE DESTINATION lib)
