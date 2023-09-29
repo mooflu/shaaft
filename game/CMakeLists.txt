@@ -18,6 +18,19 @@ set(RESOURCE_DAT ${PROJECT_SOURCE_DIR}/resource.dat)
 set(EXTRA_LIBRARIES "")
 if(WIN32)
     set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/Shaaft.rc)
+    string(REPLACE "." "," VERSION_COMMA ${VERSION})
+    set_source_files_properties(${APP_ICON} PROPERTIES
+        COMPILE_DEFINITIONS "
+            VER_LEGALCOPYRIGHT_STR=\"Copyright (C) 2003-2023 Frank Becker\";
+            VER_COMPANYNAME_STR=\"mooflu.com\";
+            VER_FILEDESCRIPTION_STR=\"3D block stacking game\";
+            VER_FILEVERSION_STR=\"${VERSION}\";
+            VER_PRODUCTNAME_STR=\"Shaaft\";
+            VER_PRODUCTVERSION_STR=\"${VERSION}\";
+            VER_FILEVERSION=${VERSION_COMMA},0;
+            VER_PRODUCTVERSION=${VERSION_COMMA},0;
+        "
+    )
     set(EXTRA_LIBRARIES
         imm32.lib
         winmm.lib
