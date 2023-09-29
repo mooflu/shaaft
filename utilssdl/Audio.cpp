@@ -65,7 +65,7 @@ Audio::~Audio() {
     XTRACE();
     LOG_INFO << "Audio shutdown...\n";
 
-#if not defined(EMSCRIPTEN)
+#if !defined(EMSCRIPTEN)
     // trying to shutdown audio with music playing/fading out in emscripten hangs
     turnMusicOff();
 #endif
@@ -278,11 +278,11 @@ bool Audio::update(void) {
 
     updateVolume();
 
-    static float nextTime = Timer::getTime() + 0.5f;
-    float thisTime = Timer::getTime();
+    static double nextTime = Timer::getTime() + 0.5;
+    double thisTime = Timer::getTime();
     if (thisTime > nextTime) {
         updateSettings();
-        nextTime = thisTime + 0.5f;
+        nextTime = thisTime + 0.5;
     }
 
     return true;

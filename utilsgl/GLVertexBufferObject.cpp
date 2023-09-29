@@ -28,6 +28,7 @@
 GLVBO::GLVBO() :
     _hasColor(false),
     _hasTexture(false),
+    _vertexCount(0),
     _vao(0),
     _vIndexBuf(0),
     _vertBuf(0),
@@ -61,7 +62,7 @@ void GLVBO::reset() {
 }
 
 void GLVBO::init(std::vector<vec4f>& verts, std::vector<vec2f>& texels, std::vector<vec4f>& colors) {
-    _vertexCount = verts.size();
+    _vertexCount = (unsigned int)verts.size();
 
     if (texels.size() != 0) {
         _hasTexture = true;
@@ -121,7 +122,7 @@ void GLVBO::init(std::vector<vec4f>& verts, std::vector<vec2f>& texels, std::vec
     }
 
     GLuint* vi = new GLuint[verts.size()];
-    for (size_t i = 0; i < verts.size(); i++) {
+    for (GLuint i = 0; i < (GLuint)verts.size(); i++) {
         vi[i] = i;
     }
     _vIndexBuf->bind(GL_ELEMENT_ARRAY_BUFFER);

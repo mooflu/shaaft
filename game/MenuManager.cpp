@@ -136,7 +136,7 @@ void MenuManager::loadMenuLevel(void) {
         r.max.x = r.min.x + 48;
         r.max.y = r.min.y + 48;
 
-        Selectable* sel = new EscapeSelectable(true, r, 0.4);
+        Selectable* sel = new EscapeSelectable(true, r, 0.4f);
         _activeSelectables.insert(_activeSelectables.end(), sel);
     }
     _currentSelectable = _activeSelectables.begin();
@@ -149,11 +149,11 @@ void MenuManager::makeMenu(TiXmlNode* _node) {
 }
 
 bool MenuManager::update(void) {
-    static float nextTime = Timer::getTime() + 0.5f;
-    float thisTime = Timer::getTime();
+    static double nextTime = Timer::getTime() + 0.5;
+    double thisTime = Timer::getTime();
     if (thisTime > nextTime) {
         updateSettings();
-        nextTime = thisTime + 0.5f;
+        nextTime = thisTime + 0.5;
     }
 
     if (_delayedExit) {
@@ -170,18 +170,18 @@ bool MenuManager::update(void) {
     if (_showCursorAnim) {
 #ifndef IPHONE
         GLBitmapCollection* icons = BitmapManagerS::instance()->getBitmap("bitmaps/particles");
-        float iw = icons->getWidth(_pointer);
-        float ih = icons->getHeight(_pointer);
+        int iw = icons->getWidth(_pointer);
+        int ih = icons->getHeight(_pointer);
 #endif
         for (int j = 0; j < 20; j++) {
-            float interpMouseX = _prevMouseX + (_mouseX - _prevMouseX) * ((19.0 - (float)j) / 19.0);
-            float interpMouseY = _prevMouseY + (_mouseY - _prevMouseY) * ((19.0 - (float)j) / 19.0);
+            float interpMouseX = _prevMouseX + (_mouseX - _prevMouseX) * ((19.0f - (float)j) / 19.0f);
+            float interpMouseY = _prevMouseY + (_mouseY - _prevMouseY) * ((19.0f - (float)j) / 19.0f);
 #ifdef IPHONE
             float w = interpMouseX;  // + iw*0.5;
             float h = interpMouseY;  // - ih*0.5;
 #else
-            float w = interpMouseX + iw * 1.4;
-            float h = interpMouseY - ih * 2.4;
+            float w = interpMouseX + iw * 1.4f;
+            float h = interpMouseY - ih * 2.4f;
 #endif
             _cursorAnim.newParticle("Spark", w, h, 0);
         }
@@ -206,8 +206,8 @@ bool MenuManager::draw(void) {
     VideoBase& video = *VideoBaseS::instance();
     glViewport(0, 0, video.getWidth(), video.getHeight());
 
-    float orthoHeight = 750.0;
-    float orthoWidth = (750.0 * (float)video.getWidth()) / (float)video.getHeight();
+    float orthoHeight = 750.0f;
+    float orthoWidth = (750.0f * (float)video.getWidth()) / (float)video.getHeight();
 
     glm::mat4 projM = glm::ortho(-0.5f, orthoWidth + 0.5f, -0.5f, orthoHeight + 0.5f, -1000.0f, 1000.0f);
     glm::mat4 modelM(1.0f);
@@ -239,28 +239,28 @@ bool MenuManager::draw(void) {
     GLBitmapCollection* menuBoard = BitmapManagerS::instance()->getBitmap("bitmaps/menuBoard");
     menuBoard->bind();
 
-    float boardScale = (float)min(orthoWidth, orthoHeight) * 0.8 / 512.0;
-    _boardOffset.x = (int)((orthoWidth - (float)menuBoard->getWidth(_board) * boardScale) / 2.0);
-    _boardOffset.y = (int)((orthoHeight - (float)menuBoard->getHeight(_board) * boardScale) / 2.0);
+    float boardScale = (float)min(orthoWidth, orthoHeight) * 0.8f / 512.0f;
+    _boardOffset.x = (int)((orthoWidth - (float)menuBoard->getWidth(_board) * boardScale) / 2.0f);
+    _boardOffset.y = (int)((orthoHeight - (float)menuBoard->getHeight(_board) * boardScale) / 2.0f);
 
     menuBoard->setColor(vec4f(1.0, 1.0, 1.0, 0.9f));
-    menuBoard->Draw(_board, _boardOffset.x, _boardOffset.y, boardScale, boardScale);
+    menuBoard->Draw(_board, (float)_boardOffset.x, (float)_boardOffset.y, boardScale, boardScale);
 
     TiXmlElement* elem = _currentMenu->ToElement();
     const char* val = elem->Attribute("Text");
     if (val) {
-        float titleScale = 1.5;
+        float titleScale = 1.5f;
         GLBitmapFont& fontShadow = *(FontManagerS::instance()->getFont("bitmaps/menuShadow"));
         GLBitmapFont& fontWhite = *(FontManagerS::instance()->getFont("bitmaps/menuWhite"));
         float w = fontWhite.GetWidth(val, titleScale);
 
         fontShadow.setColor(1.0, 1.0, 1.0, 1.0);
-        fontShadow.DrawString(val, _boardOffset.x + (menuBoard->getWidth(_board) * boardScale - w) / 2.0 + 9,
-                              _boardOffset.y + 530 - 9, titleScale, titleScale);
+        fontShadow.DrawString(val, _boardOffset.x + (menuBoard->getWidth(_board) * boardScale - w) / 2.0f + 9.0f,
+                              _boardOffset.y + 530.0f - 9.0f, titleScale, titleScale);
 
         fontWhite.setColor(1.0, 1.0, 1.0, 1.0);
-        fontWhite.DrawString(val, _boardOffset.x + (menuBoard->getWidth(_board) * boardScale - w) / 2.0,
-                             _boardOffset.y + 530, titleScale, titleScale);
+        fontWhite.DrawString(val, _boardOffset.x + (menuBoard->getWidth(_board) * boardScale - w) / 2.0f,
+                             _boardOffset.y + 530.0f, titleScale, titleScale);
     }
 
     list<Selectable*>::iterator i;
@@ -385,8 +385,8 @@ void MenuManager::input(const Trigger& trigger, const bool& isDown) {
 
                 _mouseX += trigger.fData1;
                 _mouseY += trigger.fData2;
-                Clamp(_mouseX, 0.0f, (750.0 * (float)video.getWidth()) / (float)video.getHeight());
-                Clamp(_mouseY, 0.0f, 750.0);
+                Clamp(_mouseX, 0.0f, (750.0f * (float)video.getWidth()) / (float)video.getHeight());
+                Clamp(_mouseY, 0.0f, 750.0f);
 #endif
                 activateSelectableUnderMouse();
             } break;

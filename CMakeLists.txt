@@ -21,6 +21,9 @@ string(STRIP ${VERSION} VERSION)
 message("VERSION: ${VERSION}")
 
 add_definitions(-DPACKAGE="Shaaft" -DVERSION="${VERSION}" -DSTATIC_LIB)
+if(MSVC)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+endif()
 
 if(EMSCRIPTEN)
     string(REGEX REPLACE "\n *" " " EMSCRIPTEN_FLAGS "

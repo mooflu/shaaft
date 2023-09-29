@@ -47,7 +47,7 @@ private:
     bool _hasColor;
     bool _hasTexture;
 
-    int _vertexCount;
+    unsigned int _vertexCount;
 
     VertexArray* _vao;
     Buffer* _vIndexBuf;

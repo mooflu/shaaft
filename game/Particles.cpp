@@ -96,7 +96,7 @@ void Spark::init(ParticleInfo* p) {
     p->velocity.y = ((float)(_random.random() & 0xff) - 127) * 0.01f * GAME_STEP_SCALE;
 
     p->extra.x = 0.01f * GAME_STEP_SCALE;
-    p->extra.z = 0.4;
+    p->extra.z = 0.4f;
 
     //init previous values for interpolation
     updatePrevs(p);
@@ -128,7 +128,7 @@ void Spark::draw(ParticleInfo* p) {
     ParticleInfo pi;
     interpolateOther(p, pi);
 
-    _bitmaps->setColor(1.0, 0.8 - pi.extra.z * 2.0, 0.0, pi.extra.z);
+    _bitmaps->setColor(1.0f, 0.8f - pi.extra.z * 2.0f, 0.0f, pi.extra.z);
 
     bindTexture();
     _bitmaps->DrawC(_bmIndex, pi.position.x, pi.position.y, 1.0, 1.0);
@@ -262,8 +262,8 @@ void ScoreHighlight::draw(ParticleInfo* p) {
     glm::mat4& modelview = MatrixStack::model.top();
     glm::mat4& projection = MatrixStack::projection.top();
 
-    pi.position.x -= _font->GetWidth(p->text.c_str(), pi.extra.y) / 2.0;
-    pi.position.y -= _font->GetHeight(p->extra.y) / 2.0;
+    pi.position.x -= _font->GetWidth(p->text.c_str(), pi.extra.y) / 2.0f;
+    pi.position.y -= _font->GetHeight(p->extra.y) / 2.0f;
 
     modelview = glm::translate(modelview, glm::vec3(pi.position.x, pi.position.y, pi.position.z));
     {

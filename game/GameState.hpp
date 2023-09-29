@@ -21,9 +21,9 @@ struct GameState {
 
     static bool showFPS;
 
-    static float startOfStep;
+    static double startOfStep;
     static float frameFractionOther;
-    static float startOfGameStep;
+    static double startOfGameStep;
     static float frameFraction;
     static unsigned int gameTick;
 
@@ -31,7 +31,7 @@ struct GameState {
     static PausableTimer stopwatch;
     static R250 r250;
     static Context::ContextEnum context;
-    static float secondsPlayed;
+    static double secondsPlayed;
 
     static float prevShaftPitch;
     static float prevShaftYaw;

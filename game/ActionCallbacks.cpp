@@ -17,10 +17,10 @@ void MotionAction::performAction(Trigger& trigger, bool /*isDown*/) {
     switch (GameState::context) {
 #ifndef IPHONE
         case Context::eInGame:
-            GameState::shaftPitch += (float)(trigger.fData1) / 3.0;
+            GameState::shaftPitch += (float)(trigger.fData1) / 3.0f;
             Clamp(GameState::shaftPitch, -40.0, 40.0);
 
-            GameState::shaftYaw -= (float)(trigger.fData2) / 3.0;
+            GameState::shaftYaw -= (float)(trigger.fData2) / 3.0f;
             Clamp(GameState::shaftYaw, -40.0, 40.0);
             break;
 #endif

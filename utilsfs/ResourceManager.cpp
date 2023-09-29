@@ -108,7 +108,7 @@ int ResourceManager::getResourceSize(const string& name) {
         return -1;
     }
 
-    int size = PHYSFS_fileLength(physFile);
+    int size = (int)PHYSFS_fileLength(physFile);
     PHYSFS_close(physFile);
     return size;
 }

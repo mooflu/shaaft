@@ -183,7 +183,7 @@ void BlockView::update(void) {
 void BlockView::updateSettings(void) {
     float rotSpeed = 7.0;
     ConfigS::instance()->getFloat("rotationSpeed", rotSpeed);
-    _rotationSpeed = 5.0 + rotSpeed * 1.5;
+    _rotationSpeed = 5.0f + rotSpeed * 1.5f;
 
     int moveSpeed = 5;
     ConfigS::instance()->getInteger("moveSpeed", moveSpeed);
@@ -319,11 +319,11 @@ void BlockView::initGL3Test() {
 //--------------------------------------------------------------------------------------
 //Drawing
 void BlockView::draw(void) {
-    static float nextTime = Timer::getTime() + 0.5f;
-    float thisTime = Timer::getTime();
+    static double nextTime = Timer::getTime() + 0.5;
+    double thisTime = Timer::getTime();
     if (thisTime > nextTime) {
         updateSettings();
-        nextTime = thisTime + 0.5f;
+        nextTime = thisTime + 0.5;
     }
     VideoBase& video = *VideoBaseS::instance();
     float gf = GameState::frameFraction;
@@ -343,7 +343,7 @@ void BlockView::draw(void) {
     glm::mat4& projection = MatrixStack::projection.top();
     projection = glm::mat4(1.0);
 
-    const float fov = 53.13;
+    const float fov = 53.13f;
     projection = glm::perspective(glm::radians(fov), 1.0f, 2.0f, 2000.0f);
 #if 0
     projection = glm::frustum<float>(
@@ -496,7 +496,7 @@ void BlockView::draw(void) {
     int statsOffset = video.getWidth() - blockView / 3;
     glViewport(statsOffset, 0, blockView / 3, video.getHeight());
 
-    projection = glm::frustum<float>(
+    projection = glm::frustum<double>(
         (1.0/4.0)*(-2.0*tan(fov * M_PI / 360.0)),   //xmin
         (1.0/4.0)*( 2.0*tan(fov * M_PI / 360.0)),   //xmax
         -2.0*tan(fov * M_PI / 360.0),               //ymin
@@ -542,7 +542,7 @@ void BlockView::draw(void) {
     }
 
     scoreBoard->setColor(1.0, 1.0, 1.0, 1.0);
-    scoreBoard->Draw(_scoreBoard, 0, 0, 0.73, 0.733);
+    scoreBoard->Draw(_scoreBoard, 0, 0, 0.73f, 0.733f);
     modelview = glm::translate(modelview, glm::vec3(0, 0, 1));
     {
         Program* prog = ProgramManagerS::instance()->getProgram("texture");
@@ -552,23 +552,23 @@ void BlockView::draw(void) {
     }
 
     int mooImage = _model.HachooInProgress() ? _mooChoo : _moo;
-    scoreBoard->Draw(mooImage, 98, 625, 0.73, 0.733);
+    scoreBoard->Draw(mooImage, 98, 625, 0.73f, 0.733f);
 
     glDisable(GL_DEPTH_TEST);
 
-    float barLength = _model.HachooSecsLeft() * (130.0 / _model.HachooDuration());
+    float barLength = (float)(_model.HachooSecsLeft() * (130.0 / _model.HachooDuration()));
     if (barLength > 1e-3) {
-        _font->DrawString("2x", 215, 625, 0.5, 0.5);
+        _font->DrawString("2x", 215, 625, 0.5f, 0.5f);
     }
 
     vec4f v[4] = {
-        vec4f(          104.0, 619, 0, 1),
-        vec4f(          104.0, 624, 0, 1),
-        vec4f(barLength+104.0, 624, 0, 1),
-        vec4f(barLength+104.0, 619, 0, 1),
+        vec4f(          104.0f, 619, 0, 1),
+        vec4f(          104.0f, 624, 0, 1),
+        vec4f(barLength+104.0f, 624, 0, 1),
+        vec4f(barLength+104.0f, 619, 0, 1),
     };
     GLVBO vbo;
-    vbo.setColor(1.0, 1.0, 1.0, 0.4);
+    vbo.setColor(1.0f, 1.0f, 1.0f, 0.4f);
     vbo.DrawQuad(v);
 
     MatrixStack::model.pop();
@@ -588,23 +588,23 @@ void BlockView::draw(void) {
 
     _font->setColor(1.0, 1.0, 1.0, 1.0);
     sprintf(num, "%d", _model.getLevel());
-    _font->DrawString(num, 30, 640, 1.7, 1.7);
+    _font->DrawString(num, 30, 640, 1.7f, 1.7f);
     sprintf(num, "LEVEL");
-    _font->DrawString(num, 25, 693, 0.5, 0.5);
+    _font->DrawString(num, 25, 693, 0.5f, 0.5f);
 
     float deltaY1 = 52;
     float deltaY2 = 25;
     float xOffset = 110;
     float yOffset = 387;
     sprintf(num, "%dx%dx%d", _model.getWidth(), _model.getHeight(), _model.getDepth());
-    _font->DrawString(num, xOffset, yOffset, 0.6, 0.6);
+    _font->DrawString(num, xOffset, yOffset, 0.6f, 0.6f);
     yOffset -= deltaY2;
-    _font->DrawString(_model.getBlockset().c_str(), xOffset, yOffset, 0.6, 0.6);
+    _font->DrawString(_model.getBlockset().c_str(), xOffset, yOffset, 0.6f, 0.6f);
 
     yOffset -= deltaY1;
     sprintf(num, "HiScore:");
     _font->setColor(1.0f, 0.852f, 0.0f, 1.0f);
-    _font->DrawString(num, xOffset, yOffset, 0.6, 0.6);
+    _font->DrawString(num, xOffset, yOffset, 0.6f, 0.6f);
     yOffset -= deltaY2;
     if (_model.isPracticeMode()) {
         sprintf(num, "Practice");
@@ -612,12 +612,12 @@ void BlockView::draw(void) {
         sprintf(num, "%d", ScoreKeeperS::instance()->getHighScore());
     }
     _font->setColor(1.0, 1.0, 1.0, 1.0);
-    _font->DrawString(num, xOffset, yOffset, 0.6, 0.6);
+    _font->DrawString(num, xOffset, yOffset, 0.6f, 0.6f);
 
     yOffset -= deltaY1;
     sprintf(num, "Score:");
     _font->setColor(1.0f, 0.852f, 0.0f, 1.0f);
-    _font->DrawString(num, xOffset, yOffset, 0.6, 0.6);
+    _font->DrawString(num, xOffset, yOffset, 0.6f, 0.6f);
     yOffset -= deltaY2;
     if (_model.isPracticeMode()) {
         sprintf(num, "Practice");
@@ -625,43 +625,43 @@ void BlockView::draw(void) {
         sprintf(num, "%d", ScoreKeeperS::instance()->getCurrentScore());
     }
     _font->setColor(1.0, 1.0, 1.0, 1.0);
-    _font->DrawString(num, xOffset, yOffset, 0.6, 0.6);
+    _font->DrawString(num, xOffset, yOffset, 0.6f, 0.6f);
 
     yOffset -= deltaY1;
     sprintf(num, "Cubes:");
     _font->setColor(1.0f, 0.852f, 0.0f, 1.0f);
-    _font->DrawString(num, xOffset, yOffset, 0.6, 0.6);
+    _font->DrawString(num, xOffset, yOffset, 0.6f, 0.6f);
     yOffset -= deltaY2;
     sprintf(num, "%d", _model.getElementCount());
     _font->setColor(1.0, 1.0, 1.0, 1.0);
-    _font->DrawString(num, xOffset, yOffset, 0.6, 0.6);
+    _font->DrawString(num, xOffset, yOffset, 0.6f, 0.6f);
 
     yOffset -= deltaY1;
     sprintf(num, "Time:");
     _font->setColor(1.0f, 0.852f, 0.0f, 1.0f);
-    _font->DrawString(num, xOffset, yOffset, 0.6, 0.6);
+    _font->DrawString(num, xOffset, yOffset, 0.6f, 0.6f);
     yOffset -= deltaY2;
-    float fsecs = GameState::secondsPlayed;
+    double fsecs = GameState::secondsPlayed;
     int minutes = (int)(fsecs / 60.0);
     int secs = (int)(fsecs) % 60;
     sprintf(num, "%02d:%02d", minutes, secs);
     _font->setColor(1.0, 1.0, 1.0, 1.0);
-    _font->DrawString(num, xOffset, yOffset, 0.6, 0.6);
+    _font->DrawString(num, xOffset, yOffset, 0.6f, 0.6f);
 
     string cr = "Copyright ~ 2023 Frank Becker";
-    textWidth = _font->GetWidth(cr.c_str(), 0.4);
+    textWidth = _font->GetWidth(cr.c_str(), 0.4f);
     _font->setColor(1.0, 1.0, 1.0, 0.5);
-    _font->DrawString(cr.c_str(), orthoWidth - textWidth - 5, 22.0, 0.4, 0.5);
+    _font->DrawString(cr.c_str(), orthoWidth - textWidth - 5, 22.0, 0.4f, 0.5f);
 
     string gVersion = " " + GAMEVERSION;
-    textWidth = _font->GetWidth(gVersion.c_str(), 0.4);
-    _font->DrawString(gVersion.c_str(), orthoWidth - textWidth - 5, 8, 0.4, 0.4);
+    textWidth = _font->GetWidth(gVersion.c_str(), 0.4f);
+    _font->DrawString(gVersion.c_str(), orthoWidth - textWidth - 5, 8, 0.4f, 0.4f);
 
     //restore viewport
     glViewport(0, 0, video.getWidth(), video.getHeight());
 
     if (GameState::context != Context::eMenu) {
-        float orthoWidth2 = (750.0 * (float)video.getWidth()) / (float)video.getHeight();
+        float orthoWidth2 = (750.0f * (float)video.getWidth()) / (float)video.getHeight();
 
         projection = glm::ortho(-0.5f, orthoWidth2 + 0.5f, -0.5f, orthoHeight + 0.5f, -1000.0f, 1000.0f);
         modelview = glm::mat4(1.0);
@@ -677,27 +677,27 @@ void BlockView::draw(void) {
         blackBox->bind();
 
         if (GameState::context == Context::ePaused) {
-            float boardScale = (float)min(orthoWidth2, orthoHeight) * 0.5 / 512.0;
+            float boardScale = (float)min(orthoWidth2, orthoHeight) * 0.5f / 512.0f;
             Point2Di boardOffset;
-            boardOffset.x = (int)((orthoWidth2 - (float)blackBox->getWidth(_blackBox) * boardScale) / 2.0);
-            boardOffset.y = (int)((orthoHeight - (float)blackBox->getHeight(_blackBox) * boardScale) / 2.0);
+            boardOffset.x = (int)((orthoWidth2 - (float)blackBox->getWidth(_blackBox) * boardScale) / 2.0f);
+            boardOffset.y = (int)((orthoHeight - (float)blackBox->getHeight(_blackBox) * boardScale) / 2.0f);
 
             blackBox->setColor(1.0, 1.0, 1.0, 1.0);
-            blackBox->Draw(_pausedBox, boardOffset.x, boardOffset.y, boardScale, boardScale);
+            blackBox->Draw(_pausedBox, (float)boardOffset.x, (float)boardOffset.y, boardScale, boardScale);
         }
 
         if (!GameState::isAlive) {
-            float boardScale = (float)min(orthoWidth2, orthoHeight) * 1.0 / 512.0;
+            float boardScale = (float)min(orthoWidth2, orthoHeight) * 1.0f / 512.0f;
             Point2Di boardOffset;
-            boardOffset.x = (int)((orthoWidth2 - (float)blackBox->getWidth(_blackBox) * boardScale) / 2.0);
-            boardOffset.y = (int)((orthoHeight - (float)blackBox->getHeight(_blackBox) * boardScale) / 2.0);
+            boardOffset.x = (int)((orthoWidth2 - (float)blackBox->getWidth(_blackBox) * boardScale) / 2.0f);
+            boardOffset.y = (int)((orthoHeight - (float)blackBox->getHeight(_blackBox) * boardScale) / 2.0f);
 
             if (ScoreKeeperS::instance()->currentIsTopTen()) {
-                boardOffset.y += 180.0f;
+                boardOffset.y += 180;
             }
 
             blackBox->setColor(1.0, 1.0, 1.0, 0.7f);
-            blackBox->Draw(_blackBox, boardOffset.x, boardOffset.y, boardScale, boardScale);
+            blackBox->Draw(_blackBox, (float)boardOffset.x, (float)boardOffset.y, boardScale, boardScale);
 
             if (ScoreKeeperS::instance()->currentIsTopTen()) {
                 if (!_textInput.isOn()) {
@@ -707,12 +707,12 @@ void BlockView::draw(void) {
 
                 string topTenFinish = "Top Ten Finish!";
                 _font->setColor(1.0f, 1.0f, 1.0f, 1.0f);
-                _font->DrawString(topTenFinish.c_str(), boardOffset.x + 60, boardOffset.y + 130, 1.2f, 1.2f);
+                _font->DrawString(topTenFinish.c_str(), boardOffset.x + 60.0f, boardOffset.y + 130.0f, 1.2f, 1.2f);
 
                 string pname = "Enter name: ";
                 pname += _textInput.getText() + "_";
                 _font->setColor(1.0f, 0.852f, 0.0f, 1.0f);
-                _font->DrawString(pname.c_str(), boardOffset.x + 60, boardOffset.y + 50, 1.2f, 1.2f);
+                _font->DrawString(pname.c_str(), boardOffset.x + 60.0f, boardOffset.y + 50.0f, 1.2f, 1.2f);
 
                 ScoreKeeperS::instance()->setNameForCurrent(currentText);
             } else {
@@ -722,12 +722,12 @@ void BlockView::draw(void) {
                 }
 
                 _font->setColor(1.0, 1.0, 1.0, 1.0);
-                _font->DrawString(gameOver.c_str(), boardOffset.x + 90, boardOffset.y + 130, 1.2f, 1.2f);
+                _font->DrawString(gameOver.c_str(), boardOffset.x + 90.0f, boardOffset.y + 130.0f, 1.2f, 1.2f);
 
                 string toMenu = "Press ESC to return to menu";
                 textWidth = _font->GetWidth(toMenu.c_str(), 1.0);
                 _font->setColor(1.0f, 0.852f, 0.0f, 1.0f);
-                _font->DrawString(toMenu.c_str(), boardOffset.x + 90, boardOffset.y + 50, 1.2f, 1.2f);
+                _font->DrawString(toMenu.c_str(), boardOffset.x + 90.0f, boardOffset.y + 50.0f, 1.2f, 1.2f);
             }
         } else {
             ParticleGroupManagerS::instance()->draw();
@@ -749,12 +749,12 @@ void BlockView::drawIndicator(void) {
         int count = _model.numBlocksInPlane(i);
 
         if (!count) {
-            _indicator->setColor(0.2, 0.2, 0.2, 1.0);
+            _indicator->setColor(0.2f, 0.2f, 0.2f, 1.0f);
         } else {
             _indicator->setColor(getColor(i));
         }
 
-        float yOffset = (float)i * 2.5;
+        float yOffset = (float)i * 2.5f;
 
         MatrixStack::model.push(MatrixStack::model.top());
         glm::mat4& modelview = MatrixStack::model.top();
@@ -986,7 +986,7 @@ vec4f BlockView::getColor(int p) {
             return vec4f(1.0, 0.0, 1.0, 1.0);
             break;
         case 5:
-            return vec4f(1.0, 0.7, 0.0, 1.0);
+            return vec4f(1.0, 0.7f, 0.0, 1.0);
             break;
         case 6:
             return vec4f(0.5, 0.5, 0.5, 1.0);
@@ -1098,7 +1098,7 @@ void BlockView::drawElement(Point3Di* p, BlockType blockType) {
         GLBitmapCollection* scoreBoard = BitmapManagerS::instance()->getBitmap("bitmaps/scoreBoard");
         scoreBoard->bind();
 
-        float hintSize = 0.6;
+        float hintSize = 0.6f;
         MatrixStack::model.push(MatrixStack::model.top());
         glm::mat4& modelview = MatrixStack::model.top();
 
@@ -1111,7 +1111,7 @@ void BlockView::drawElement(Point3Di* p, BlockType blockType) {
         glUniformMatrix4fv(modelViewMatrixLoc, 1, GL_FALSE, glm::value_ptr(MatrixStack::projection.top() * modelview));
 
         scoreBoard->setColor(1.0, 1.0, 1.0, 1.0f);
-        scoreBoard->Draw(_target, 0, 0, 0.18 * hintSize, 0.18 * hintSize);
+        scoreBoard->Draw(_target, 0, 0, 0.18f * hintSize, 0.18f * hintSize);
 
         MatrixStack::model.pop();
     } else {

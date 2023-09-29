@@ -18,18 +18,18 @@
 //General counter
 class WPP {
 public:
-    WPP(float period = 1.0f);
+    WPP(double period = 1.0);
     void Update(void);
 
-    float GetCountPerPeriod(void) { return _cpp; }
+    double GetCountPerPeriod(void) { return _cpp; }
 
 private:
     WPP(const WPP&);
     WPP& operator=(const WPP&);
 
-    float _cpp;
-    float _period;
-    float _oldTime;
+    double _cpp;
+    double _period;
+    double _oldTime;
     int _count;
 };
 
@@ -39,7 +39,7 @@ class FPS {
 public:
     static void Update(void) { _wpp.Update(); }
 
-    static float GetFPS(void) { return _wpp.GetCountPerPeriod(); }
+    static double GetFPS(void) { return _wpp.GetCountPerPeriod(); }
 
     static const char* GetFPSString(void);
 

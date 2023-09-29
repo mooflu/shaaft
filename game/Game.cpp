@@ -252,7 +252,7 @@ void Game::startNewGame(void) {
 
 void Game::updateOtherLogic(void) {
     int stepCount = 0;
-    float currentTime = GameState::mainTimer.getTime();
+    double currentTime = GameState::mainTimer.getTime();
     while ((currentTime - GameState::startOfStep) > GAME_STEP_SIZE) {
         if (GameState::context == Context::eMenu) {
             MenuManagerS::instance()->update();
@@ -274,7 +274,7 @@ void Game::updateOtherLogic(void) {
         InputS::instance()->update();
     }
 
-    GameState::frameFractionOther = (currentTime - GameState::startOfStep) / GAME_STEP_SIZE;
+    GameState::frameFractionOther = (float)((currentTime - GameState::startOfStep) / GAME_STEP_SIZE);
 
     if (stepCount > 1) {
         //LOG_WARNING << "Skipped " << stepCount << " frames." << endl;
@@ -294,7 +294,7 @@ void Game::updateOtherLogic(void) {
 
 void Game::updateInGameLogic(void) {
     int stepCount = 0;
-    float currentGameTime = GameState::stopwatch.getTime();
+    double currentGameTime = GameState::stopwatch.getTime();
     while ((currentGameTime - GameState::startOfGameStep) > GAME_STEP_SIZE) {
         GameState::prevShaftPitch = GameState::shaftPitch;
         GameState::prevShaftYaw = GameState::shaftYaw;
@@ -321,7 +321,7 @@ void Game::updateInGameLogic(void) {
         }
     }
 
-    GameState::frameFraction = (currentGameTime - GameState::startOfGameStep) / GAME_STEP_SIZE;
+    GameState::frameFraction = (float)((currentGameTime - GameState::startOfGameStep) / GAME_STEP_SIZE);
 
     if (stepCount > 1) {
         if (GameState::frameFraction > 1.0) {

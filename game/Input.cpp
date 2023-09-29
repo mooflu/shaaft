@@ -64,7 +64,7 @@ const vec2f& Input::mousePos(void) {
 }
 
 void Input::resetMousePosition() {
-    _mousePos = vec2f(VideoBaseS::instance()->getWidth(), VideoBaseS::instance()->getHeight()) / 2;
+    _mousePos = vec2f((float)VideoBaseS::instance()->getWidth(), (float)VideoBaseS::instance()->getHeight()) / 2;
 }
 
 bool Input::init(void) {
@@ -505,8 +505,8 @@ bool Input::tryGetTrigger(Trigger& trigger, bool& isDown) {
 
         case SDL_MOUSEMOTION:
             trigger.type = eMotionTrigger;
-            trigger.fData1 = event.motion.xrel;
-            trigger.fData2 = -event.motion.yrel;
+            trigger.fData1 = (float)event.motion.xrel;
+            trigger.fData2 = (float)-event.motion.yrel;
             break;
 
         case SDL_MOUSEWHEEL:
@@ -522,7 +522,7 @@ bool Input::tryGetTrigger(Trigger& trigger, bool& isDown) {
             trigger.type = eTextInputTrigger;
             trigger.text = event.text.text;
             trigger.data1 = -1;
-            trigger.data2 = strlen(event.text.text);
+            trigger.data2 = (int)strlen(event.text.text);
             break;
 
         case SDL_TEXTEDITING:
@@ -550,11 +550,11 @@ bool Input::update(void) {
     bool isDown;
     Trigger trigger;
 
-    static float nextTime = Timer::getTime() + 0.5f;
-    float thisTime = Timer::getTime();
+    static double nextTime = Timer::getTime() + 0.5;
+    double thisTime = Timer::getTime();
     if (thisTime > nextTime) {
         updateMouseSettings();
-        nextTime = thisTime + 0.5f;
+        nextTime = thisTime + 0.5;
     }
 
     _mouseDelta = vec2f(0, 0);
@@ -646,8 +646,8 @@ bool Input::update(void) {
 
     if ((fabs(_mouseDelta.x()) > 1.0e-10) || (fabs(_mouseDelta.y()) > 1.0e-10)) {
         _mousePos += _mouseDelta;
-        Clampf(_mousePos.x(), 0, VideoBaseS::instance()->getWidth());
-        Clampf(_mousePos.y(), 0, VideoBaseS::instance()->getHeight());
+        Clampf(_mousePos.x(), 0, (float)VideoBaseS::instance()->getWidth());
+        Clampf(_mousePos.y(), 0, (float)VideoBaseS::instance()->getHeight());
 
         trigger.fData1 = _mouseDelta.x();
         trigger.fData2 = _mouseDelta.y();

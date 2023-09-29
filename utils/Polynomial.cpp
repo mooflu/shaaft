@@ -616,7 +616,7 @@ bool fxShift(int NN, int L2, const vector<Complex>& P, vector<Complex>& QP, vect
 vector<Complex> Polynomial::Solve(vector<Complex>& coeffs) {
     vector<Complex> solutions;
 
-    int NN = coeffs.size();
+    unsigned int NN = (unsigned int)coeffs.size();
     unsigned int degree = NN - 1;
 
     //  Helper arrays
@@ -637,14 +637,14 @@ vector<Complex> Polynomial::Solve(vector<Complex>& coeffs) {
     }
 
     //  Calculate the modulus of the coefficients.
-    for (int i = 0; i < NN; ++i) {
+    for (size_t i = 0; i < NN; ++i) {
         SH[i].real = cmod(coeffs[i]);
     }
 
     //  Scale the polynomial if needed.
     double bound = scale(NN, SH);
     if (bound != 1.0) {
-        for (int i = 0; i < NN; ++i) {
+        for (size_t i = 0; i < NN; ++i) {
             coeffs[i] *= bound;
         }
     }
@@ -664,7 +664,7 @@ vector<Complex> Polynomial::Solve(vector<Complex>& coeffs) {
         }
 
         //  Calculate a lower bound on the modulus of the zeros.
-        for (int i = 0; i < NN; ++i) {
+        for (size_t i = 0; i < NN; ++i) {
             SH[i].real = cmod(coeffs[i]);
         }
 
@@ -692,7 +692,7 @@ vector<Complex> Polynomial::Solve(vector<Complex>& coeffs) {
                     NN--;
                     idNN2++;
 
-                    for (int i = 0; i < NN; ++i) {
+                    for (size_t i = 0; i < NN; ++i) {
                         coeffs[i] = QP[i];
                     }
 

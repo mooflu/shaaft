@@ -14,7 +14,7 @@
 // FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details
 //
 
-#include <math.h>
+#include <cmath>
 #include <limits>
 
 template <typename T>

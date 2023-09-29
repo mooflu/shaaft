@@ -267,8 +267,8 @@ ImageOnlySelectable::ImageOnlySelectable(bool enabled, const BoundingBox& rect, 
     }
     _image = _icons->getIndex(_text);
 
-    float width = _icons->getWidth(_image);
-    float height = _icons->getHeight(_image);
+    int width = _icons->getWidth(_image);
+    int height = _icons->getHeight(_image);
 
     if (center) {
         _boundingBox.min.x -= width * 0.5f;
@@ -379,11 +379,11 @@ void FloatSelectable::input(const Trigger& trigger, const bool& isDown, const Po
             if (isDown && (_active == this)) {
                 switch (trigger.data1) {
                     case SDLK_LEFT:
-                        incBy(-0.1);
+                        incBy(-0.1f);
                         break;
 
                     case SDLK_RIGHT:
-                        incBy(0.1);
+                        incBy(0.1f);
                         break;
 
                     default:
@@ -443,15 +443,15 @@ void FloatSelectable::draw(const Point2Di& offset) {
     _icons->bind();
     if (_active == this) {
         if (!_enabled) {
-            _icons->setColor(0.7, 0.7, 0.7, 1.0);
+            _icons->setColor(0.7f, 0.7f, 0.7f, 1.0f);
         } else {
             _icons->setColor(1.0f, 0.0f, 0.0f, 1.0f);
         }
     } else {
         if (!_enabled) {
-            _icons->setColor(0.5, 0.5, 0.5, 1.0);
+            _icons->setColor(0.5f, 0.5f, 0.5f, 1.0f);
         } else {
-            _icons->setColor(1.0, 1.0, 1.0, 1.0);
+            _icons->setColor(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
 
@@ -581,13 +581,13 @@ void EnumSelectable::draw(const Point2Di& offset) {
 
     if (_active == this) {
         if (!_enabled) {
-            _fontWhite->setColor(0.7, 0.7, 0.7, 1.0);
+            _fontWhite->setColor(0.7f, 0.7f, 0.7f, 1.0f);
         } else {
             _fontWhite->setColor(1.0f, 0.0f, 0.0f, 1.0f);
         }
     } else {
         if (!_enabled) {
-            _fontWhite->setColor(0.5, 0.5, 0.5, 1.0);
+            _fontWhite->setColor(0.5f, 0.5f, 0.5f, 1.0f);
         } else {
             _fontWhite->setColor(1.0f, 0.852f, 0.0f, 1.0f);
         }
@@ -671,15 +671,15 @@ void BoolSelectable::draw(const Point2Di& offset) {
     _icons->bind();
     if (_active == this) {
         if (!_enabled) {
-            _icons->setColor(0.7, 0.7, 0.7, 1.0);
+            _icons->setColor(0.7f, 0.7f, 0.7f, 1.0f);
         } else {
             _icons->setColor(1.0f, 0.0f, 0.0f, 1.0f);
         }
     } else {
         if (!_enabled) {
-            _icons->setColor(0.5, 0.5, 0.5, 1.0);
+            _icons->setColor(0.5f, 0.5f, 0.5f, 1.0f);
         } else {
-            _icons->setColor(1.0, 1.0, 1.0, 1.0);
+            _icons->setColor(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
 
@@ -1073,15 +1073,15 @@ void ResolutionSelectable::draw(const Point2Di& offset) {
     _icons->bind();
     if (_active == this) {
         if (!_enabled) {
-            _icons->setColor(0.7, 0.7, 0.7, 1.0);
+            _icons->setColor(0.7f, 0.7f, 0.7f, 1.0f);
         } else {
             _icons->setColor(1.0f, 0.0f, 0.0f, 1.0f);
         }
     } else {
         if (!_enabled) {
-            _icons->setColor(0.5, 0.5, 0.5, 1.0);
+            _icons->setColor(0.5f, 0.5f, 0.5f, 1.0f);
         } else {
-            _icons->setColor(1.0, 1.0, 1.0, 1.0);
+            _icons->setColor(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
 
@@ -1154,7 +1154,7 @@ void TextSelectable::update(void) {
 #ifndef IPHONE
     _prevSize = _size;
     _size += _ds;
-    Clamp(_size, 1.0, 1.8);  //any bigger and we'll have overlapping activation areas
+    Clamp(_size, 1.0f, 1.8f);  //any bigger and we'll have overlapping activation areas
 #endif
 
     //adjust the input box according to the scaled text
@@ -1247,7 +1247,7 @@ BindKeySelectable::BindKeySelectable(bool enabled, const BoundingBox& rect, cons
         LOG_ERROR << "Icon-Off for action not found" << endl;
     }
 
-    _size = _size * 0.6;
+    _size = _size * 0.6f;
     _boundingBox.max.x = _boundingBox.min.x + _icons->getWidth(_bindKeyOn) * _size;
     _boundingBox.max.y = _boundingBox.min.y + _icons->getHeight(_bindKeyOn) * _size;
     _inputBox = _boundingBox;
@@ -1290,22 +1290,22 @@ void BindKeySelectable::draw(const Point2Di& offset) {
 
     Selectable::draw(offset);
 
-    float fontScale = _size * 1.8;
-    float center = (_boundingBox.max.x - _boundingBox.min.x - _fontWhite->GetWidth(_text.c_str(), fontScale)) / 2.0;
-    _fontShadow->setColor(1.0, 1.0, 1.0, 1.0);
+    float fontScale = _size * 1.8f;
+    float center = (_boundingBox.max.x - _boundingBox.min.x - _fontWhite->GetWidth(_text.c_str(), fontScale)) / 2.0f;
+    _fontShadow->setColor(1.0f, 1.0f, 1.0f, 1.0f);
     _fontShadow->DrawString(_text.c_str(), center + _boundingBox.min.x + offset.x + 9 * fontScale,
-                            _boundingBox.min.y + offset.y - 9 * fontScale - 20.0, fontScale, fontScale);
+                            _boundingBox.min.y + offset.y - 9 * fontScale - 20.0f, fontScale, fontScale);
 
     if (!_enabled) {
-        _fontWhite->setColor(0.5, 0.5, 0.5, 1.0);
+        _fontWhite->setColor(0.5f, 0.5f, 0.5f, 1.0f);
     } else {
-        _fontWhite->setColor(r, g, b, 1.0);
+        _fontWhite->setColor(r, g, b, 1.0f);
     }
-    _fontWhite->DrawString(_text.c_str(), center + _boundingBox.min.x + offset.x, _boundingBox.min.y + offset.y - 20.0,
+    _fontWhite->DrawString(_text.c_str(), center + _boundingBox.min.x + offset.x, _boundingBox.min.y + offset.y - 20.0f,
                            fontScale, fontScale);
 
     _icons->bind();
-    _icons->setColor(1.0, 1.0, 1.0, 1.0);
+    _icons->setColor(1.0f, 1.0f, 1.0f, 1.0f);
     if (_active == this) {
         if (InputS::instance()->waitingForBind()) {
             _icons->setColor(1.0f, 0.852f, 0.0f, 1.0f);

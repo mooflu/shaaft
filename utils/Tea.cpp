@@ -18,10 +18,10 @@ uint32_t Tea::k[4] = {
 };
 
 void Tea::msgToData(const std::string& msg, std::vector<uint32_t>& v) {
-    int n = (msg.size() + 3) / 4;
-    int len = msg.size();
-    int pos = 0;
-    for (int i = 0; i < n; i++) {
+    size_t n = (msg.size() + 3) / 4;
+    size_t len = msg.size();
+    size_t pos = 0;
+    for (size_t i = 0; i < n; i++) {
         uint32_t result = (unsigned char)msg[pos++];
         if (pos < len) {
             result += (unsigned char)msg[pos++] << (1 * 8);
@@ -55,7 +55,7 @@ std::string Tea::dataToMsg(const std::vector<uint32_t>& v) {
 std::string Tea::encode(const std::string& msg) {
     std::vector<uint32_t> v;
     msgToData(msg, v);
-    unsigned int n = v.size();
+    unsigned int n = (unsigned int)v.size();
 
     unsigned p, e;
     unsigned int rounds = 6 + 52 / n;
@@ -83,7 +83,7 @@ std::string Tea::encode(const std::string& msg) {
 std::string Tea::decode(const std::string& msg) {
     std::vector<uint32_t> v;
     msgToData(msg, v);
-    int n = v.size();
+    unsigned int n = (unsigned int)v.size();
 
     unsigned p, e;
     unsigned int rounds = 6 + 52 / n;

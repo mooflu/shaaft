@@ -24,6 +24,6 @@ void Buffer::unbind(const GLenum target, const GLuint index) {
     glBindBufferBase(target, index, 0);
 }
 
-void Buffer::setData(GLenum target, int size, void* data, GLenum usage) {
+void Buffer::setData(GLenum target, size_t size, void* data, GLenum usage) {
     glBufferData(target, size, data, usage);
 }

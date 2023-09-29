@@ -76,8 +76,8 @@ public:
 
     bool HachooInProgress(void) { return _hachooInProgress; }
 
-    float HachooSecsLeft(void);
-    float HachooDuration(void);
+    double HachooSecsLeft(void);
+    double HachooDuration(void);
 
     bool update(void);
 
@@ -119,7 +119,7 @@ private:
     std::string _blockset;
     R250& _r250;
 
-    float _nextDrop;
+    double _nextDrop;
     float _dropDelay;
 
     unsigned char* _planesmem;
@@ -165,6 +165,6 @@ private:
     BlockView* _view;
 
     bool _hachooInProgress;
-    float _nextHachoo;
-    float _nextHachooBonusEnd;
+    double _nextHachoo;
+    double _nextHachooBonusEnd;
 };

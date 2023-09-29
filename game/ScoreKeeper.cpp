@@ -90,7 +90,7 @@ void ScoreKeeper::mergeOnlineScores() {
                 if (currentScore.score == _leaderBoard[i].score && currentScore.cubes == _leaderBoard[i].cubes &&
                     currentScore.secondsPlayed == _leaderBoard[i].secondsPlayed &&
                     currentScore.time == _leaderBoard[i].time) {
-                    _currentIndex = i;
+                    _currentIndex = (unsigned int)i;
                     break;
                 }
             }
@@ -223,7 +223,7 @@ int ScoreKeeper::addToCurrentScore(int score, int cubes, int secs) {
         int shaftOffset = (video.getWidth() - blockView * 4 / 3) / 2;
 
         ParticleInfo pi;
-        pi.position.x = 375 + shaftOffset / 2;
+        pi.position.x = 375 + shaftOffset / 2.0f;
         pi.position.y = 375;
         pi.position.z = 0;
         char buf[10];
@@ -311,7 +311,7 @@ void ScoreKeeper::resetLeaderBoard(LeaderBoard& lb) {
     };
 
     int startIndex = _random.random();
-    for (size_t i = 0; i < lb.size(); i++) {
+    for (unsigned int i = 0; i < lb.size(); i++) {
         lb[i].score = 10 * i + 10;
         lb[i].name = names[(i + startIndex) % NUM_NAMES];
         time(&lb[i].time);
@@ -613,8 +613,8 @@ void ScoreKeeper::draw(const Point2Di& offset) {
 
     string scoreBoardHeader = _currentScoreboard->name + ":";
     fontShadow->setColor(1.0, 1.0, 1.0, 1.0);
-    fontShadow->DrawString(scoreBoardHeader.c_str(), 90 + offset.x + 9, 480 + offset.y - 9, 1.0f, 1.0f);
-    fontWhite->DrawString(scoreBoardHeader.c_str(), 90 + offset.x, 480 + offset.y, 1.0f, 1.0f);
+    fontShadow->DrawString(scoreBoardHeader.c_str(), 90.0f + offset.x + 9.0f, 480.0f + offset.y - 9.0f, 1.0f, 1.0f);
+    fontWhite->DrawString(scoreBoardHeader.c_str(), 90.0f + offset.x, 480.0f + offset.y, 1.0f, 1.0f);
 
     if (numBoards() > 1) {
         icons->bind();
@@ -638,23 +638,23 @@ void ScoreKeeper::draw(const Point2Di& offset) {
         fontShadow->setColor(1.0, 1.0, 1.0, 1.0);
         fontShadow->DrawString(place, 80 + offset.x - placeWidth + 7, 420 + offset.y - (float)i * spacing - 7, scale,
                                scale);
-        fontShadow->DrawString(_currentScoreboardAsLeaderBoard[i].name.c_str(), 90 + offset.x + 7,
+        fontShadow->DrawString(_currentScoreboardAsLeaderBoard[i].name.c_str(), 90 + offset.x + 7.0f,
                                420 + offset.y - (float)i * spacing - 7, scale, scale);
         fontShadow->DrawString(score, 560 + offset.x - scoreWidth + 7, 420 + offset.y - (float)i * spacing - 7, scale,
                                scale);
 
         if (i == _infoIndex) {
-            fontWhite->setColor(1.0, 0.1, 0.1, 1.0);
+            fontWhite->setColor(1.0, 0.1f, 0.1f, 1.0);
         } else if (_leaderBoardName == _currentScoreboard->name && i == _currentIndex) {
             fontWhite->setColor(1.0, 0.852f, 0.0, 1.0);
         } else if (_currentScoreboardAsLeaderBoard[i].online) {
             fontWhite->setColor(1.0, 1.0, 1.0, 1.0);
         } else {
-            fontWhite->setColor(1.0, 0.95, 0.7, 1.0);
+            fontWhite->setColor(1.0, 0.95f, 0.7f, 1.0);
         }
 
         fontWhite->DrawString(place, 80 + offset.x - placeWidth, 420 + offset.y - (float)i * spacing, scale, scale);
-        fontWhite->DrawString(_currentScoreboardAsLeaderBoard[i].name.c_str(), 90 + offset.x,
+        fontWhite->DrawString(_currentScoreboardAsLeaderBoard[i].name.c_str(), 90.0f + offset.x,
                               420 + offset.y - (float)i * spacing, scale, scale);
         fontWhite->DrawString(score, 560 + offset.x - scoreWidth, 420 + offset.y - (float)i * spacing, scale, scale);
     }

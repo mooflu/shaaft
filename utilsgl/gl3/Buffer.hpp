@@ -13,7 +13,7 @@ public:
     static void unbind(GLenum target);
     static void unbind(GLenum target, GLuint index);
 
-    void setData(GLenum target, int size, void* data, GLenum usage);
+    void setData(GLenum target, size_t size, void* data, GLenum usage);
 
 private:
     GLuint _id;

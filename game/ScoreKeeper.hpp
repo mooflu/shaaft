@@ -99,7 +99,7 @@ public:
     //set active score board (if empty string, uses current leader board)
     void setActive(std::string scoreboardName);
 
-    int numBoards() { return _scoreBoards.size(); }
+    size_t numBoards() { return _scoreBoards.size(); }
 
     //advance to next/previous score board
     void nextBoard(void);

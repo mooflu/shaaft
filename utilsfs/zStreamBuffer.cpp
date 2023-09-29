@@ -73,7 +73,7 @@ bool ziStreamBuffer::_init(const std::string& fileName) {
 }
 
 int ziStreamBuffer::fileSize(void) {
-    return PHYSFS_fileLength(_physFile);
+    return (int)PHYSFS_fileLength(_physFile);
 }
 
 ziStreamBuffer::int_type ziStreamBuffer::underflow(void) {

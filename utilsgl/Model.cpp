@@ -67,7 +67,7 @@ bool Model::load(const char* filename) {
     //HACK to fixup models with bad normals or models that require
     //GL_LIGHT_MODEL_TWO_SIDE, but doesn't work on IPHONE
     string fileName = filename;
-    int len = fileName.length();
+    size_t len = fileName.length();
     if (fileName[len - 7] == 'X') {
         _fixNormals = true;
         fileName.replace(fileName.end() - 7, fileName.end(), ".model");
@@ -427,7 +427,7 @@ void Model::prepareModel(void) {
         }
     }
     GLuint* vi = new GLuint[verts.size()];
-    for (size_t i = 0; i < verts.size(); i++) {
+    for (GLuint i = 0; i < verts.size(); i++) {
         vi[i] = i;
     }
     _vIndexBuf->bind(GL_ELEMENT_ARRAY_BUFFER);

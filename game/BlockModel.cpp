@@ -95,15 +95,15 @@ void BlockModel::updateNextHachoo(void) {
     _nextHachoo = GameState::stopwatch.getTime() + 60.0 * (float)((_r250.random() % 5) + 1);
 }
 
-float BlockModel::HachooSecsLeft(void) {
+double BlockModel::HachooSecsLeft(void) {
     if (_nextHachooBonusEnd > GameState::stopwatch.getTime()) {
         return _nextHachooBonusEnd - GameState::stopwatch.getTime();
     }
     return 0.0;
 }
 
-float BlockModel::HachooDuration(void) {
-    return (_width * _height * 20.0f) / 12.0f;
+double BlockModel::HachooDuration(void) {
+    return (_width * _height * 20.0) / 12.0;
 }
 
 void BlockModel::clearAndDeleteElementList(ElementList*& elemList, DeleteType deleteType) {
@@ -343,7 +343,7 @@ bool BlockModel::readBlock(ziStream& infile, int numElems, int& linecount) {
         BlockInfo bi;
         bi.elements = el;
         bi.multiplier = dx * dy * dz;
-        bi.center = Point3D((maxPos.x + minPos.x) / 2.0, (maxPos.y + minPos.y) / 2.0, (maxPos.z + minPos.z) / 2.0);
+        bi.center = Point3D((maxPos.x + minPos.x) / 2.0f, (maxPos.y + minPos.y) / 2.0f, (maxPos.z + minPos.z) / 2.0f);
         _blockList.push_back(bi);
     } else {
         clearAndDeleteElementList(el);
@@ -456,7 +456,7 @@ void BlockModel::rotateBlock(const Point3Di& r1, const Point3Di& r2, const Point
         _tmpElementList = tmp;
 
         Quaternion q;
-        q.set(90.0f, Point3D(axis.x, axis.y, axis.z));
+        q.set(90.0f, Point3D((float)axis.x, (float)axis.y, (float)axis.z));
         _view->notifyNewRotation(q);
     } else {
         //reject and restore original ptr
@@ -557,7 +557,7 @@ void BlockModel::updateHintList(void) {
 }
 
 float BlockModel::getScoreMultiplier(void) {
-    float now = GameState::stopwatch.getTime();
+    double now = GameState::stopwatch.getTime();
     if (_nextHachooBonusEnd > now) {
         return 2.0;
     }
@@ -588,7 +588,7 @@ bool BlockModel::update(void) {
             }
         }
     } else {
-        float now = GameState::stopwatch.getTime();
+        double now = GameState::stopwatch.getTime();
         if (now >= _nextDrop) {
             if (canDrop()) {
                 _offset.z--;
@@ -618,9 +618,9 @@ bool BlockModel::update(void) {
                 }
                 _elementCount += eCount;
 
-                int scoreToAdd = (eCount + _multiplier + _freefallZ / 2) * _level;
+                float scoreToAdd = (eCount + _multiplier + _freefallZ / 2.0f) * _level;
                 scoreToAdd *= getScoreMultiplier();
-                ScoreKeeperS::instance()->addToCurrentScore(scoreToAdd, eCount, (int)GameState::stopwatch.getTime());
+                ScoreKeeperS::instance()->addToCurrentScore((int)scoreToAdd, eCount, (int)GameState::stopwatch.getTime());
 
                 AudioS::instance()->playSample("sounds/katoung");
                 checkPlanes();
@@ -710,9 +710,9 @@ void BlockModel::checkPlanes(void) {
             break;
     }
 
-    int scoreToAdd = planeCount * planeCount * _level * 50;
+    float scoreToAdd = planeCount * planeCount * _level * 50.f;
     scoreToAdd *= getScoreMultiplier();
-    ScoreKeeperS::instance()->addToCurrentScore(scoreToAdd);
+    ScoreKeeperS::instance()->addToCurrentScore((int)scoreToAdd);
 }
 
 bool BlockModel::lockElement(Point3Di& a) {

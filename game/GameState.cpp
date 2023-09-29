@@ -15,9 +15,9 @@ bool GameState::requestExit = false;
 
 bool GameState::showFPS = false;
 
-float GameState::startOfStep = 0;
+double GameState::startOfStep = 0;
 float GameState::frameFractionOther = 0.0;
-float GameState::startOfGameStep = 0;
+double GameState::startOfGameStep = 0;
 float GameState::frameFraction = 0.0;
 unsigned int GameState::gameTick = 0;
 
@@ -25,7 +25,7 @@ PausableTimer GameState::mainTimer;
 PausableTimer GameState::stopwatch;
 R250 GameState::r250;
 Context::ContextEnum GameState::context = Context::eUnknown;
-float GameState::secondsPlayed = 0;
+double GameState::secondsPlayed = 0;
 
 float GameState::prevShaftPitch = 0.0;
 float GameState::prevShaftYaw = 0.0;

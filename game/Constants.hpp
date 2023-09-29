@@ -38,10 +38,10 @@ const std::string EFFECTS_GROUP3 = "Effects3";
 
 const int MAX_PARTICLES_PER_GROUP = 2048;
 
-const float GAME_STEP_SIZE = (float)(1.0 / 30.0);  //run logic 30 times per second
-const int MAX_GAME_STEPS = 20;                     //max number of logic runs per frame
+const float GAME_STEP_SIZE = (1.0f / 30.0f);  //run logic 30 times per second
+const int MAX_GAME_STEPS = 20;                //max number of logic runs per frame
 
 // All updates in out logic are based on a game step size of 1/50.
 // In case we want to use a different GAME_STEP_SIZE in the future,
 // multiply all update values by GAME_STEP_SCALE.
-const float GAME_STEP_SCALE = (float)(50.0 * GAME_STEP_SIZE);
+const float GAME_STEP_SCALE = (50.0f * GAME_STEP_SIZE);

@@ -323,10 +323,10 @@ void VideoBase::setResolutionConfig(int width, int height, bool fullscreen) {
 }
 
 bool VideoBase::update(void) {
-    static float nextTime = Timer::getTime() + 0.5f;
-    float thisTime = Timer::getTime();
+    static double nextTime = Timer::getTime() + 0.5;
+    double thisTime = Timer::getTime();
     if (thisTime > nextTime) {
-        nextTime = thisTime + 0.5f;
+        nextTime = thisTime + 0.5;
         return updateSettings();
     }
     return true;
