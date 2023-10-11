@@ -175,7 +175,7 @@ void GLVBO::DrawPoints(GLfloat* v, int numVerts) {
     std::vector<vec4f> verts;
     std::vector<vec4f> colors;
     std::vector<vec2f> texels;
-    for (size_t i = 0; i < numVerts; i += 3) {
+    for (size_t i = 0; i < (numVerts*3); i += 3) {
         verts.push_back(vec4f(v[i], v[i + 1], v[i + 2], 1));
     }
 
