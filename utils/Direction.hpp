@@ -14,17 +14,12 @@
 // FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details
 //
 
-#ifdef HAS_NAMESPACE
-namespace
-#else
-struct
-#endif
-    Direction {
-enum DirectionEnum {
-    eUnknown,
-    eLeft,
-    eUp,
-    eDown,
-    eRight
-};
+namespace Direction {
+    enum DirectionEnum {
+        eUnknown = 0,
+        eLeft = 1,
+        eUp = 2,
+        eDown = 4,
+        eRight = 8
+    };
 };  // namespace Direction
