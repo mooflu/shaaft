@@ -77,7 +77,7 @@ void showVersions(void) {
              << (int)physFSVer.minor  << "."
              << (int)physFSVer.patch  << endl;
     LOG_INFO << "zlib Version " << zlibVersion() << endl;
-    LOG_INFO << "PNG Version " << png_get_header_version(NULL) << endl;
+    LOG_INFO << "PNG Version " << png_get_libpng_ver(NULL) << endl;
 }
 #endif
 
