@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.11)
 
 project(shaaft C CXX)
 
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/utilscmake")
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/mooflu.common/utilscmake")
 
 if (NOT VERSION)
     find_package (Git)
@@ -51,15 +51,15 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_DEBUG_POSTFIX "_d")
 
-include(${PROJECT_SOURCE_DIR}/utilscmake/PlatformSetup.cmake)
+include(${PROJECT_SOURCE_DIR}/mooflu.common/utilscmake/PlatformSetup.cmake)
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/utils ${CMAKE_BINARY_DIR}/utils)
-add_subdirectory(${PROJECT_SOURCE_DIR}/utilsrandom ${CMAKE_BINARY_DIR}/utilsrandom)
-add_subdirectory(${PROJECT_SOURCE_DIR}/utilssdl ${CMAKE_BINARY_DIR}/utilssdl)
-add_subdirectory(${PROJECT_SOURCE_DIR}/utilsgl ${CMAKE_BINARY_DIR}/utilsgl)
-add_subdirectory(${PROJECT_SOURCE_DIR}/utilsfs ${CMAKE_BINARY_DIR}/utilsfs)
-add_subdirectory(${PROJECT_SOURCE_DIR}/tinyxml ${CMAKE_BINARY_DIR}/tinyxml)
-add_subdirectory(${PROJECT_SOURCE_DIR}/miniyaml ${CMAKE_BINARY_DIR}/miniyaml)
+add_subdirectory(${PROJECT_SOURCE_DIR}/mooflu.common/utils ${CMAKE_BINARY_DIR}/utils)
+add_subdirectory(${PROJECT_SOURCE_DIR}/mooflu.common/utilsrandom ${CMAKE_BINARY_DIR}/utilsrandom)
+add_subdirectory(${PROJECT_SOURCE_DIR}/mooflu.common/utilssdl ${CMAKE_BINARY_DIR}/utilssdl)
+add_subdirectory(${PROJECT_SOURCE_DIR}/mooflu.common/utilsgl ${CMAKE_BINARY_DIR}/utilsgl)
+add_subdirectory(${PROJECT_SOURCE_DIR}/mooflu.common/utilsfs ${CMAKE_BINARY_DIR}/utilsfs)
+add_subdirectory(${PROJECT_SOURCE_DIR}/mooflu.common/tinyxml ${CMAKE_BINARY_DIR}/tinyxml)
+add_subdirectory(${PROJECT_SOURCE_DIR}/mooflu.common/miniyaml ${CMAKE_BINARY_DIR}/miniyaml)
 add_subdirectory(${PROJECT_SOURCE_DIR}/game)
 
 set_target_properties(shaaft PROPERTIES

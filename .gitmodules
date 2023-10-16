@@ -1,0 +1,3 @@
+[submodule "mooflu.common"]
+	path = mooflu.common
+	url = git@github.com:mooflu/mooflu.common.git

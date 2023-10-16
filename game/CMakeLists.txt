@@ -1,4 +1,4 @@
-include(${PROJECT_SOURCE_DIR}/utilscmake/FindExtras.cmake)
+include(${PROJECT_SOURCE_DIR}/mooflu.common/utilscmake/FindExtras.cmake)
 
 # set(CMAKE_FIND_DEBUG_MODE TRUE)
 
@@ -68,14 +68,14 @@ endif()
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${CMAKE_PREFIX_PATH}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${PROJECT_SOURCE_DIR}/utils)
-include_directories(${PROJECT_SOURCE_DIR}/utilsfs)
-include_directories(${PROJECT_SOURCE_DIR}/utilsgl)
-include_directories(${PROJECT_SOURCE_DIR}/utilssdl)
-include_directories(${PROJECT_SOURCE_DIR}/utilsrandom)
-include_directories(${PROJECT_SOURCE_DIR}/tinyxml)
-include_directories(${PROJECT_SOURCE_DIR}/miniyaml)
-include_directories(${PROJECT_SOURCE_DIR}/) # vmmlib/vector.hpp
+include_directories(${PROJECT_SOURCE_DIR}/mooflu.common/utils)
+include_directories(${PROJECT_SOURCE_DIR}/mooflu.common/utilsfs)
+include_directories(${PROJECT_SOURCE_DIR}/mooflu.common/utilsgl)
+include_directories(${PROJECT_SOURCE_DIR}/mooflu.common/utilssdl)
+include_directories(${PROJECT_SOURCE_DIR}/mooflu.common/utilsrandom)
+include_directories(${PROJECT_SOURCE_DIR}/mooflu.common/tinyxml)
+include_directories(${PROJECT_SOURCE_DIR}/mooflu.common/miniyaml)
+include_directories(${PROJECT_SOURCE_DIR}/mooflu.common/) # vmmlib/vector.hpp
 
 file(GLOB GAME_SRC *.cpp)
 file(GLOB GAME_HEADERS *.hpp)
