@@ -31,7 +31,9 @@ struct Trigger {
         if ((type == eMotionTrigger) && (type == t.type)) {
             return true;
         }
-        //ignore modifiers (data2) and keycode (data1)
-        return ((type == t.type) && (data3 == t.data3));  //data3 is scancode
+        //data1 - keycode or mouse button
+        //data2 - modifiers (ignore here)
+        //data3 - scancode
+        return ((type == t.type) && (data1 == t.data1) && (data3 == t.data3));
     }
 };
