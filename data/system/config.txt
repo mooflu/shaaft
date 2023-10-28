@@ -23,6 +23,7 @@ config:
   musicVolume: 0.4
   showCursorAnimation: 1
   showScoreUpdates: 1
+  mouseSensitivity: 1
 
 binds:
   MoveIn: SPACE

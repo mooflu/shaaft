@@ -6,349 +6,361 @@
     <ActionItem
         Text="New Game"
         Action="NewGame"
-	Info="Start a new game!"
+        Info="Start a new game!"
         Position="300.0 440.0"/>
 
     <Menu
         Text="Scores"
         Info="The Top-10 scores"
-	Position="300.0 380.0">
+        Position="300.0 380.0">
 
         <LeaderBoard
-	    Text="Leader Board:"
-	    Info="Top-10"
-	    Size="1.0"
-	    Position="300.0 460.0" />
+            Text="Leader Board:"
+            Info="Top-10"
+            Size="1.0"
+            Position="300.0 460.0" />
     </Menu>
 
     <Menu
         Text="Setup"
         Info="Change this'n that."
-	Position="300.0 320.0">
+        Position="300.0 320.0">
 
-	<Menu
-	    Text="Controls"
-	    Info="Keyboard and mouse control tweaks."
-	    Position="300.0 440.0">
+        <Menu
+            Text="Controls"
+            Info="Keyboard and mouse control tweaks."
+            Position="300.0 440.0">
 
-	    <BindKey
-		Info="Click then press the key you want to use for this rotation."
-		Size="0.5"
-		Position="75.0 420.0"
-		Action="RotateQ" />
+            <BindKey
+                Info="Click then press the key you want to use for this rotation."
+                Size="0.5"
+                Position="75.0 420.0"
+                Action="RotateQ" />
 
-	    <BindKey
-		Info="Click then press the key you want to use for this rotation."
-		Size="0.5"
-		Position="275.0 420.0"
-		Action="RotateW" />
+            <BindKey
+                Info="Click then press the key you want to use for this rotation."
+                Size="0.5"
+                Position="275.0 420.0"
+                Action="RotateW" />
 
-	    <BindKey
-		Info="Click then press the key you want to use for this rotation."
-		Size="0.5"
-		Position="475.0 420.0"
-		Action="RotateE" />
+            <BindKey
+                Info="Click then press the key you want to use for this rotation."
+                Size="0.5"
+                Position="475.0 420.0"
+                Action="RotateE" />
 
-	    <BindKey
-		Info="Click then press the key you want to use for this rotation."
-		Size="0.5"
-		Position="75.0 340.0"
-		Action="RotateA" />
+            <BindKey
+                Info="Click then press the key you want to use for this rotation."
+                Size="0.5"
+                Position="75.0 340.0"
+                Action="RotateA" />
 
-	    <BindKey
-		Info="Click then press the key you want to use for this rotation."
-		Size="0.5"
-		Position="275.0 340.0"
-		Action="RotateS" />
+            <BindKey
+                Info="Click then press the key you want to use for this rotation."
+                Size="0.5"
+                Position="275.0 340.0"
+                Action="RotateS" />
 
-	    <BindKey
-		Info="Click then press the key you want to use for this rotation."
-		Size="0.5"
-		Position="475.0 340.0"
-		Action="RotateD" />
+            <BindKey
+                Info="Click then press the key you want to use for this rotation."
+                Size="0.5"
+                Position="475.0 340.0"
+                Action="RotateD" />
 
-	    <BindKey
-		Info="Click then press the key you want to use for moving left."
-		Size="0.5"
-		Position="75.0 240.0"
-		Action="MoveLeft" />
+            <BindKey
+                Info="Click then press the key you want to use for moving left."
+                Size="0.5"
+                Position="75.0 240.0"
+                Action="MoveLeft" />
 
-	    <BindKey
-		Info="Click then press the key you want to use for moving up."
-		Size="0.5"
-		Position="275.0 240.0"
-		Action="MoveUp" />
+            <BindKey
+                Info="Click then press the key you want to use for moving up."
+                Size="0.5"
+                Position="275.0 240.0"
+                Action="MoveUp" />
 
-	    <BindKey
-		Info="Click then press the key you want to use for dropping."
-		Size="0.5"
-		Position="475.0 240.0"
-		Action="MoveIn" />
+            <BindKey
+                Info="Click then press the key you want to use for dropping."
+                Size="0.5"
+                Position="475.0 240.0"
+                Action="MoveIn" />
 
-	    <BindKey
-		Info="Click then press the key you want to use for moving right."
-		Size="0.5"
-		Position="75.0 160.0"
-		Action="MoveRight" />
+            <BindKey
+                Info="Click then press the key you want to use for moving right."
+                Size="0.5"
+                Position="75.0 160.0"
+                Action="MoveRight" />
 
-	    <BindKey
-		Info="Click then press the key you want to use for moving down."
-		Size="0.5"
-		Position="275.0 160.0"
-		Action="MoveDown" />
+            <BindKey
+                Info="Click then press the key you want to use for moving down."
+                Size="0.5"
+                Position="275.0 160.0"
+                Action="MoveDown" />
 
-	    <BindKey
-		Info="Click then press the key you want to use for pausing."
-		Size="0.5"
-		Position="475.0 160.0"
-		Action="PauseGame" />
-	</Menu>
+            <BindKey
+                Info="Click then press the key you want to use for pausing."
+                Size="0.5"
+                Position="475.0 160.0"
+                Action="PauseGame" />
 
-	<Menu
-	    Text="Display"
-	    Info="Display related tweaks."
-	    Position="300.0 380.0">
+            <Float
+                Text="Mouse Sensitivity"
+                Info="Change mouse speed."
+                Position="70.0 70.0"
+                Variable="mouseSensitivity"
+                Range="0.1 3.0"
+                SliderOffset="130"/>
+        </Menu>
 
-	    <Bool
-		Text="Fullscreen"
-		Info="Toggle between fullscreen and windowed mode."
-		Position="30.0 440.0"
-		Variable="fullscreen" />
-	    <Resolution
-		Text="Resolution: "
-		Info="Change resolution. Click resolution to change and box to accept."
-		Position="30.0 400.0" />
+        <Menu
+            Text="Display"
+            Info="Display related tweaks."
+            Position="300.0 380.0">
 
-	    <Bool
-		Text="Show FPS"
-		Info="Show or hide frames per second counter."
-		Position="30.0 340.0"
-		Variable="showFPS" />
-	    <Bool
-		Text="Draw Solid Shaft Tiles"
-		Info="Fills the shaft tiles with a solid color."
-		Position="30.0 300.0"
-		Variable="drawSolidShaftTiles" />
-	    <Bool
-		Text="Draw Shaft Tile Frame"
-		Info="Draws a line around each shaft tile."
-		Position="30.0 260.0"
-		Variable="drawShaftTileFrame" />
-	    <Bool
-		Text="Mouse Cursor Animation"
-		Info="Draw mouse cursor animation."
-		Position="30.0 170.0"
-		Variable="showCursorAnimation" />
-	    <Bool
-		Text="Show Score Updates"
-		Info="Show score updates within shaft."
-		Position="30.0 130.0"
-		Variable="showScoreUpdates" />
-	</Menu>
+            <Bool
+                Text="Fullscreen"
+                Info="Toggle between fullscreen and windowed mode."
+                Position="30.0 440.0"
+                Variable="fullscreen" />
+            <Resolution
+                Text="Resolution: "
+                Info="Change resolution. Click resolution to change and box to accept."
+                Position="30.0 400.0" />
 
-	<Menu
-	    Text="Sound"
-	    Info="Sound related tweaks."
-	    Position="300.0 320.0">
+            <Bool
+                Text="Show FPS"
+                Info="Show or hide frames per second counter."
+                Position="30.0 340.0"
+                Variable="showFPS" />
+            <Bool
+                Text="Draw Solid Shaft Tiles"
+                Info="Fills the shaft tiles with a solid color."
+                Position="30.0 300.0"
+                Variable="drawSolidShaftTiles" />
+            <Bool
+                Text="Draw Shaft Tile Frame"
+                Info="Draws a line around each shaft tile."
+                Position="30.0 260.0"
+                Variable="drawShaftTileFrame" />
+            <Bool
+                Text="Mouse Cursor Animation"
+                Info="Draw mouse cursor animation."
+                Position="30.0 170.0"
+                Variable="showCursorAnimation" />
+            <Bool
+                Text="Show Score Updates"
+                Info="Show score updates within shaft."
+                Position="30.0 130.0"
+                Variable="showScoreUpdates" />
+        </Menu>
 
-	    <Bool
-		Text="Play music"
-		Info="Turn music on or off."
-		Position="30.0 440.0"
-		Variable="playMusic" />
-	    <!--Bool
-		Text="Play default soundtrack"
-		Info="Play default or custom soundtrack."
-		Position="30.0 400.0"
-		Variable="playDefaultSoundtrack" /-->
+        <Menu
+            Text="Sound"
+            Info="Sound related tweaks."
+            Position="300.0 320.0">
 
-	    <Float
-		Text="Music Volume"
-		Info="Change music volume."
-		Position="30.0 400.0"
-		Variable="musicVolume"
-		Range="0.0 1.0"
-		SliderOffset="60"/>
-	    <Float
-		Text="Effects Volume"
-		Info="Change effects volume."
-		Position="30.0 360.0"
-		Variable="effectsVolume"
-		Range="0.0 1.0"
-		SliderOffset="60"/>
-	</Menu>
+            <Bool
+                Text="Play music"
+                Info="Turn music on or off."
+                Position="30.0 440.0"
+                Variable="playMusic" />
+            <!--Bool
+                Text="Play default soundtrack"
+                Info="Play default or custom soundtrack."
+                Position="30.0 400.0"
+                Variable="playDefaultSoundtrack" /-->
 
-	<Enum
-	    Dis="1"
-	    Text="Start Level: "
-	    Info="Click to change start level for next new game."
-	    Position="30.0 270.0"
-	    Variable="startLevel"
-	    Values="1 2 3 4 5 6 7 8 9"/>
-	<Enum
-	    Dis="1"
-	    Text="Shaft width: "
-	    Info="Click to change width for next new game."
-	    Position="30.0 230.0"
-	    Variable="shaftWidth"
-	    Values="3 4 5 6 7 8 9"/>
-	<Enum
-	    Dis="1"
-	    Text="Shaft height: "
-	    Info="Click to change height for next new game."
-	    Position="30.0 190.0"
-	    Variable="shaftHeight"
-	    Values="3 4 5 6 7 8 9"/>
-	<Enum
-	    Dis="1"
-	    Text="Shaft depth: "
-	    Info="Click to change depth for next new game."
-	    Position="30.0 150.0"
-	    Variable="shaftDepth"
-	    Values="5 6 7 8 9 10 11 12 13 14 15"/>
-	<Enum
-	    Dis="1"
-	    Text="Blockset: "
-	    Info="Click to change the set of blocks to use for the next new game."
-	    Position="30.0 110.0"
-	    Variable="blockset"
-	    Values="Shaaft Flat3 Basic3 Flat5 Simple5 Extended5"/>
+            <Float
+                Text="Music Volume"
+                Info="Change music volume."
+                Position="30.0 400.0"
+                Variable="musicVolume"
+                Range="0.0 1.0"
+                SliderOffset="100"/>
+            <Float
+                Text="Effects Volume"
+                Info="Change effects volume."
+                Position="30.0 360.0"
+                Variable="effectsVolume"
+                Range="0.0 1.0"
+                SliderOffset="100"/>
+        </Menu>
 
-	<Enum
-	    Text="Rotation Speed: "
-	    Info="Click to change how fast a block rotates (larger values are faster)."
-	    Position="330.0 270.0"
-	    Variable="rotationSpeed"
-	    Values="1 2 3 4 5 6 7 8 9"/>
-	<Enum
-	    Text="Move Speed: "
-	    Info="Click to change how fast a block moves (larger values are faster)."
-	    Position="330.0 230.0"
-	    Variable="moveSpeed"
-	    Values="1 2 3 4 5 6 7 8 9"/>
-	<Bool
-	    Text="Show Next"
-	    Info="Show or hide the next block preview display."
-	    Position="330.0 190.0"
-	    Variable="showNextBlock" />
-	<Bool
-	    Text="Show Indicator"
-	    Info="Show or hide the indicator where a block will land."
-	    Position="330.0 150.0"
-	    Variable="showBlockIndicator" />
-	<Bool
-	    Text="Shaft Tilting"
-	    Info="Allow the shaft to be tilted with the mouse."
-	    Position="330.0 110.0"
-	    Variable="allowShaftTilting" />
-	<Bool
-	    Dis="1"
-	    Text="Practice Mode"
-	    Info="Blocks will not drop automatically. No score is kept."
-	    Position="330.0 70.0"
-	    Variable="practiceMode" />
+        <Enum
+            Dis="1"
+            Text="Start Level: "
+            Info="Click to change start level for next new game."
+            Position="30.0 270.0"
+            Variable="startLevel"
+            Values="1 2 3 4 5 6 7 8 9"/>
+        <Enum
+            Dis="1"
+            Text="Shaft width: "
+            Info="Click to change width for next new game."
+            Position="30.0 230.0"
+            Variable="shaftWidth"
+            Values="3 4 5 6 7 8 9"/>
+        <Enum
+            Dis="1"
+            Text="Shaft height: "
+            Info="Click to change height for next new game."
+            Position="30.0 190.0"
+            Variable="shaftHeight"
+            Values="3 4 5 6 7 8 9"/>
+        <Enum
+            Dis="1"
+            Text="Shaft depth: "
+            Info="Click to change depth for next new game."
+            Position="30.0 150.0"
+            Variable="shaftDepth"
+            Values="5 6 7 8 9 10 11 12 13 14 15"/>
+        <Enum
+            Dis="1"
+            Text="Blockset: "
+            Info="Click to change the set of blocks to use for the next new game."
+            Position="30.0 110.0"
+            Variable="blockset"
+            Values="Shaaft Flat3 Basic3 Flat5 Simple5 Extended5"/>
+
+        <Enum
+            Text="Rotation Speed: "
+            Info="Click to change how fast a block rotates (larger values are faster)."
+            Position="330.0 270.0"
+            Variable="rotationSpeed"
+            Values="1 2 3 4 5 6 7 8 9"/>
+        <Enum
+            Text="Move Speed: "
+            Info="Click to change how fast a block moves (larger values are faster)."
+            Position="330.0 230.0"
+            Variable="moveSpeed"
+            Values="1 2 3 4 5 6 7 8 9"/>
+        <Bool
+            Text="Show Next"
+            Info="Show or hide the next block preview display."
+            Position="330.0 190.0"
+            Variable="showNextBlock" />
+        <Bool
+            Text="Show Indicator"
+            Info="Show or hide the indicator where a block will land."
+            Position="330.0 150.0"
+            Variable="showBlockIndicator" />
+        <Bool
+            Text="Shaft Tilting"
+            Info="Allow the shaft to be tilted with the mouse."
+            Position="330.0 110.0"
+            Variable="allowShaftTilting" />
+        <Bool
+            Dis="1"
+            Text="Practice Mode"
+            Info="Blocks will not drop automatically. No score is kept."
+            Position="330.0 70.0"
+            Variable="practiceMode" />
     </Menu>
 
     <Menu
         Text="Help"
         Info="Tips'n tricks"
-	Position="300.0 260.0">
+        Position="300.0 260.0">
 
         <TextItem
-	    Text="You can move a block until it's locked."
-	    Position="300.0 440.0" />
+            Text="You can move a block until it's locked."
+            Position="300.0 440.0" />
         <TextItem
-	    Text="The shape of the block changes when it is locked."
-	    Position="300.0 400.0" />
+            Text="The shape of the block changes when it is locked."
+            Position="300.0 400.0" />
         <TextItem
-	    Text="For more points clear multiple planes at once."
-	    Position="300.0 360.0" />
+            Text="For more points clear multiple planes at once."
+            Position="300.0 360.0" />
         <TextItem
-	    Text="For even more points try dropping a block sooner."
-	    Position="300.0 320.0" />
+            Text="For even more points try dropping a block sooner."
+            Position="300.0 320.0" />
         <TextItem
-	    Text="More complex blocks score more points as well."
-	    Position="300.0 280.0" />
+            Text="More complex blocks score more points as well."
+            Position="300.0 280.0" />
         <TextItem
-	    Text="Double points for the 20 seconds following"
-	    Position="300.0 240.0" />
+            Text="Double points for the 20 seconds following"
+            Position="300.0 240.0" />
         <TextItem
-	    Text="a Moo-Hachoo. Watch the Moo!"
-	    Position="300.0 200.0" />
+            Text="a Moo-Hachoo. Watch the Moo!"
+            Position="300.0 200.0" />
     </Menu>
 
     <Menu
         Text="About"
         Info="About Shaaft and Credits"
-	Position="300.0 200.0">
+        Position="300.0 200.0">
 
         <TextItem
-	    Text="Shaaft"
-	    Size="1.8"
-	    Info="A double-A title. Please buy if you haven't done so already."
-	    Position="300.0 430.0" />
+            Text="Shaaft"
+            Size="1.8"
+            Info="A double-A title. Please buy if you haven't done so already."
+            Position="300.0 430.0" />
         <TextItem
-	    Text="Copyright ~ 2023 Frank Becker."
-	    Info="Made in Canada, eh!"
-	    Position="300.0 380.0" />
+            Text="Copyright ~ 2023 Frank Becker."
+            Info="Made in Canada, eh!"
+            Position="300.0 380.0" />
         <TextItem
-	    Text="All rights reserved."
-	    Info=""
-	    Position="300.0 340.0" />
+            Text="All rights reserved."
+            Info=""
+            Position="300.0 340.0" />
         <TextItem
-	    Text="Visit http://games.mooflu.com"
-	    Info="Ha-MooChoo!"
-	    Position="300.0 300.0" />
+            Text="Visit https://github.com/mooflu"
+            Info="Ha-MooChoo!"
+            Position="300.0 300.0" />
         <TextItem
-	    Text="VERSION"
-	    Position="450.0 30.0" />
+            Text="VERSION"
+            Position="450.0 30.0" />
 
-	<Menu
-	    Text="Credits"
-	    Info="Greetings and salutations go out to..."
-	    Position="300.0 200.0">
+        <Menu
+            Text="Credits"
+            Info="Greetings and salutations go out to..."
+            Position="300.0 200.0">
 
-	    <TextItem
-		Text="Special thanks to:"
-		Size="1.2"
-		Info="Danke schoen. Muchas gracias. Merci."
-		Position="300.0 430.0" />
-	    <TextItem
-		Text="Soundtrack (Nauticus) by Alexander Parker"
-		Info="Goto www.soundportfolio.com for details."
-		Position="300.0 380.0" />
-	    <TextItem
-		Text="SDL (Simple DirectMedia Layer)"
-		Info="Goto libsdl.org for details."
-		Position="300.0 340.0" />
-	    <TextItem
-		Text="Lee Thomason (TinyXml)"
-		Info="Goto tinyxml.sourceforge.net for details."
-		Position="300.0 300.0" />
-	    <TextItem
-		Text="Inkscape (Vector Graphics Editor)"
-		Info="Goto www.inkscape.org for details."
-		Position="300.0 260.0" />
-	    <TextItem
-		Text="Blender (3D Animation Program)"
-		Info="Goto www.blender.org for details."
-		Position="300.0 220.0" />
-	    <TextItem
-		Text="Gimp (Image Manipulation Program)"
-		Info="Goto www.gimp.org for details."
-		Position="300.0 180.0" />
-	    <TextItem
-		Text="Audacity (Audio Editor and Recorder)"
-		Info="Goto audacity.sourceforge.net for details."
-		Position="300.0 140.0" />
-	</Menu>
+            <TextItem
+                Text="Special thanks to:"
+                Size="1.2"
+                Info="Danke schoen. Muchas gracias. Merci."
+                Position="300.0 430.0" />
+            <TextItem
+                Text="Soundtrack (Nauticus) by Alexander Parker"
+                Info="Goto www.soundportfolio.com for details."
+                Position="300.0 380.0" />
+            <TextItem
+                Text="SDL (Simple DirectMedia Layer)"
+                Info="Goto libsdl.org for details."
+                Position="300.0 340.0" />
+            <TextItem
+                Text="Lee Thomason (TinyXml)"
+                Info="Goto https://github.com/leethomason for details."
+                Position="300.0 300.0" />
+            <TextItem
+                Text="PhysicsFS"
+                Info="Goto https://github.com/icculus/physfs for details."
+                Position="300.0 260.0" />
+            <TextItem
+                Text="mini-yaml"
+                Info="Goto https://github.com/jimmiebergmann/mini-yaml for details."
+                Position="300.0 220.0" />
+            <TextItem
+                Text="vmmlib"
+                Info="Goto https://github.com/VMML/vmmlib for details."
+                Position="300.0 180.0" />
+            <TextItem
+                Text="glew"
+                Info="Goto https://github.com/nigels-com/glew for details."
+                Position="300.0 140.0" />
+            <TextItem
+                Text="glm"
+                Info="Goto https://github.com/g-truc/glm for details."
+                Position="300.0 100.0" />
+        </Menu>
 
     </Menu>
 
     <ActionItem
         Text="Quit"
         Action="Quit"
-	Info="I had enough, thank you!"
+        Info="I had enough, thank you!"
         Position="300.0 120.0"/>
 
 </Menu>

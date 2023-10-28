@@ -117,6 +117,7 @@ private:
     //mouse position [0..1]
     vec2f _mousePos;
     vec2f _mouseDelta;
+    float _mouseSensitivity;
 
     //intercept raw input
     InterceptorI* _interceptor;

@@ -333,9 +333,9 @@ FloatSelectable::FloatSelectable(bool enabled, const BoundingBox& rect, const st
     _xPos = (curVal - _min) * 140.0f / (_max - _min);
 
     //bounding box for double arrow
-    _bRect.min.x = _boundingBox.min.x + 142 + _sliderOffset;
+    _bRect.min.x = _boundingBox.min.x + 102 + _sliderOffset;
     _bRect.max.x = _bRect.min.x + 20;
-    _bRect.min.y = _boundingBox.min.y - 5;
+    _bRect.min.y = _boundingBox.min.y;
     _bRect.max.y = _bRect.min.y + 30;
 
     _slider = _icons->getIndex("Slider");
@@ -347,7 +347,7 @@ FloatSelectable::FloatSelectable(bool enabled, const BoundingBox& rect, const st
         LOG_ERROR << "DoubleArrow not found" << endl;
     }
 
-    _boundingBox.max.x = 170 + _sliderOffset + _icons->getWidth(_slider) * 1.6f;
+    _boundingBox.max.x = _bRect.min.x + _icons->getWidth(_slider) * 1.6f;
 
     _inputBox = _boundingBox;
 }
@@ -455,10 +455,16 @@ void FloatSelectable::draw(const Point2Di& offset) {
         }
     }
 
-    _icons->DrawC(_slider, _boundingBox.min.x + offset.x + 221 + _sliderOffset, _boundingBox.min.y + offset.y + 10,
-                  1.1f, 0.5f);
-    _icons->DrawC(_doubleArrow, _boundingBox.min.x + offset.x + 152 + _sliderOffset + _xPos,
-                  _boundingBox.min.y + offset.y + 11, 0.8f, 0.8f);
+    _icons->DrawC(_slider, _boundingBox.min.x + offset.x + 180 + _sliderOffset, _boundingBox.min.y + offset.y + 15,
+                  1.1f, 0.4f);
+    _icons->DrawC(_doubleArrow, _boundingBox.min.x + offset.x + 112 + _sliderOffset + _xPos,
+                  _boundingBox.min.y + offset.y + 15, 0.8f, 0.8f);
+
+    float curVal = _min + _xPos * (_max - _min) / 140.0f;
+    char valStr[10];
+    sprintf(valStr, "%2.2f", curVal);
+    _fontWhite->DrawString(valStr, _boundingBox.max.x + offset.x - 50,
+        _boundingBox.min.y + offset.y + 5, 0.5f, 0.5f);
 }
 
 //------------------------------------------------------------------------------
