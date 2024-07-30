@@ -1,4 +1,5 @@
-# Play
+# Play <img src="https://github.com/user-attachments/assets/b2bf5d75-1e4f-445f-be6d-059a684bbcf2" width="32px">
+
 https://mooflu.github.io/shaaft/shaaft.html
 
 `q,a,w,s,e,d` to rotate
