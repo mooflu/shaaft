@@ -1,4 +1,4 @@
-# Play <img src="https://github.com/user-attachments/assets/b2bf5d75-1e4f-445f-be6d-059a684bbcf2" width="32px">
+# Play <img src="https://github.com/user-attachments/assets/b2bf5d75-1e4f-445f-be6d-059a684bbcf2" width="40px">
 
 https://mooflu.github.io/shaaft/shaaft.html
 
