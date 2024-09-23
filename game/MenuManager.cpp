@@ -46,6 +46,11 @@ MenuManager::MenuManager() :
     XTRACE();
 
     updateSettings();
+
+    int w = VideoBaseS::instance()->getWidth();
+    int h = VideoBaseS::instance()->getHeight();
+    _mouseX = w / 2;
+    _mouseY = h / 2;
 }
 
 MenuManager::~MenuManager() {
@@ -280,9 +285,16 @@ bool MenuManager::draw(void) {
     return true;
 }
 
-void MenuManager::reload(void) {}
+void MenuManager::reload(void) {
+    int w = VideoBaseS::instance()->getWidth();
+    int h = VideoBaseS::instance()->getHeight();
+    _mouseX = w / 2;
+    _mouseY = h / 2;
+}
 
 void MenuManager::turnMenuOn(void) {
+    SDL_SetRelativeMouseMode(SDL_FALSE);
+
     AudioS::instance()->playSample("sounds/beep");
     _prevContext = GameState::context;
     GameState::context = Context::eMenu;
@@ -303,6 +315,8 @@ void MenuManager::turnMenuOff(void) {
         return;
     }
 
+    SDL_SetRelativeMouseMode(SDL_TRUE);
+
     AudioS::instance()->playSample("sounds/beep");
     GameState::context = _prevContext;
 
@@ -316,6 +330,24 @@ void MenuManager::turnMenuOff(void) {
 
 bool MenuManager::canReturnToGame(void) {
     return (_prevContext == Context::eInGame) || (_prevContext == Context::ePaused);
+}
+
+void MenuManager::updateMousePosition(const Trigger& trigger) {
+    if (VideoBaseS::instance()->isFullscreen()) {
+        _mouseX += trigger.fData1;
+        _mouseY += trigger.fData2;
+    } else {
+        int x;
+        int y;
+        SDL_GetMouseState(&x, &y);
+        float arx = (float)VideoBaseS::instance()->getWidth() / 1000.0;
+        float ary = (float)VideoBaseS::instance()->getHeight() / 750.0;
+        _mouseX = x / arx;
+        _mouseY = 750.0 - (y / ary);
+    }
+    VideoBase& video = *VideoBaseS::instance();
+    Clamp(_mouseX, 0.0f, (750.0f * (float)video.getWidth()) / (float)video.getHeight());
+    Clamp(_mouseY, 0.0f, 750.0f);
 }
 
 void MenuManager::input(const Trigger& trigger, const bool& isDown) {
@@ -381,12 +413,7 @@ void MenuManager::input(const Trigger& trigger, const bool& isDown) {
                 Clamp(_mouseX, 0.0f, 1000.0);
                 Clamp(_mouseY, 0.0f, 750.0);
 #else
-                VideoBase& video = *VideoBaseS::instance();
-
-                _mouseX += trigger.fData1;
-                _mouseY += trigger.fData2;
-                Clamp(_mouseX, 0.0f, (750.0f * (float)video.getWidth()) / (float)video.getHeight());
-                Clamp(_mouseY, 0.0f, 750.0f);
+                updateMousePosition(trigger);
 #endif
                 activateSelectableUnderMouse();
             } break;

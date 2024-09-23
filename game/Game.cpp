@@ -246,6 +246,7 @@ void Game::setupModel(SetupModelEnum setupType) {
 void Game::startNewGame(void) {
     GameS::instance()->reset();
     GameState::context = Context::eInGame;
+    SDL_SetRelativeMouseMode(SDL_TRUE);
     InputS::instance()->disableInterceptor();
     GameState::stopwatch.start();
 }
