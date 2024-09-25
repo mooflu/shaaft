@@ -226,7 +226,7 @@ int ScoreKeeper::addToCurrentScore(int score, int cubes, int secs) {
         pi.position.x = 375 + shaftOffset / 2.0f;
         pi.position.y = 375;
         pi.position.z = 0;
-        char buf[10];
+        char buf[11];
         sprintf(buf, "%d", newValue);
         pi.text = buf;
 

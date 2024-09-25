@@ -24,6 +24,7 @@ using namespace std;
 #endif
 
 #include <algorithm>
+#include <memory>
 using namespace std;
 
 /*
